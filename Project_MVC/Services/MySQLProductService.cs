@@ -13,6 +13,8 @@ namespace Project_MVC.Services
         private MyDbContext db = new MyDbContext();
         public Product Create(Product product)
         {
+            product.ProductCategoryId = Convert.ToInt32(product.ProductCategoryNameAndId.Split(' ')[0]);
+            product.ProductCategoryName = product.ProductCategoryNameAndId.Split(' ')[2];
             product.CreatedAt = DateTime.Now;
             product.UpdatedAt = null;
             product.DeletedAt = null;

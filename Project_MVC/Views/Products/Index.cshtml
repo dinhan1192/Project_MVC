@@ -19,16 +19,23 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+@using (Html.BeginForm("Index", "Products", FormMethod.Get))
+{
+    <p>
+        Find by Product Name or Code: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control" })
+        <input type="submit" value="Search" />
+    </p>
+}
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.ProductCategory.Name)
+            @Html.DisplayNameFor(model => model.ProductCategoryName)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.ProductCode)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.ActionLink("Product Name", "Index", new { sortOrder = ViewBag.NameSortParm })
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Price)
@@ -37,16 +44,7 @@
             @Html.DisplayNameFor(model => model.Description)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.CreatedAt)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UpdatedAt)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DeletedAt)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Status)
+            @Html.ActionLink("Created At", "Index", new { sortOrder = ViewBag.DateSortParm })
         </th>
         <th></th>
     </tr>
@@ -55,7 +53,7 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.ProductCategory.Name)
+                @Html.DisplayFor(modelItem => item.ProductCategoryName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ProductCode)
@@ -71,15 +69,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedAt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DeletedAt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |

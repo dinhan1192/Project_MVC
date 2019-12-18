@@ -49,7 +49,7 @@ namespace Project_MVC.Controllers
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                products = products.Where(s => s.Name.Contains(searchString));
+                products = products.Where(s => s.Name.Contains(searchString) || s.ProductCode.Contains(searchString));
             }
             switch (sortOrder)
             {
@@ -113,7 +113,7 @@ namespace Project_MVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,ProductCode,Name,Price,Description,CreatedAt,UpdatedAt,DeletedAt,Status,ProductCategoryId")] Product product)
+        public ActionResult Create([Bind(Include = "Id,ProductCode,Name,Price,ProductCategoryNameAndId,Description,CreatedAt,UpdatedAt,DeletedAt,Status,ProductCategoryId")] Product product)
         {
             if (ModelState.IsValid)
             {

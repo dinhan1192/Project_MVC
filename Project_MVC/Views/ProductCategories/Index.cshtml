@@ -19,6 +19,13 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+@using (Html.BeginForm("Index", "ProductCategories", FormMethod.Get))
+{
+    <p>
+        Find by Product Category Name: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control" })
+        <input type="submit" value="Search" />
+    </p>
+}
 <table class="table">
     <tr>
         <th>

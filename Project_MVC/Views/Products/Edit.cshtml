@@ -51,11 +51,11 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ProductCategoryId, "ProductCategoryId", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.ProductCategoryNameAndId, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ProductCategoryId, new { @class = "form-control typeahead", @name = "AutoComplete", data_provide = "typeahead" })
+                @Html.TextBoxFor(model => model.ProductCategoryNameAndId, new { @class = "form-control typeahead", @name = "AutoComplete", data_provide = "typeahead" })
                 @Html.Hidden("hidSearch")
-                @Html.ValidationMessageFor(model => model.ProductCategoryId, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.ProductCategoryNameAndId, "", new { @class = "text-danger" })
             </div>
         </div>
 

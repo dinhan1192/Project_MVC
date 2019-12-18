@@ -10,6 +10,8 @@ namespace Project_MVC.Models
     public class Product
     {
         public int? Id { get; set; }
+        [Required]
+        [DisplayName("Product Code")]
         public string ProductCode { get; set; }
         [DisplayName("Product Name")]
         [Required]
@@ -23,7 +25,11 @@ namespace Project_MVC.Models
         public ProductStatus Status { get; set; }
         [DisplayName("Product Category")]
         public int ProductCategoryId { get; set; }
-        public virtual ProductCategory ProductCategory { get; set; }
+        //public virtual ProductCategory ProductCategory { get; set; }
+        public string ProductCategoryName { get; set; }
+        [Required]
+        [DisplayName("Name of Product Category")]
+        public string ProductCategoryNameAndId { get; set; }
         public enum ProductStatus
         {
             NotDeleted = 0, Deleted = -1

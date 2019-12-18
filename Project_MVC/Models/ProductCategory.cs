@@ -18,7 +18,7 @@ namespace Project_MVC.Models
         public DateTime? UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
         public ProductCategoryStatus Status { get; set; }
-        public virtual ICollection<Product> Products { get; set; }
+        //public virtual ICollection<Product> Products { get; set; }
 
         public enum ProductCategoryStatus
         {
