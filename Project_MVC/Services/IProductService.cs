@@ -13,6 +13,7 @@ namespace Project_MVC.Services
         bool Update(Product existProduct, Product product, ModelStateDictionary state);
         bool Delete(Product product, ModelStateDictionary state);
         bool Detail(int? id);
-        void Validate(Product product, ModelStateDictionary state);
+        void ValidateCode(Product product, ModelStateDictionary state);
+        void ValidateCategory(Product product, ModelStateDictionary state);
     }
 }

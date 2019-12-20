@@ -81,5 +81,11 @@ D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\obj\Debug\Project_MV
 D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\obj\Debug\Project_MVC.csproj.CopyComplete
 D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\obj\Debug\Project_MVC.dll
 D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\obj\Debug\Project_MVC.pdb
+D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\System.Net.Http.Formatting.dll
+D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\System.Web.Http.dll
+D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\System.Web.Http.WebHost.dll
+D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\System.Net.Http.Formatting.xml
+D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\System.Web.Http.xml
+D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\System.Web.Http.WebHost.xml
 D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\obj\Debug\Project_MVC.Migrations.InitializeDatabase.resources
 D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\obj\Debug\Project_MVC.csproj.GenerateResource.cache

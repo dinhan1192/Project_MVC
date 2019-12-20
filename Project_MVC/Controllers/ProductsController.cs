@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Newtonsoft.Json;
 using Project_MVC.Models;
 using Project_MVC.Services;
 using static Project_MVC.Models.Product;
@@ -78,12 +79,19 @@ namespace Project_MVC.Controllers
 
         // Cái này là dùng cho AutoComplete
         public ActionResult GetListProductCategories()
-        {
+     {
+            Console.WriteLine("123");
+            //var list = db.ProductCategories.Where(s => s.Status != ProductCategoryStatus.Deleted).ToList();
+            var list = db.ProductCategories.Select(dep => new
+            {
+                dep.Id,
+                dep.Name
+            });
             return new JsonResult()
             {
-                Data = db.ProductCategories.Where(s => s.Status != ProductCategoryStatus.Deleted).ToList(),
-                JsonRequestBehavior = JsonRequestBehavior.AllowGet
-            };
+                Data = list,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+        };
         }
 
         // GET: Products/Details/5
@@ -113,7 +121,7 @@ namespace Project_MVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,ProductCode,Name,Price,ProductCategoryNameAndId,Description,CreatedAt,UpdatedAt,DeletedAt,Status,ProductCategoryId")] Product product)
+        public ActionResult Create([Bind(Include = "Id,ProductCode,Name,Price,Description,CreatedAt,UpdatedAt,DeletedAt,Status,ProductCategoryId,ProductCategoryNameAndId")] Product product)
         {
             ModelStateDictionary state = ModelState;
 
@@ -133,6 +141,7 @@ namespace Project_MVC.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Product product = db.Products.Find(id);
+            product.ProductCategoryNameAndId = product.ProductCategoryId + " - " + product.ProductCategory.Name;
             if (product == null || product.IsDeleted())
             {
                 return HttpNotFound();
@@ -146,7 +155,7 @@ namespace Project_MVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Price,Description,ProductCategoryNameAndId")] Product product)
+        public ActionResult Edit([Bind(Include = "Id,Name,Price,Description,ProductCategoryId,ProductCategoryNameAndId")] Product product)
         {
             ModelStateDictionary state = ModelState;
             if (product == null || product.Id == null)

@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -23,12 +25,11 @@ namespace Project_MVC.Models
         public DateTime? UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
         public ProductStatus Status { get; set; }
-        public int? ProductCategoryId { get; set; }
-        //public virtual ProductCategory ProductCategory { get; set; }
         [DisplayName("Product Category")]
-        public string ProductCategoryName { get; set; }
-        [Required]
+        public int? ProductCategoryId { get; set; }
+        public virtual ProductCategory ProductCategory { get; set; }
         [DisplayName("Name And Id of Product Category")]
+        [NotMapped]
         [RegularExpression(@"^[0-9]+\s-\s[0-9a-zA-Z\s+ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]+$", ErrorMessage = "Invalid Product Category")]
         public string ProductCategoryNameAndId { get; set; }
         public enum ProductStatus

@@ -69,12 +69,10 @@
             <div class="col-md-10">
                 @Html.TextBoxFor(model => model.ProductCategoryNameAndId, new { @class = "form-control typeahead", @name = "AutoComplete", data_provide = "typeahead" })
                 @*<input id="ProductCategoryId" type="text" name="Autocomplete" value="" class="form-control typeahead" data-provide="typeahead" />*@
-                @*<input type="hidden" name="hidSearch" id="hidSearch" />*@
-                @Html.Hidden("hidSearch")
+                @*<input type="hidden" name="ProductCategoryId" id="hidProductCategoryId" />*@
+                @Html.HiddenFor(model => model.ProductCategoryId, new { @id = "hidProductCategoryId", @name = "hidProductCategoryId" })
                 @Html.ValidationMessageFor(model => model.ProductCategoryNameAndId, "", new { @class = "text-danger" })
             </div>
-            <p>
-            </p>
         </div>
 
         <div class="form-group">

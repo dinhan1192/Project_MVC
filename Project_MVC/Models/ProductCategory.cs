@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -19,7 +20,7 @@ namespace Project_MVC.Models
         public DateTime? UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
         public ProductCategoryStatus Status { get; set; }
-        //public virtual ICollection<Product> Products { get; set; }
+        public virtual ICollection<Product> Products { get; set; }
 
         public enum ProductCategoryStatus
         {

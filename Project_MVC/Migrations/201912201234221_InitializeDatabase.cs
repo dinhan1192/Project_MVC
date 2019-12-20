@@ -54,10 +54,10 @@ namespace Project_MVC.Migrations
                         DeletedAt = c.DateTime(precision: 0),
                         Status = c.Int(nullable: false),
                         ProductCategoryId = c.Int(),
-                        ProductCategoryName = c.String(unicode: false),
-                        ProductCategoryNameAndId = c.String(nullable: false, unicode: false),
                     })
-                .PrimaryKey(t => t.Id);
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.ProductCategories", t => t.ProductCategoryId)
+                .Index(t => t.ProductCategoryId);
             
             CreateTable(
                 "dbo.ProductCategories",
@@ -78,7 +78,9 @@ namespace Project_MVC.Migrations
         public override void Down()
         {
             DropForeignKey("dbo.OrderDetails", "ProductId", "dbo.Products");
+            DropForeignKey("dbo.Products", "ProductCategoryId", "dbo.ProductCategories");
             DropForeignKey("dbo.OrderDetails", "OrderId", "dbo.Orders");
+            DropIndex("dbo.Products", new[] { "ProductCategoryId" });
             DropIndex("dbo.OrderDetails", new[] { "OrderId" });
             DropIndex("dbo.OrderDetails", new[] { "ProductId" });
             DropTable("dbo.ProductCategories");

@@ -10,6 +10,7 @@
                 success: function (response) {
                     $.each(response, function () {
                         this.name = this.Id + ' - ' + this.Name;
+                        //this.name = this.Name;
                     });
                     return process(response);
                 }
@@ -21,7 +22,8 @@
         var current = $input.typeahead("getActive");
         if (current) {
             if (current.name == $input.val()) {
-                $('hidSearch').val(current.Id)
+                $('#hidProductCategoryId').val(current.Id);
+                console.log(current.Id)
             }
         }
     })
