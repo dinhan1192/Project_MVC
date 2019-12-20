@@ -78,8 +78,8 @@ D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\Newtonsoft.Json.
 D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\Antlr3.Runtime.pdb
 D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
 D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\obj\Debug\Project_MVC.csprojAssemblyReference.cache
-D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\obj\Debug\Project_MVC.Migrations.InitializeDatabase.resources
-D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\obj\Debug\Project_MVC.csproj.GenerateResource.cache
 D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\obj\Debug\Project_MVC.csproj.CopyComplete
 D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\obj\Debug\Project_MVC.dll
 D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\obj\Debug\Project_MVC.pdb
+D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\obj\Debug\Project_MVC.Migrations.InitializeDatabase.resources
+D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\obj\Debug\Project_MVC.csproj.GenerateResource.cache

@@ -45,7 +45,7 @@ namespace Project_MVC.Migrations
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        ProductCode = c.String(nullable: false, unicode: false),
+                        ProductCode = c.String(unicode: false),
                         Name = c.String(nullable: false, unicode: false),
                         Price = c.Double(nullable: false),
                         Description = c.String(unicode: false),
@@ -53,8 +53,9 @@ namespace Project_MVC.Migrations
                         UpdatedAt = c.DateTime(precision: 0),
                         DeletedAt = c.DateTime(precision: 0),
                         Status = c.Int(nullable: false),
-                        ProductCategoryId = c.Int(nullable: false),
-                        ProductCategoryName = c.String(nullable: false, unicode: false),
+                        ProductCategoryId = c.Int(),
+                        ProductCategoryName = c.String(unicode: false),
+                        ProductCategoryNameAndId = c.String(nullable: false, unicode: false),
                     })
                 .PrimaryKey(t => t.Id);
             

@@ -19,7 +19,7 @@ namespace Project_MVC.Services
             if (state.IsValid)
             {
                 product.ProductCategoryId = Utils.Utility.GetNullableInt(product.ProductCategoryNameAndId.Split(' ')[0]);
-                product.ProductCategoryName = product.ProductCategoryNameAndId.Split(' ')[2];
+                product.ProductCategoryName = product.ProductCategoryNameAndId.Substring(product.ProductCategoryNameAndId.IndexOf('-') + 2);
                 product.CreatedAt = DateTime.Now;
                 product.UpdatedAt = null;
                 product.DeletedAt = null;
@@ -59,7 +59,7 @@ namespace Project_MVC.Services
                 existProduct.Name = product.Name;
                 existProduct.Price = product.Price;
                 existProduct.ProductCategoryId = Utils.Utility.GetNullableInt(product.ProductCategoryNameAndId.Split(' ')[0]);
-                existProduct.ProductCategoryName = product.ProductCategoryNameAndId.Split(' ')[2];
+                existProduct.ProductCategoryName = product.ProductCategoryNameAndId.Substring(product.ProductCategoryNameAndId.IndexOf('-') + 2);
                 existProduct.Description = product.Description;
                 existProduct.UpdatedAt = DateTime.Now;
                 db.Products.AddOrUpdate(existProduct);
