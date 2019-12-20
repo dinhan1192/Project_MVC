@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Data.Entity.Migrations;
 using System.Linq;
+using System.Net;
 using System.Web;
+using System.Web.Mvc;
 using Project_MVC.Models;
 using static Project_MVC.Models.Product;
 
@@ -11,45 +13,75 @@ namespace Project_MVC.Services
     public class MySQLProductService : IProductService
     {
         private MyDbContext db = new MyDbContext();
-        public Product Create(Product product)
+        public bool Create(Product product, ModelStateDictionary state)
         {
-            product.ProductCategoryId = Convert.ToInt32(product.ProductCategoryNameAndId.Split(' ')[0]);
-            product.ProductCategoryName = product.ProductCategoryNameAndId.Split(' ')[2];
-            product.CreatedAt = DateTime.Now;
-            product.UpdatedAt = null;
-            product.DeletedAt = null;
-            db.Products.Add(product);
-            db.SaveChanges();
-            return product;
+            Validate(product, state);
+            if (state.IsValid)
+            {
+                product.ProductCategoryId = Utils.Utility.GetNullableInt(product.ProductCategoryNameAndId.Split(' ')[0]);
+                product.ProductCategoryName = product.ProductCategoryNameAndId.Split(' ')[2];
+                product.CreatedAt = DateTime.Now;
+                product.UpdatedAt = null;
+                product.DeletedAt = null;
+                db.Products.Add(product);
+                db.SaveChanges();
+                return true;
+            }
+
+            //ViewBag.ProductCategoryId = new SelectList(db.ProductCategories, "Id", "Name", product.ProductCategoryId);
+            return false;
         }
 
-        public Product Delete(Product existProduct)
+        public bool Delete(Product existProduct, ModelStateDictionary state)
         {
-            existProduct.Status = ProductStatus.Deleted;
-            existProduct.DeletedAt = DateTime.Now;
-            db.Products.AddOrUpdate(existProduct);
-            db.SaveChanges();
+            if (state.IsValid)
+            {
+                existProduct.Status = ProductStatus.Deleted;
+                existProduct.DeletedAt = DateTime.Now;
+                db.Products.AddOrUpdate(existProduct);
+                db.SaveChanges();
 
-            return existProduct;
+                return true;
+            }
+
+            return false;
         }
 
-        public Product Detail(Product product)
+        public bool Detail(int? id)
         {
             throw new NotImplementedException();
         }
 
-        public Product Update(Product existProduct, Product product)
+        public bool Update(Product existProduct, Product product, ModelStateDictionary state)
         {
-            existProduct.Name = product.Name;
-            existProduct.Price = product.Price;
-            existProduct.ProductCode = product.ProductCode;
-            existProduct.ProductCategoryId = product.ProductCategoryId;
-            existProduct.Description = product.Description;
-            existProduct.UpdatedAt = DateTime.Now;
-            db.Products.AddOrUpdate(existProduct);
-            db.SaveChanges();
+            if (state.IsValid)
+            {
+                existProduct.Name = product.Name;
+                existProduct.Price = product.Price;
+                existProduct.ProductCategoryId = Utils.Utility.GetNullableInt(product.ProductCategoryNameAndId.Split(' ')[0]);
+                existProduct.ProductCategoryName = product.ProductCategoryNameAndId.Split(' ')[2];
+                existProduct.Description = product.Description;
+                existProduct.UpdatedAt = DateTime.Now;
+                db.Products.AddOrUpdate(existProduct);
+                db.SaveChanges();
 
-            return existProduct;
+                return true;
+            }
+
+            return false;
+        }
+
+        public void Validate(Product product, ModelStateDictionary state)
+        {
+            if (string.IsNullOrEmpty(product.ProductCode))
+            {
+                state.AddModelError("ProductCode", "Product Code is required.");
+            }
+            var list = db.Products.Where(s => s.ProductCode.Contains(product.ProductCode) && s.Status == ProductStatus.NotDeleted).ToList();
+            if (list.Count != 0)
+            {
+                state.AddModelError("ProductCode", "Product Code already exist.");
+            }
         }
     }
 }

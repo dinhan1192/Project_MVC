@@ -103,9 +103,9 @@ namespace Project_MVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Name,Description,CreatedAt,UpdatedAt,DeletedAt,Status")] ProductCategory productCategory)
         {
-            if (ModelState.IsValid)
+            ModelStateDictionary state = ModelState;
+            if (mySQLProductCategoryService.Create(productCategory, state))
             {
-                mySQLProductCategoryService.Create(productCategory);
                 return RedirectToAction("Index");
             }
 
@@ -134,6 +134,8 @@ namespace Project_MVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Name,Description")] ProductCategory productCategory)
         {
+            ModelStateDictionary state = ModelState;
+
             if (productCategory == null || productCategory.Id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -143,10 +145,8 @@ namespace Project_MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
-            if (ModelState.IsValid)
+            if (mySQLProductCategoryService.Update(existProductCategory, productCategory, state))
             {
-                //db.Entry(student).State = EntityState.Modified;
-                mySQLProductCategoryService.Update(existProductCategory, productCategory);
                 return RedirectToAction("Index");
             }
 
@@ -173,6 +173,7 @@ namespace Project_MVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int? id)
         {
+            ModelStateDictionary state = ModelState;
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -182,10 +183,8 @@ namespace Project_MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
-            if (ModelState.IsValid)
+            if (mySQLProductCategoryService.Delete(existProductCategory, state))
             {
-                //db.Entry(student).State = EntityState.Modified;
-                mySQLProductCategoryService.Delete(existProductCategory);
                 return RedirectToAction("Index");
             }
             return RedirectToAction("Index");

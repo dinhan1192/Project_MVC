@@ -115,14 +115,13 @@ namespace Project_MVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,ProductCode,Name,Price,ProductCategoryNameAndId,Description,CreatedAt,UpdatedAt,DeletedAt,Status,ProductCategoryId")] Product product)
         {
-            if (ModelState.IsValid)
-            {
-                mySQLProductService.Create(product);
+            ModelStateDictionary state = ModelState;
 
+            if (mySQLProductService.Create(product, state))
+            {
                 return RedirectToAction("Index");
             }
 
-            //ViewBag.ProductCategoryId = new SelectList(db.ProductCategories, "Id", "Name", product.ProductCategoryId);
             return View(product);
         }
 
@@ -138,7 +137,7 @@ namespace Project_MVC.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.ProductCategoryId = new SelectList(db.ProductCategories, "Id", "Name", product.ProductCategoryId);
+            //ViewBag.ProductCategoryId = new SelectList(db.ProductCategories, "Id", "Name", product.ProductCategoryId);
             return View(product);
         }
 
@@ -147,8 +146,9 @@ namespace Project_MVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Price,Description,ProductCategoryId")] Product product)
+        public ActionResult Edit([Bind(Include = "Id,Name,Price,Description,ProductCategoryNameAndId")] Product product)
         {
+            ModelStateDictionary state = ModelState;
             if (product == null || product.Id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -158,10 +158,8 @@ namespace Project_MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
-            if (ModelState.IsValid)
+            if (mySQLProductService.Update(existProduct, product, state))
             {
-                //db.Entry(student).State = EntityState.Modified;
-                mySQLProductService.Update(existProduct, product);
                 return RedirectToAction("Index");
             }
 
@@ -188,6 +186,8 @@ namespace Project_MVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int? id)
         {
+            ModelStateDictionary state = ModelState;
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -197,10 +197,8 @@ namespace Project_MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
-            if (ModelState.IsValid)
+            if (mySQLProductService.Delete(existProduct, state))
             {
-                //db.Entry(student).State = EntityState.Modified;
-                mySQLProductService.Delete(existProduct);
                 return RedirectToAction("Index");
             }
             return RedirectToAction("Index");
