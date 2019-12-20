@@ -82,7 +82,7 @@ namespace Project_MVC.Controllers
      {
             Console.WriteLine("123");
             //var list = db.ProductCategories.Where(s => s.Status != ProductCategoryStatus.Deleted).ToList();
-            var list = db.ProductCategories.Select(dep => new
+            var list = db.ProductCategories.Where(s => s.Status != ProductCategoryStatus.Deleted).Select(dep => new
             {
                 dep.Id,
                 dep.Name
