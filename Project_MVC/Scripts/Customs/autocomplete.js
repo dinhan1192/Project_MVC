@@ -1,11 +1,12 @@
 ﻿$(document).ready(function () {
     var $input = $('.typeahead');
+    var link = $('#AutoComplete').data('request-url');
     $input.typeahead({
         autoSelect: true,
         items: 3,
         source: function (query, process) {
             $.ajax({
-                url: '/Products/GetListProductCategories',
+                url: link,
                 type: 'GET',
                 success: function (response) {
                     $.each(response, function () {
@@ -21,7 +22,7 @@
         var current = $input.typeahead("getActive");
         if (current) {
             if (current.name == $input.val()) {
-                $('#hidProductCategoryId').val(current.Code);
+                $('#hidCode').val(current.Code);
                 //console.log(current.Code)
             }
         }

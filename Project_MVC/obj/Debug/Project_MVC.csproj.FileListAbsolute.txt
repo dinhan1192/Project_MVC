@@ -1,7 +1,7 @@
-D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\roslyn\csc.exe
 D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\Project_MVC.dll.config
 D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\Project_MVC.dll
 D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\Project_MVC.pdb
+D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\roslyn\csc.exe
 D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\roslyn\csc.exe.config
 D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\roslyn\csc.rsp
 D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\roslyn\csi.exe
@@ -55,7 +55,10 @@ D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\Microsoft.Web.In
 D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\MySql.Data.dll
 D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\MySql.Data.Entity.EF6.dll
 D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\Newtonsoft.Json.dll
+D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\System.Net.Http.Formatting.dll
 D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\System.Web.Helpers.dll
+D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\System.Web.Http.dll
+D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\System.Web.Http.WebHost.dll
 D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\System.Web.Mvc.dll
 D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\System.Web.Optimization.dll
 D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\System.Web.Razor.dll
@@ -67,6 +70,9 @@ D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\EntityFramework.
 D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\EntityFramework.SqlServer.xml
 D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\MySql.Data.xml
 D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\MySql.Data.Entity.EF6.xml
+D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\System.Net.Http.Formatting.xml
+D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\System.Web.Http.xml
+D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\System.Web.Http.WebHost.xml
 D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\System.Web.Helpers.xml
 D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\System.Web.Mvc.xml
 D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\System.Web.Optimization.xml
@@ -78,14 +84,8 @@ D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\Newtonsoft.Json.
 D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\Antlr3.Runtime.pdb
 D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
 D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\obj\Debug\Project_MVC.csprojAssemblyReference.cache
+D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\obj\Debug\Project_MVC.Migrations.InitializeDatabase.resources
+D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\obj\Debug\Project_MVC.csproj.GenerateResource.cache
 D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\obj\Debug\Project_MVC.csproj.CopyComplete
 D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\obj\Debug\Project_MVC.dll
 D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\obj\Debug\Project_MVC.pdb
-D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\System.Net.Http.Formatting.dll
-D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\System.Web.Http.dll
-D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\System.Web.Http.WebHost.dll
-D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\System.Net.Http.Formatting.xml
-D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\System.Web.Http.xml
-D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\bin\System.Web.Http.WebHost.xml
-D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\obj\Debug\Project_MVC.Migrations.InitializeDatabase.resources
-D:\Lap Trinh\T1808A\MVC\Project_MVC\Project_MVC\Project_MVC\obj\Debug\Project_MVC.csproj.GenerateResource.cache

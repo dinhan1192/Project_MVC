@@ -74,7 +74,7 @@
                 @Html.ActionLink("Edit", "Edit", new { id = item.Code }) |
                 @Html.ActionLink("Details", "Details", new { id = item.Code }) |
                 @Html.ActionLink("Delete", "Delete", new { id = item.Code },
-              new { @class = "btn btn-danger btn-delete-product", @id = "delete-" + item.Code })
+              new { @class = "btn btn-danger btn-delete-notify", @id = "delete-" + item.Code, data_request_url = "/Products/Delete/" })
             </td>
         </tr>
     }

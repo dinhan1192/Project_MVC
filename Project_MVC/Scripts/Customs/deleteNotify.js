@@ -1,10 +1,12 @@
 ﻿$(document).ready(function () {
-    $('.btn-delete-productCategory').click(function () {
+    console.log("123")
+    $('.btn-delete-notify').click(function () {
+        var link = $(this).data('request-url');
         var id = $(this).attr("id").replace("delete-", "");
-        if (confirm("Are you sure want to delete this Product Category ?")) {
+        if (confirm("Are you sure want to delete this item ?")) {
             var token = $('input[name="__RequestVerificationToken"]').val();
             $.ajax({
-                url: "/ProductCategories/Delete/" + id,
+                url: link + id,
                 type: "POST",
                 data: {
                     __RequestVerificationToken: token

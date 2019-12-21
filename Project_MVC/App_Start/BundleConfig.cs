@@ -23,9 +23,8 @@ namespace Project_MVC
                       "~/Scripts/bootstrap.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/custom").Include(
-                      "~/Scripts/Customs/ProductCategories/deleteNotify.js",
-                      "~/Scripts/Customs/Products/deleteNotify.js",
-                      "~/Scripts/Customs/Products/autocompleteforCategory.js"
+                      "~/Scripts/Customs/deleteNotify.js",
+                      "~/Scripts/Customs/autocomplete.js"
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/typeahead").Include(

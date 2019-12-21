@@ -187,9 +187,8 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\bootstrap3-typeahead.min.js" />
-    <Content Include="Scripts\Customs\ProductCategories\deleteNotify.js" />
-    <Content Include="Scripts\Customs\Products\autocompleteforCategory.js" />
-    <Content Include="Scripts\Customs\Products\deleteNotify.js" />
+    <Content Include="Scripts\Customs\deleteNotify.js" />
+    <Content Include="Scripts\Customs\autocomplete.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.js" />

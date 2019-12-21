@@ -66,7 +66,7 @@
                 @*@Html.ActionLink("Delete", "Delete", new { id = item.Code },
                   new { @class = "btn btn-danger btn-delete-productCategory", @id = "delete-" + item.Code, @tag = "deleteNotifyButton", @value = @url })*@
                 @Html.ActionLink("Delete", "Delete", new { id = item.Code },
-                  new { @class = "btn btn-danger btn-delete-productCategory", @id = "delete-" + item.Code })
+                  new { @class = "btn btn-danger btn-delete-notify", @id = "delete-" + item.Code, data_request_url = "/ProductCategories/Delete/" })
             </td>
         </tr>
     }
