@@ -12,6 +12,8 @@
     string nextPageInString = Convert.ToString(nextPage);
 
     var totalPage = ViewBag.totalPage;
+
+    //var url = ".btn-delete-productCategory /ProductCategories/Delete/ Category";
 }
 
 <h2>Index</h2>
@@ -29,6 +31,9 @@
 <table class="table">
     <tr>
         <th>
+            @Html.DisplayNameFor(model => model.Code)
+        </th>
+        <th>
             @Html.ActionLink("Product Category Name", "Index", new { sortOrder = ViewBag.NameSortParm })
         </th>
         <th>
@@ -44,6 +49,9 @@
     {
         <tr>
             <td>
+                @Html.DisplayFor(modelItem => item.Code)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
@@ -53,10 +61,12 @@
                 @Html.DisplayFor(modelItem => item.CreatedAt)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id },
-                  new { @class = "btn btn-danger btn-delete-productCategory", @id = "delete-" + item.Id })
+                @Html.ActionLink("Edit", "Edit", new { id = item.Code }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Code }) |
+                @*@Html.ActionLink("Delete", "Delete", new { id = item.Code },
+                  new { @class = "btn btn-danger btn-delete-productCategory", @id = "delete-" + item.Code, @tag = "deleteNotifyButton", @value = @url })*@
+                @Html.ActionLink("Delete", "Delete", new { id = item.Code },
+                  new { @class = "btn btn-danger btn-delete-productCategory", @id = "delete-" + item.Code })
             </td>
         </tr>
     }

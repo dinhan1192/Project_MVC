@@ -11,9 +11,9 @@ namespace Project_MVC.Models
 {
     public class Product
     {
-        public int? Id { get; set; }
+        [Key]
         [DisplayName("Product Code")]
-        public string ProductCode { get; set; }
+        public string Code { get; set; }
         [DisplayName("Product Name")]
         [Required]
         [RegularExpression(@"^[0-9a-zA-Z\s+ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]+$", ErrorMessage = "Invalid Product Category")]
@@ -25,13 +25,13 @@ namespace Project_MVC.Models
         public DateTime? UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
         public ProductStatus Status { get; set; }
-        [DisplayName("Product Category")]
-        public int? ProductCategoryId { get; set; }
+        [ForeignKey("ProductCategory")]
+        public string ProductCategoryCode { get; set; }
         public virtual ProductCategory ProductCategory { get; set; }
-        [DisplayName("Name And Id of Product Category")]
+        [DisplayName("Product Category")]
         [NotMapped]
-        [RegularExpression(@"^[0-9]+\s-\s[0-9a-zA-Z\s+ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]+$", ErrorMessage = "Invalid Product Category")]
-        public string ProductCategoryNameAndId { get; set; }
+        [RegularExpression(@"^[0-9A-Z]+\s-\s[0-9a-zA-Z\s+ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]+$", ErrorMessage = "Invalid Product Category")]
+        public string ProductCategoryNameAndCode { get; set; }
         public enum ProductStatus
         {
             NotDeleted = 0, Deleted = -1

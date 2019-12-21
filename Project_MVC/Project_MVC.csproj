@@ -153,9 +153,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201912201234221_InitializeDatabase.cs" />
-    <Compile Include="Migrations\201912201234221_InitializeDatabase.Designer.cs">
-      <DependentUpon>201912201234221_InitializeDatabase.cs</DependentUpon>
+    <Compile Include="Migrations\201912210229091_InitializeDatabase.cs" />
+    <Compile Include="Migrations\201912210229091_InitializeDatabase.Designer.cs">
+      <DependentUpon>201912210229091_InitializeDatabase.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CartInformation.cs" />
@@ -242,8 +242,8 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201912201234221_InitializeDatabase.resx">
-      <DependentUpon>201912201234221_InitializeDatabase.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201912210229091_InitializeDatabase.resx">
+      <DependentUpon>201912210229091_InitializeDatabase.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

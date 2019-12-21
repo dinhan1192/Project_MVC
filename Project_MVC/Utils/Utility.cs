@@ -161,6 +161,11 @@ namespace Project_MVC.Utils
             return null;
         }
 
+        public static int GetInt(string value)
+        {
+            return Convert.ToInt32(value);
+        }
+
         public static decimal? GetNullableDecimal(string value)
         {
             if (string.IsNullOrEmpty(value))

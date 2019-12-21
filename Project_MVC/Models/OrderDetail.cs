@@ -11,9 +11,9 @@ namespace Project_MVC.Models
     {
         // Khóa chính của OrderDetail là kết hợp của ProductId và OrderId
         [Key, Column(Order = 0)]
-        public int? ProductId { get; set; }
+        public string ProductCode { get; set; }
         [Key, Column(Order = 1)]
-        public int? OrderId { get; set; }
+        public string OrderId { get; set; }
         public virtual Order Order { get; set; }
         public virtual Product Product { get; set; }
         public int Quantity { get; set; }

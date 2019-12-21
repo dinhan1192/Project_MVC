@@ -50,7 +50,7 @@ namespace Project_MVC.Controllers
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                products = products.Where(s => s.Name.Contains(searchString) || s.ProductCode.Contains(searchString));
+                products = products.Where(s => s.Name.Contains(searchString) || s.Code.Contains(searchString));
             }
             switch (sortOrder)
             {
@@ -84,7 +84,7 @@ namespace Project_MVC.Controllers
             //var list = db.ProductCategories.Where(s => s.Status != ProductCategoryStatus.Deleted).ToList();
             var list = db.ProductCategories.Where(s => s.Status != ProductCategoryStatus.Deleted).Select(dep => new
             {
-                dep.Id,
+                dep.Code,
                 dep.Name
             });
             return new JsonResult()
@@ -95,7 +95,7 @@ namespace Project_MVC.Controllers
         }
 
         // GET: Products/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(string id)
         {
             if (id == null)
             {
@@ -121,7 +121,7 @@ namespace Project_MVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,ProductCode,Name,Price,Description,CreatedAt,UpdatedAt,DeletedAt,Status,ProductCategoryId,ProductCategoryNameAndId")] Product product)
+        public ActionResult Create([Bind(Include = "Code,Name,Price,Description,ProductCategoryCode,ProductCategoryNameAndCode")] Product product)
         {
             ModelStateDictionary state = ModelState;
 
@@ -134,14 +134,14 @@ namespace Project_MVC.Controllers
         }
 
         // GET: Products/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Product product = db.Products.Find(id);
-            product.ProductCategoryNameAndId = product.ProductCategoryId + " - " + product.ProductCategory.Name;
+            product.ProductCategoryNameAndCode = product.Code + " - " + product.ProductCategory.Name;
             if (product == null || product.IsDeleted())
             {
                 return HttpNotFound();
@@ -155,14 +155,14 @@ namespace Project_MVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Price,Description,ProductCategoryId,ProductCategoryNameAndId")] Product product)
+        public ActionResult Edit([Bind(Include = "Code,Name,Price,Description,ProductCategoryCode,ProductCategoryNameAndCode")] Product product)
         {
             ModelStateDictionary state = ModelState;
-            if (product == null || product.Id == null)
+            if (product == null || product.Code == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var existProduct = db.Products.Find(product.Id);
+            var existProduct = db.Products.Find(product.Code);
             if (existProduct == null || existProduct.IsDeleted())
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
@@ -176,7 +176,7 @@ namespace Project_MVC.Controllers
         }
 
         // GET: Products/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(string id)
         {
             if (id == null)
             {
@@ -193,7 +193,7 @@ namespace Project_MVC.Controllers
         // POST: Products/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int? id)
+        public ActionResult DeleteConfirmed(string id)
         {
             ModelStateDictionary state = ModelState;
 

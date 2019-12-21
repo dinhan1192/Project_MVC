@@ -9,8 +9,7 @@
                 type: 'GET',
                 success: function (response) {
                     $.each(response, function () {
-                        this.name = this.Id + ' - ' + this.Name;
-                        //this.name = this.Name;
+                        this.name = this.Code + ' - ' + this.Name;
                     });
                     return process(response);
                 }
@@ -22,8 +21,8 @@
         var current = $input.typeahead("getActive");
         if (current) {
             if (current.name == $input.val()) {
-                $('#hidProductCategoryId').val(current.Id);
-                console.log(current.Id)
+                $('#hidProductCategoryId').val(current.Code);
+                //console.log(current.Code)
             }
         }
     })

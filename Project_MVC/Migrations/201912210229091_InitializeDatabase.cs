@@ -11,16 +11,17 @@ namespace Project_MVC.Migrations
                 "dbo.OrderDetails",
                 c => new
                     {
-                        ProductId = c.Int(nullable: false),
-                        OrderId = c.Int(nullable: false),
+                        ProductCode = c.String(nullable: false, maxLength: 128, storeType: "nvarchar"),
+                        OrderId = c.String(nullable: false, maxLength: 128, storeType: "nvarchar"),
                         Quantity = c.Int(nullable: false),
                         UnitPrice = c.Double(nullable: false),
+                        Order_Id = c.Int(),
                     })
-                .PrimaryKey(t => new { t.ProductId, t.OrderId })
-                .ForeignKey("dbo.Orders", t => t.OrderId, cascadeDelete: true)
-                .ForeignKey("dbo.Products", t => t.ProductId, cascadeDelete: true)
-                .Index(t => t.ProductId)
-                .Index(t => t.OrderId);
+                .PrimaryKey(t => new { t.ProductCode, t.OrderId })
+                .ForeignKey("dbo.Orders", t => t.Order_Id)
+                .ForeignKey("dbo.Products", t => t.ProductCode, cascadeDelete: true)
+                .Index(t => t.ProductCode)
+                .Index(t => t.Order_Id);
             
             CreateTable(
                 "dbo.Orders",
@@ -44,8 +45,7 @@ namespace Project_MVC.Migrations
                 "dbo.Products",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
-                        ProductCode = c.String(unicode: false),
+                        Code = c.String(nullable: false, maxLength: 128, storeType: "nvarchar"),
                         Name = c.String(nullable: false, unicode: false),
                         Price = c.Double(nullable: false),
                         Description = c.String(unicode: false),
@@ -53,17 +53,17 @@ namespace Project_MVC.Migrations
                         UpdatedAt = c.DateTime(precision: 0),
                         DeletedAt = c.DateTime(precision: 0),
                         Status = c.Int(nullable: false),
-                        ProductCategoryId = c.Int(),
+                        ProductCategoryCode = c.String(maxLength: 128, storeType: "nvarchar"),
                     })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.ProductCategories", t => t.ProductCategoryId)
-                .Index(t => t.ProductCategoryId);
+                .PrimaryKey(t => t.Code)
+                .ForeignKey("dbo.ProductCategories", t => t.ProductCategoryCode)
+                .Index(t => t.ProductCategoryCode);
             
             CreateTable(
                 "dbo.ProductCategories",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Code = c.String(nullable: false, maxLength: 128, storeType: "nvarchar"),
                         Name = c.String(nullable: false, unicode: false),
                         Description = c.String(unicode: false),
                         CreatedAt = c.DateTime(precision: 0),
@@ -71,18 +71,18 @@ namespace Project_MVC.Migrations
                         DeletedAt = c.DateTime(precision: 0),
                         Status = c.Int(nullable: false),
                     })
-                .PrimaryKey(t => t.Id);
+                .PrimaryKey(t => t.Code);
             
         }
         
         public override void Down()
         {
-            DropForeignKey("dbo.OrderDetails", "ProductId", "dbo.Products");
-            DropForeignKey("dbo.Products", "ProductCategoryId", "dbo.ProductCategories");
-            DropForeignKey("dbo.OrderDetails", "OrderId", "dbo.Orders");
-            DropIndex("dbo.Products", new[] { "ProductCategoryId" });
-            DropIndex("dbo.OrderDetails", new[] { "OrderId" });
-            DropIndex("dbo.OrderDetails", new[] { "ProductId" });
+            DropForeignKey("dbo.OrderDetails", "ProductCode", "dbo.Products");
+            DropForeignKey("dbo.Products", "ProductCategoryCode", "dbo.ProductCategories");
+            DropForeignKey("dbo.OrderDetails", "Order_Id", "dbo.Orders");
+            DropIndex("dbo.Products", new[] { "ProductCategoryCode" });
+            DropIndex("dbo.OrderDetails", new[] { "Order_Id" });
+            DropIndex("dbo.OrderDetails", new[] { "ProductCode" });
             DropTable("dbo.ProductCategories");
             DropTable("dbo.Products");
             DropTable("dbo.Orders");

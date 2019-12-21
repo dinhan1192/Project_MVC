@@ -13,7 +13,7 @@ namespace Project_MVC.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201912201234221_InitializeDatabase"; }
+            get { return "201912210229091_InitializeDatabase"; }
         }
         
         string IMigrationMetadata.Source

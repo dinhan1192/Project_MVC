@@ -76,7 +76,7 @@ namespace Project_MVC.Controllers
         }
 
         // GET: ProductCategories/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(string id)
         {
             if (id == null)
             {
@@ -101,7 +101,7 @@ namespace Project_MVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Description,CreatedAt,UpdatedAt,DeletedAt,Status")] ProductCategory productCategory)
+        public ActionResult Create([Bind(Include = "Code,Name,Description")] ProductCategory productCategory)
         {
             ModelStateDictionary state = ModelState;
             if (mySQLProductCategoryService.Create(productCategory, state))
@@ -113,7 +113,7 @@ namespace Project_MVC.Controllers
         }
 
         // GET: ProductCategories/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(string id)
         {
             if (id == null)
             {
@@ -132,15 +132,15 @@ namespace Project_MVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Description")] ProductCategory productCategory)
+        public ActionResult Edit([Bind(Include = "Code,Name,Description")] ProductCategory productCategory)
         {
             ModelStateDictionary state = ModelState;
 
-            if (productCategory == null || productCategory.Id == null)
+            if (productCategory == null || productCategory.Code == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var existProductCategory = db.ProductCategories.Find(productCategory.Id);
+            var existProductCategory = db.ProductCategories.Find(productCategory.Code);
             if (existProductCategory == null || existProductCategory.IsDeleted())
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
@@ -154,7 +154,7 @@ namespace Project_MVC.Controllers
         }
 
         // GET: ProductCategories/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(string id)
         {
             if (id == null)
             {
@@ -171,7 +171,7 @@ namespace Project_MVC.Controllers
         // POST: ProductCategories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int? id)
+        public ActionResult DeleteConfirmed(string id)
         {
             ModelStateDictionary state = ModelState;
             if (id == null)

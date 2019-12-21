@@ -16,13 +16,13 @@
     <h4>Product</h4>
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.Code)
 
     <div class="form-group">
-        @Html.LabelFor(model => model.ProductCode, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.DisplayFor(model => model.ProductCode, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.ProductCode, "", new { @class = "text-danger" })
+            @Html.DisplayFor(model => model.Code, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
         </div>
     </div>
 
@@ -51,13 +51,13 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.ProductCategoryNameAndId, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.ProductCategoryNameAndCode, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.TextBoxFor(model => model.ProductCategoryNameAndId, new { @class = "form-control typeahead", @name = "AutoComplete", data_provide = "typeahead" })
+            @Html.TextBoxFor(model => model.ProductCategoryNameAndCode, new { @class = "form-control typeahead", @name = "AutoComplete", data_provide = "typeahead" })
             @*<input id="ProductCategoryId" type="text" name="Autocomplete" value="" class="form-control typeahead" data-provide="typeahead" />*@
             @*<input type="hidden" name="ProductCategoryId" id="hidProductCategoryId" />*@
-            @Html.HiddenFor(model => model.ProductCategoryId, new { @id = "hidProductCategoryId", @name = "hidProductCategoryId" })
-            @Html.ValidationMessageFor(model => model.ProductCategoryNameAndId, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.ProductCategoryCode, new { @id = "hidProductCategoryId", @name = "hidProductCategoryId" })
+            @Html.ValidationMessageFor(model => model.ProductCategoryNameAndCode, "", new { @class = "text-danger" })
         </div>
     </div>
 

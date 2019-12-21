@@ -14,11 +14,13 @@ namespace Project_MVC.Services
         private MyDbContext db = new MyDbContext();
         public bool Create(ProductCategory productCategory, ModelStateDictionary state)
         {
+            ValidateCode(productCategory, state);
             if (state.IsValid)
             {
                 productCategory.CreatedAt = DateTime.Now;
                 productCategory.UpdatedAt = null;
                 productCategory.DeletedAt = null;
+                productCategory.Status = ProductCategoryStatus.NotDeleted;
                 db.ProductCategories.Add(productCategory);
                 db.SaveChanges();
                 return true;
@@ -61,6 +63,19 @@ namespace Project_MVC.Services
             }
 
             return false;
+        }
+
+        public void ValidateCode(ProductCategory productCategory, ModelStateDictionary state)
+        {
+            if (string.IsNullOrEmpty(productCategory.Code))
+            {
+                state.AddModelError("Code", "Product Category Code is required.");
+            }
+            var list = db.ProductCategories.Where(s => s.Code.Contains(productCategory.Code)).ToList();
+            if (list.Count != 0)
+            {
+                state.AddModelError("Code", "Product Category Code already exist.");
+            }
         }
     }
 }

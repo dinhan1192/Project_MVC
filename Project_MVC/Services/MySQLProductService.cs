@@ -25,6 +25,7 @@ namespace Project_MVC.Services
                 product.CreatedAt = DateTime.Now;
                 product.UpdatedAt = null;
                 product.DeletedAt = null;
+                product.Status = ProductStatus.NotDeleted;
                 db.Products.Add(product);
                 db.SaveChanges();
                 return true;
@@ -87,7 +88,7 @@ namespace Project_MVC.Services
             {
                 existProduct.Name = product.Name;
                 existProduct.Price = product.Price;
-                existProduct.ProductCategoryId = product.ProductCategoryId;
+                existProduct.ProductCategoryCode = product.ProductCategoryCode;
                 existProduct.Description = product.Description;
                 existProduct.UpdatedAt = DateTime.Now;
                 db.Products.AddOrUpdate(existProduct);
@@ -101,22 +102,22 @@ namespace Project_MVC.Services
 
         public void ValidateCategory(Product product, ModelStateDictionary state)
         {
-            if (string.IsNullOrEmpty(product.ProductCategoryNameAndId))
+            if (string.IsNullOrEmpty(product.ProductCategoryNameAndCode))
             {
-                state.AddModelError("ProductCategoryNameAndId", "Product Category is required.");
+                state.AddModelError("ProductCategoryNameAndCode", "Product Category is required.");
             }
         }
 
         public void ValidateCode(Product product, ModelStateDictionary state)
         {
-            if (string.IsNullOrEmpty(product.ProductCode))
+            if (string.IsNullOrEmpty(product.Code))
             {
-                state.AddModelError("ProductCode", "Product Code is required.");
+                state.AddModelError("Code", "Product Code is required.");
             }
-            var list = db.Products.Where(s => s.ProductCode.Contains(product.ProductCode) && s.Status == ProductStatus.NotDeleted).ToList();
+            var list = db.Products.Where(s => s.Code.Contains(product.Code)).ToList();
             if (list.Count != 0)
             {
-                state.AddModelError("ProductCode", "Product Code already exist.");
+                state.AddModelError("Code", "Product Code already exist.");
             }
         }
     }

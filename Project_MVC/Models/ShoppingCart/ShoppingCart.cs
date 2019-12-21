@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Project_MVC.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -7,7 +8,7 @@ namespace Project_MVC.Models
 {
     public class ShoppingCart
     {
-        private Dictionary<int, CartItem> _cartItems = new Dictionary<int, CartItem>();
+        private Dictionary<string, CartItem> _cartItems = new Dictionary<string, CartItem>();
         private double _totalPrice = 0;
 
         public double GetTotalPrice()
@@ -20,12 +21,12 @@ namespace Project_MVC.Models
             return this._totalPrice;
         }
 
-        public Dictionary<int, CartItem> GetCartItems()
+        public Dictionary<string, CartItem> GetCartItems()
         {
             return _cartItems;
         }
 
-        public void SetCartItems(Dictionary<int, CartItem> cartItems)
+        public void SetCartItems(Dictionary<string, CartItem> cartItems)
         {
             this._cartItems = cartItems;
         }
@@ -37,37 +38,37 @@ namespace Project_MVC.Models
          */
         public void AddCart(Product product, int quantity)
         {
-            if (_cartItems.ContainsKey((int)product.Id))
+            if (_cartItems.ContainsKey(product.Code))
             {
-                var item = _cartItems[(int)product.Id];
+                var item = _cartItems[product.Code];
                 item.Quantity += quantity;
-                _cartItems[(int)product.Id] = item;
+                _cartItems[product.Code] = item;
                 return;
             }
             var cartItem = new CartItem
             {
-                ProductId = product.Id,
+                ProductCode = product.Code,
                 ProductName = product.Name,
                 Price = product.Price,
                 Quantity = quantity
             };
             // đưa cart item tương ứng với sản phẩm (ở trên) vào danh sách.
-            _cartItems.Add((int)cartItem.ProductId, cartItem);
+            _cartItems.Add(cartItem.ProductCode, cartItem);
         }
 
         public void UpdateCart(Product product, int quantity)
         {
-            if (_cartItems.ContainsKey((int)product.Id))
+            if (_cartItems.ContainsKey(product.Code))
             {
-                var item = _cartItems[(int)product.Id];
+                var item = _cartItems[product.Code];
                 item.Quantity = quantity;
-                _cartItems[(int)product.Id] = item;
+                _cartItems[product.Code] = item;
             }
         }
 
-        public void RemoveFromCart(int productId)
+        public void RemoveFromCart(string productCode)
         {
-            _cartItems.Remove(productId);
+            _cartItems.Remove(productCode);
         }
     }
 }
