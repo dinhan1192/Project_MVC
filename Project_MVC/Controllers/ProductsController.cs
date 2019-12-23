@@ -17,7 +17,7 @@ namespace Project_MVC.Controllers
     public class ProductsController : Controller
     {
         private MyDbContext db = new MyDbContext();
-        private IProductService mySQLProductService;
+        private ICRUDService<Product> mySQLProductService;
 
         public ProductsController()
         {

@@ -9,19 +9,19 @@ using static Project_MVC.Models.ProductCategory;
 
 namespace Project_MVC.Services
 {
-    public class MySQLProductCategoryService : IProductCategoryService
+    public class MySQLProductCategoryService : ICRUDService<ProductCategory>
     {
         private MyDbContext db = new MyDbContext();
-        public bool Create(ProductCategory productCategory, ModelStateDictionary state)
+        public bool Create(ProductCategory item, ModelStateDictionary state)
         {
-            ValidateCode(productCategory, state);
+            ValidateCode(item, state);
             if (state.IsValid)
             {
-                productCategory.CreatedAt = DateTime.Now;
-                productCategory.UpdatedAt = null;
-                productCategory.DeletedAt = null;
-                productCategory.Status = ProductCategoryStatus.NotDeleted;
-                db.ProductCategories.Add(productCategory);
+                item.CreatedAt = DateTime.Now;
+                item.UpdatedAt = null;
+                item.DeletedAt = null;
+                item.Status = ProductCategoryStatus.NotDeleted;
+                db.ProductCategories.Add(item);
                 db.SaveChanges();
                 return true;
             }
@@ -29,13 +29,13 @@ namespace Project_MVC.Services
             return false;
         }
 
-        public bool Delete(ProductCategory productCategory, ModelStateDictionary state)
+        public bool Delete(ProductCategory item, ModelStateDictionary state)
         {
             if (state.IsValid)
             {
-                productCategory.Status = ProductCategoryStatus.Deleted;
-                productCategory.DeletedAt = DateTime.Now;
-                db.ProductCategories.AddOrUpdate(productCategory);
+                item.Status = ProductCategoryStatus.Deleted;
+                item.DeletedAt = DateTime.Now;
+                db.ProductCategories.AddOrUpdate(item);
                 db.SaveChanges();
 
                 return true;
@@ -49,14 +49,14 @@ namespace Project_MVC.Services
             throw new NotImplementedException();
         }
 
-        public bool Update(ProductCategory existProductCategory, ProductCategory productCategory, ModelStateDictionary state)
+        public bool Update(ProductCategory existItem, ProductCategory item, ModelStateDictionary state)
         {
             if(state.IsValid)
             {
-                existProductCategory.Name = productCategory.Name;
-                existProductCategory.Description = productCategory.Description;
-                existProductCategory.UpdatedAt = DateTime.Now;
-                db.ProductCategories.AddOrUpdate(existProductCategory);
+                existItem.Name = item.Name;
+                existItem.Description = item.Description;
+                existItem.UpdatedAt = DateTime.Now;
+                db.ProductCategories.AddOrUpdate(existItem);
                 db.SaveChanges();
 
                 return true;
@@ -65,13 +65,18 @@ namespace Project_MVC.Services
             return false;
         }
 
-        public void ValidateCode(ProductCategory productCategory, ModelStateDictionary state)
+        public void ValidateCategory(ProductCategory item, ModelStateDictionary state)
         {
-            if (string.IsNullOrEmpty(productCategory.Code))
+            throw new NotImplementedException();
+        }
+
+        public void ValidateCode(ProductCategory item, ModelStateDictionary state)
+        {
+            if (string.IsNullOrEmpty(item.Code))
             {
                 state.AddModelError("Code", "Product Category Code is required.");
             }
-            var list = db.ProductCategories.Where(s => s.Code.Contains(productCategory.Code)).ToList();
+            var list = db.ProductCategories.Where(s => s.Code.Contains(item.Code)).ToList();
             if (list.Count != 0)
             {
                 state.AddModelError("Code", "Product Category Code already exist.");

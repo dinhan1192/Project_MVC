@@ -11,7 +11,7 @@ using static Project_MVC.Models.Product;
 
 namespace Project_MVC.Services
 {
-    public class MySQLProductService : IProductService
+    public class MySQLProductService : ICRUDService<Product>
     {
         private MyDbContext db = new MyDbContext();
         public bool Create(Product product, ModelStateDictionary state)
@@ -50,7 +50,7 @@ namespace Project_MVC.Services
             return false;
         }
 
-        public bool Detail(int? id)
+        public Product Detail(Product item)
         {
             throw new NotImplementedException();
         }
