@@ -121,11 +121,11 @@ namespace Project_MVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Code,Name,Price,Description,ProductCategoryCode,ProductCategoryNameAndCode")] Product product)
+        public ActionResult Create([Bind(Include = "Code,Name,Price,Description,ProductCategoryCode,ProductCategoryNameAndCode")] Product product, IEnumerable<HttpPostedFileBase> images)
         {
             ModelStateDictionary state = ModelState;
 
-            if (mySQLProductService.Create(product, state))
+            if (mySQLProductService.CreateWithImage(product, state, images))
             {
                 return RedirectToAction("Index");
             }

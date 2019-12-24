@@ -13,7 +13,7 @@
 
     var totalPage = ViewBag.totalPage;
 
-    //var url = ".btn-delete-productCategory /ProductCategories/Delete/ Category";
+    var url = "/ProductCategories/Delete/";
 }
 
 <h2>Index</h2>
@@ -66,7 +66,7 @@
                 @*@Html.ActionLink("Delete", "Delete", new { id = item.Code },
                   new { @class = "btn btn-danger btn-delete-productCategory", @id = "delete-" + item.Code, @tag = "deleteNotifyButton", @value = @url })*@
                 @Html.ActionLink("Delete", "Delete", new { id = item.Code },
-                  new { @class = "btn btn-danger btn-delete-notify", @id = "delete-" + item.Code, data_request_url = "/ProductCategories/Delete/" })
+                  new { @class = "btn btn-danger btn-delete-notify", @id = "delete-" + item.Code, data_request_url = @url });
             </td>
         </tr>
     }

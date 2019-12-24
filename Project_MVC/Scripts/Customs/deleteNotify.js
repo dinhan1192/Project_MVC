@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-    console.log("123")
+    //console.log("123")
     $('.btn-delete-notify').click(function () {
         var link = $(this).data('request-url');
         var id = $(this).attr("id").replace("delete-", "");

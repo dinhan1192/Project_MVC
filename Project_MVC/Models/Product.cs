@@ -1,11 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿//using Microsoft.Extensions.Primitives;
+using Newtonsoft.Json;
+//using Newtonsoft.Json.Linq;
+//using Newtonsoft.Json.Schema;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web;
 
 namespace Project_MVC.Models
 {
@@ -32,6 +33,11 @@ namespace Project_MVC.Models
         [NotMapped]
         [RegularExpression(@"^[0-9A-Z]+\s-\s[0-9a-zA-Z\s+ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]+$", ErrorMessage = "Invalid Product Category")]
         public string ProductCategoryNameAndCode { get; set; }
+        //[NotMapped]
+        //[DisplayName("Product Image")]
+        //public HttpPostedFileBase ProductImageFile { get; set; }
+        public virtual ICollection<ProductImage> ProductImages { get; set; }
+
         public enum ProductStatus
         {
             NotDeleted = 0, Deleted = -1

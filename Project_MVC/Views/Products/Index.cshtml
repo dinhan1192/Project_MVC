@@ -12,6 +12,8 @@
     string nextPageInString = Convert.ToString(nextPage);
 
     var totalPage = ViewBag.totalPage;
+
+    var url = "/Products/Delete/";
 }
 
 <h2>Index</h2>
@@ -46,37 +48,46 @@
         <th>
             @Html.ActionLink("Created At", "Index", new { sortOrder = ViewBag.DateSortParm })
         </th>
+        <th>
+            Product Images
+        </th>
         <th></th>
     </tr>
 
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductCategory.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Code)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Code }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Code }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Code },
-              new { @class = "btn btn-danger btn-delete-notify", @id = "delete-" + item.Code, data_request_url = "/Products/Delete/" })
-            </td>
-        </tr>
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.ProductCategory.Name)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Code)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Name)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Price)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Description)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.CreatedAt)
+    </td>
+    <td>
+        @foreach (var image in item.ProductImages)
+        {
+            <img src="data:image;base64,@System.Convert.ToBase64String(image.SignImage)" width="80" height="80" />
+        }
+    </td>
+    <td>
+        @Html.ActionLink("Edit", "Edit", new { id = item.Code }) |
+        @Html.ActionLink("Details", "Details", new { id = item.Code }) |
+        @Html.ActionLink("Delete", "Delete", new { id = item.Code },
+      new { @class = "btn btn-danger btn-delete-notify", @id = "delete-" + item.Code, data_request_url = @url })
+    </td>
+</tr>
     }
 
 </table>

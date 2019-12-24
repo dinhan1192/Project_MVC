@@ -29,6 +29,11 @@ namespace Project_MVC.Services
             return false;
         }
 
+        public bool CreateWithImage(ProductCategory item, ModelStateDictionary state, IEnumerable<HttpPostedFileBase> images)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool Delete(ProductCategory item, ModelStateDictionary state)
         {
             if (state.IsValid)

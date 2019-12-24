@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity.Migrations;
 using System.Data.Entity.Validation;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -14,19 +15,40 @@ namespace Project_MVC.Services
     public class MySQLProductService : ICRUDService<Product>
     {
         private MyDbContext db = new MyDbContext();
-        public bool Create(Product product, ModelStateDictionary state)
+
+        public bool Create(Product item, ModelStateDictionary state)
         {
-            ValidateCode(product, state);
-            ValidateCategory(product, state);
+            throw new NotImplementedException();
+        }
+
+        public bool CreateWithImage(Product item, ModelStateDictionary state, IEnumerable<HttpPostedFileBase> images)
+        {
+            ValidateCode(item, state);
+            ValidateCategory(item, state);
             if (state.IsValid)
             {
                 //product.ProductCategoryId = Utils.Utility.GetNullableInt(product.ProductCategoryNameAndId.Split(' ')[0]);
                 //product.ProductCategoryName = product.ProductCategoryNameAndId.Substring(product.ProductCategoryNameAndId.IndexOf('-') + 2);
-                product.CreatedAt = DateTime.Now;
-                product.UpdatedAt = null;
-                product.DeletedAt = null;
-                product.Status = ProductStatus.NotDeleted;
-                db.Products.Add(product);
+                item.CreatedAt = DateTime.Now;
+                item.UpdatedAt = null;
+                item.DeletedAt = null;
+                item.Status = ProductStatus.NotDeleted;
+                db.Products.Add(item);
+                if (images != null)
+                {
+                    var imageList = new List<ProductImage>();
+                    foreach (var image in images)
+                    {
+                        using (var br = new BinaryReader(image.InputStream))
+                        {
+                            var data = br.ReadBytes(image.ContentLength);
+                            var img = new ProductImage { ProductCode = item.Code };
+                            img.SignImage = data;
+                            imageList.Add(img);
+                        }
+                    }
+                    item.ProductImages = imageList;
+                }
                 db.SaveChanges();
                 return true;
             }
