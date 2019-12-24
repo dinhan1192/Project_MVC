@@ -155,7 +155,7 @@ namespace Project_MVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Code,Name,Price,Description,ProductCategoryCode,ProductCategoryNameAndCode")] Product product)
+        public ActionResult Edit([Bind(Include = "Code,Name,Price,Description,ProductCategoryCode,ProductCategoryNameAndCode")] Product product, IEnumerable<HttpPostedFileBase> images)
         {
             ModelStateDictionary state = ModelState;
             if (product == null || product.Code == null)
@@ -167,7 +167,7 @@ namespace Project_MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
-            if (mySQLProductService.Update(existProduct, product, state))
+            if (mySQLProductService.UpdateWithImage(existProduct, product, state, images))
             {
                 return RedirectToAction("Index");
             }

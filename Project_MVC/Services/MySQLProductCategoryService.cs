@@ -70,6 +70,11 @@ namespace Project_MVC.Services
             return false;
         }
 
+        public bool UpdateWithImage(ProductCategory existItem, ProductCategory item, ModelStateDictionary state, IEnumerable<HttpPostedFileBase> images)
+        {
+            throw new NotImplementedException();
+        }
+
         public void ValidateCategory(ProductCategory item, ModelStateDictionary state)
         {
             throw new NotImplementedException();

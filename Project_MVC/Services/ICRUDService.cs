@@ -14,6 +14,7 @@ namespace Project_MVC.Services
         bool Create(T item, ModelStateDictionary state);
         bool CreateWithImage(T item, ModelStateDictionary state, IEnumerable<HttpPostedFileBase> images);
         bool Update(T existItem, T item, ModelStateDictionary state);
+        bool UpdateWithImage(T existItem, T item, ModelStateDictionary state, IEnumerable<HttpPostedFileBase> images);
         bool Delete(T item, ModelStateDictionary state);
         T Detail(T item);
         void ValidateCode(T item, ModelStateDictionary state);

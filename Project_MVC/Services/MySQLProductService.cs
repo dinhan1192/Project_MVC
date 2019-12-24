@@ -34,7 +34,7 @@ namespace Project_MVC.Services
                 item.DeletedAt = null;
                 item.Status = ProductStatus.NotDeleted;
                 db.Products.Add(item);
-                if (images != null)
+                if (images != null && !images.Any())
                 {
                     var imageList = new List<ProductImage>();
                     foreach (var image in images)
@@ -77,17 +77,36 @@ namespace Project_MVC.Services
             throw new NotImplementedException();
         }
 
-        public bool Update(Product existProduct, Product product, ModelStateDictionary state)
+        public bool Update(Product existItem, Product item, ModelStateDictionary state)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool UpdateWithImage(Product existItem, Product item, ModelStateDictionary state, IEnumerable<HttpPostedFileBase> images)
         {
             //try
             //{
-            //    existProduct.Name = product.Name;
-            //    existProduct.Price = product.Price;
-            //    existProduct.ProductCategoryId = product.ProductCategoryId;
-            //    existProduct.ProductCategoryNameAndId = product.ProductCategoryNameAndId;
-            //    existProduct.Description = product.Description;
-            //    existProduct.UpdatedAt = DateTime.Now;
-            //    db.Products.AddOrUpdate(existProduct);
+            //    existItem.Name = item.Name;
+            //    existItem.Price = item.Price;
+            //    existItem.ProductCategoryCode = item.ProductCategoryCode;
+            //    existItem.Description = item.Description;
+            //    existItem.UpdatedAt = DateTime.Now;
+            //    db.Products.AddOrUpdate(existItem);
+            //    if (images != null)
+            //    {
+            //        var imageList = new List<ProductImage>();
+            //        foreach (var image in images)
+            //        {
+            //            using (var br = new BinaryReader(image.InputStream))
+            //            {
+            //                var data = br.ReadBytes(image.ContentLength);
+            //                var img = new ProductImage { ProductCode = item.Code };
+            //                img.SignImage = data;
+            //                imageList.Add(img);
+            //            }
+            //        }
+            //        item.ProductImages = imageList;
+            //    }
             //    db.SaveChanges();
             //    return true;
             //}
@@ -105,15 +124,31 @@ namespace Project_MVC.Services
             //    }
             //    throw;
             //}
-            ValidateCategory(product, state);
+            ValidateCategory(item, state);
             if (state.IsValid)
             {
-                existProduct.Name = product.Name;
-                existProduct.Price = product.Price;
-                existProduct.ProductCategoryCode = product.ProductCategoryCode;
-                existProduct.Description = product.Description;
-                existProduct.UpdatedAt = DateTime.Now;
-                db.Products.AddOrUpdate(existProduct);
+                existItem.Name = item.Name;
+                existItem.Price = item.Price;
+                existItem.ProductCategoryCode = item.ProductCategoryCode;
+                existItem.Description = item.Description;
+                existItem.UpdatedAt = DateTime.Now;
+                //var list = existItem.ProductImages;
+                db.Products.AddOrUpdate(existItem);
+                if (images != null && !images.Any())
+                {
+                    var imageList = new List<ProductImage>();
+                    foreach (var image in images)
+                    {
+                        using (var br = new BinaryReader(image.InputStream))
+                        {
+                            var data = br.ReadBytes(image.ContentLength);
+                            var img = new ProductImage { ProductCode = item.Code };
+                            img.SignImage = data;
+                            imageList.Add(img);
+                        }
+                    }
+                    db.ProductImages.AddRange(imageList);
+                }
                 db.SaveChanges();
 
                 return true;
