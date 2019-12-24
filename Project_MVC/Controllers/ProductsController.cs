@@ -68,7 +68,7 @@ namespace Project_MVC.Controllers
                     break;
             }
 
-            int pageSize = 3;
+            int pageSize = Constant.PageSize;
             int pageNumber = (page ?? 1);
             ViewBag.currentPage = pageNumber;
             ViewBag.totalPage = Math.Ceiling((double)products.Count() / pageSize);

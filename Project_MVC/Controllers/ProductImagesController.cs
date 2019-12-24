@@ -35,7 +35,7 @@ namespace Project_MVC.Controllers
                 productImages = productImages.Where(s => s.Product.Name.Contains(searchString));
             }
 
-            int pageSize = 3;
+            int pageSize = Constant.PageSize;
             int pageNumber = (page ?? 1);
             ViewBag.currentPage = pageNumber;
             ViewBag.totalPage = Math.Ceiling((double)productImages.Count() / pageSize);

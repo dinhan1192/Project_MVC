@@ -177,6 +177,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CartInformation.cs" />
     <Compile Include="Models\CartItem.cs" />
+    <Compile Include="Models\Constant.cs" />
     <Compile Include="Models\MyDbContext.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\OrderDetail.cs" />
