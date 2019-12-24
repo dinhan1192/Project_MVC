@@ -8,4 +8,9 @@ document.getElementById('fileUpload').addEventListener('change', function () {
             return false;
         }
     }
+    //if (this.files[0].size > 1024 * 1024) {
+    //    // The file is too big (i.e. larger than 1MB)
+    //    alert("Too big!");
+    //    return false;
+    //}
 });
