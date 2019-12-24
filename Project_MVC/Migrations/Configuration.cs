@@ -9,8 +9,7 @@ namespace Project_MVC.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
-            AutomaticMigrationDataLossAllowed = true;
+            AutomaticMigrationsEnabled = false;
         }
 
         protected override void Seed(Project_MVC.Models.MyDbContext context)

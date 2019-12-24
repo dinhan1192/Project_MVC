@@ -165,13 +165,14 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductCategoriesController.cs" />
+    <Compile Include="Controllers\ProductImagesController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201912210229091_InitializeDatabase.cs" />
-    <Compile Include="Migrations\201912210229091_InitializeDatabase.Designer.cs">
-      <DependentUpon>201912210229091_InitializeDatabase.cs</DependentUpon>
+    <Compile Include="Migrations\201912240841232_InitializeDatabase.cs" />
+    <Compile Include="Migrations\201912240841232_InitializeDatabase.Designer.cs">
+      <DependentUpon>201912240841232_InitializeDatabase.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CartInformation.cs" />
@@ -231,15 +232,17 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\ProductCategories\Create.cshtml" />
-    <Content Include="Views\ProductCategories\Delete.cshtml" />
     <Content Include="Views\ProductCategories\Details.cshtml" />
     <Content Include="Views\ProductCategories\Edit.cshtml" />
     <Content Include="Views\ProductCategories\Index.cshtml" />
     <Content Include="Views\Products\Create.cshtml" />
-    <Content Include="Views\Products\Delete.cshtml" />
     <Content Include="Views\Products\Details.cshtml" />
     <Content Include="Views\Products\Edit.cshtml" />
     <Content Include="Views\Products\Index.cshtml" />
+    <Content Include="Views\ProductImages\Create.cshtml" />
+    <Content Include="Views\ProductImages\Details.cshtml" />
+    <Content Include="Views\ProductImages\Edit.cshtml" />
+    <Content Include="Views\ProductImages\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -258,8 +261,8 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201912210229091_InitializeDatabase.resx">
-      <DependentUpon>201912210229091_InitializeDatabase.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201912240841232_InitializeDatabase.resx">
+      <DependentUpon>201912240841232_InitializeDatabase.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

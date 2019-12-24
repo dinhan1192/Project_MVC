@@ -34,17 +34,20 @@ namespace Project_MVC.Services
                 item.DeletedAt = null;
                 item.Status = ProductStatus.NotDeleted;
                 db.Products.Add(item);
-                if (images != null && !images.Any())
+                if (images != null)
                 {
                     var imageList = new List<ProductImage>();
                     foreach (var image in images)
                     {
-                        using (var br = new BinaryReader(image.InputStream))
+                        if (image != null)
                         {
-                            var data = br.ReadBytes(image.ContentLength);
-                            var img = new ProductImage { ProductCode = item.Code };
-                            img.SignImage = data;
-                            imageList.Add(img);
+                            using (var br = new BinaryReader(image.InputStream))
+                            {
+                                var data = br.ReadBytes(image.ContentLength);
+                                var img = new ProductImage { ProductCode = item.Code };
+                                img.ImageData = data;
+                                imageList.Add(img);
+                            }
                         }
                     }
                     item.ProductImages = imageList;
@@ -134,17 +137,20 @@ namespace Project_MVC.Services
                 existItem.UpdatedAt = DateTime.Now;
                 //var list = existItem.ProductImages;
                 db.Products.AddOrUpdate(existItem);
-                if (images != null && !images.Any())
+                if (images != null)
                 {
                     var imageList = new List<ProductImage>();
                     foreach (var image in images)
                     {
-                        using (var br = new BinaryReader(image.InputStream))
+                        if(image != null)
                         {
-                            var data = br.ReadBytes(image.ContentLength);
-                            var img = new ProductImage { ProductCode = item.Code };
-                            img.SignImage = data;
-                            imageList.Add(img);
+                            using (var br = new BinaryReader(image.InputStream))
+                            {
+                                var data = br.ReadBytes(image.ContentLength);
+                                var img = new ProductImage { ProductCode = item.Code };
+                                img.ImageData = data;
+                                imageList.Add(img);
+                            }
                         }
                     }
                     db.ProductImages.AddRange(imageList);

@@ -24,8 +24,8 @@ namespace Project_MVC
 
             bundles.Add(new ScriptBundle("~/bundles/custom").Include(
                       "~/Scripts/Customs/deleteNotify.js",
-                      "~/Scripts/Customs/autocomplete.js",
-                      "~/Scripts/Customs/checkFileSize.js"
+                      "~/Scripts/Customs/autocomplete.js"
+                      //"~/Scripts/Customs/checkFileSize.js"
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/typeahead").Include(
