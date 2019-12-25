@@ -36,7 +36,9 @@ namespace Project_MVC.Models
         //[NotMapped]
         //[DisplayName("Product Image")]
         //public HttpPostedFileBase ProductImageFile { get; set; }
+        #region Images members
         public virtual ICollection<ProductImage> ProductImages { get; set; }
+        #endregion
 
         public enum ProductStatus
         {

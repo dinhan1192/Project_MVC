@@ -15,6 +15,12 @@ namespace Project_MVC.Services
     public class MySQLProductService : ICRUDService<Product>
     {
         private MyDbContext db = new MyDbContext();
+        private IImageService mySQLImageService;
+
+        public MySQLProductService()
+        {
+            mySQLImageService = new MySQLImageService();
+        }
 
         public bool Create(Product item, ModelStateDictionary state)
         {
@@ -34,26 +40,12 @@ namespace Project_MVC.Services
                 item.DeletedAt = null;
                 item.Status = ProductStatus.NotDeleted;
                 db.Products.Add(item);
-                if (images != null)
-                {
-                    var imageList = new List<ProductImage>();
-                    foreach (var image in images)
-                    {
-                        if (image != null)
-                        {
-                            using (var br = new BinaryReader(image.InputStream))
-                            {
-                                var data = br.ReadBytes(image.ContentLength);
-                                var img = new ProductImage { ProductCode = item.Code };
-                                img.ImageData = data;
-                                imageList.Add(img);
-                            }
-                        }
-                    }
-                    item.ProductImages = imageList;
-                }
+                // add image to table ProductImages
+                item.ProductImages = mySQLImageService.SaveImage2Db(item.Code, images);
+                //
                 db.SaveChanges();
                 return true;
+
             }
 
             //ViewBag.ProductCategoryId = new SelectList(db.ProductCategories, "Id", "Name", product.ProductCategoryId);
@@ -137,24 +129,10 @@ namespace Project_MVC.Services
                 existItem.UpdatedAt = DateTime.Now;
                 //var list = existItem.ProductImages;
                 db.Products.AddOrUpdate(existItem);
-                if (images != null)
-                {
-                    var imageList = new List<ProductImage>();
-                    foreach (var image in images)
-                    {
-                        if(image != null)
-                        {
-                            using (var br = new BinaryReader(image.InputStream))
-                            {
-                                var data = br.ReadBytes(image.ContentLength);
-                                var img = new ProductImage { ProductCode = item.Code };
-                                img.ImageData = data;
-                                imageList.Add(img);
-                            }
-                        }
-                    }
-                    db.ProductImages.AddRange(imageList);
-                }
+                // add image to table ProductImages
+                var imageList = mySQLImageService.SaveImage2Db(item.Code, images);
+                db.ProductImages.AddRange(imageList);
+                //
                 db.SaveChanges();
 
                 return true;
@@ -163,21 +141,21 @@ namespace Project_MVC.Services
             return false;
         }
 
-        public void ValidateCategory(Product product, ModelStateDictionary state)
+        public void ValidateCategory(Product item, ModelStateDictionary state)
         {
-            if (string.IsNullOrEmpty(product.ProductCategoryNameAndCode))
+            if (string.IsNullOrEmpty(item.ProductCategoryNameAndCode))
             {
                 state.AddModelError("ProductCategoryNameAndCode", "Product Category is required.");
             }
         }
 
-        public void ValidateCode(Product product, ModelStateDictionary state)
+        public void ValidateCode(Product item, ModelStateDictionary state)
         {
-            if (string.IsNullOrEmpty(product.Code))
+            if (string.IsNullOrEmpty(item.Code))
             {
                 state.AddModelError("Code", "Product Code is required.");
             }
-            var list = db.Products.Where(s => s.Code.Contains(product.Code)).ToList();
+            var list = db.Products.Where(s => s.Code.Contains(item.Code)).ToList();
             if (list.Count != 0)
             {
                 state.AddModelError("Code", "Product Code already exist.");
