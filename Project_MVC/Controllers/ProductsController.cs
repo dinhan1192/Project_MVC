@@ -123,9 +123,9 @@ namespace Project_MVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Code,Name,Price,Description,ProductCategoryCode,ProductCategoryNameAndCode")] Product product, IEnumerable<HttpPostedFileBase> images)
         {
-            ModelStateDictionary state = ModelState;
+            //ModelStateDictionary state = ModelState;
 
-            if (mySQLProductService.CreateWithImage(product, state, images))
+            if (mySQLProductService.CreateWithImage(product, ModelState, images))
             {
                 return RedirectToAction("Index");
             }
@@ -157,7 +157,7 @@ namespace Project_MVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Code,Name,Price,Description,ProductCategoryCode,ProductCategoryNameAndCode")] Product product, IEnumerable<HttpPostedFileBase> images)
         {
-            ModelStateDictionary state = ModelState;
+            //ModelStateDictionary state = ModelState;
             if (product == null || product.Code == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -167,7 +167,7 @@ namespace Project_MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
-            if (mySQLProductService.UpdateWithImage(existProduct, product, state, images))
+            if (mySQLProductService.UpdateWithImage(existProduct, product, ModelState, images))
             {
                 return RedirectToAction("Index");
             }
@@ -195,7 +195,7 @@ namespace Project_MVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
-            ModelStateDictionary state = ModelState;
+            //ModelStateDictionary state = ModelState;
 
             if (id == null)
             {
@@ -206,7 +206,7 @@ namespace Project_MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
-            if (mySQLProductService.Delete(existProduct, state))
+            if (mySQLProductService.Delete(existProduct, ModelState))
             {
                 return RedirectToAction("Index");
             }

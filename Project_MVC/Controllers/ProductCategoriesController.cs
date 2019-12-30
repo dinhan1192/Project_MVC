@@ -103,8 +103,8 @@ namespace Project_MVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Code,Name,Description")] ProductCategory productCategory)
         {
-            ModelStateDictionary state = ModelState;
-            if (mySQLProductCategoryService.Create(productCategory, state))
+            //ModelStateDictionary state = ModelState;
+            if (mySQLProductCategoryService.Create(productCategory, ModelState))
             {
                 return RedirectToAction("Index");
             }
@@ -134,7 +134,7 @@ namespace Project_MVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Code,Name,Description")] ProductCategory productCategory)
         {
-            ModelStateDictionary state = ModelState;
+            //ModelStateDictionary state = ModelState;
 
             if (productCategory == null || productCategory.Code == null)
             {
@@ -145,7 +145,7 @@ namespace Project_MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
-            if (mySQLProductCategoryService.Update(existProductCategory, productCategory, state))
+            if (mySQLProductCategoryService.Update(existProductCategory, productCategory, ModelState))
             {
                 return RedirectToAction("Index");
             }
@@ -173,7 +173,7 @@ namespace Project_MVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
-            ModelStateDictionary state = ModelState;
+            //ModelStateDictionary state = ModelState;
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -183,7 +183,7 @@ namespace Project_MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
-            if (mySQLProductCategoryService.Delete(existProductCategory, state))
+            if (mySQLProductCategoryService.Delete(existProductCategory, ModelState))
             {
                 return RedirectToAction("Index");
             }
