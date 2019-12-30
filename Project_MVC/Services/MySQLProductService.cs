@@ -41,7 +41,7 @@ namespace Project_MVC.Services
                 item.Status = ProductStatus.NotDeleted;
                 db.Products.Add(item);
                 // add image to table ProductImages
-                item.ProductImages = mySQLImageService.SaveImage2Db(item.Code, images);
+                item.ProductImages = mySQLImageService.SaveImage2List(item.Code, images);
                 //
                 db.SaveChanges();
                 return true;
@@ -130,7 +130,7 @@ namespace Project_MVC.Services
                 //var list = existItem.ProductImages;
                 db.Products.AddOrUpdate(existItem);
                 // add image to table ProductImages
-                var imageList = mySQLImageService.SaveImage2Db(item.Code, images);
+                var imageList = mySQLImageService.SaveImage2List(item.Code, images);
                 db.ProductImages.AddRange(imageList);
                 //
                 db.SaveChanges();

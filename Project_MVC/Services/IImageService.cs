@@ -10,6 +10,6 @@ namespace Project_MVC.Services
 {
     interface IImageService
     {
-        List<ProductImage> SaveImage2Db(string code, IEnumerable<HttpPostedFileBase> images);
+        List<ProductImage> SaveImage2List(string code, IEnumerable<HttpPostedFileBase> images);
     }
 }

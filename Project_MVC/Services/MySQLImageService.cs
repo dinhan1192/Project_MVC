@@ -10,7 +10,7 @@ namespace Project_MVC.Services
     public class MySQLImageService : IImageService
     {
         private MyDbContext db = new MyDbContext();
-        public List<ProductImage> SaveImage2Db(string code, IEnumerable<HttpPostedFileBase> images)
+        public List<ProductImage> SaveImage2List(string code, IEnumerable<HttpPostedFileBase> images)
         {
             if (images != null)
             {
