@@ -33,5 +33,31 @@ namespace Project_MVC.Services
 
             return null;
         }
+
+        public List<ProductVideo> SaveVideo2List(string code, IEnumerable<HttpPostedFileBase> videos)
+        {
+            if (videos != null)
+            {
+                var videoList = new List<ProductVideo>();
+                foreach (var video in videos)
+                {
+                    if (video != null)
+                    {
+                        using (var br = new BinaryReader(video.InputStream))
+                        {
+                            var data = br.ReadBytes(video.ContentLength);
+                            var contentType = video.ContentType;
+                            var vid = new ProductVideo { ProductCode = code };
+                            vid.VideoData = data;
+                            vid.ContentType = contentType;
+                            videoList.Add(vid);
+                        }
+                    }
+                }
+                return videoList;
+            }
+
+            return null;
+        }
     }
 }

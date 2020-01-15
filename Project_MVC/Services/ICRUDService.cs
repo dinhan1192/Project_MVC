@@ -12,7 +12,7 @@ namespace Project_MVC.Services
     interface ICRUDService<T>
     {
         bool Create(T item, ModelStateDictionary state);
-        bool CreateWithImage(T item, ModelStateDictionary state, IEnumerable<HttpPostedFileBase> images);
+        bool CreateWithImage(T item, ModelStateDictionary state, IEnumerable<HttpPostedFileBase> images, IEnumerable<HttpPostedFileBase> videos);
         bool Update(T existItem, T item, ModelStateDictionary state);
         bool UpdateWithImage(T existItem, T item, ModelStateDictionary state, IEnumerable<HttpPostedFileBase> images);
         bool Delete(T item, ModelStateDictionary state);

@@ -11,5 +11,6 @@ namespace Project_MVC.Services
     interface IImageService
     {
         List<ProductImage> SaveImage2List(string code, IEnumerable<HttpPostedFileBase> images);
+        List<ProductVideo> SaveVideo2List(string code, IEnumerable<HttpPostedFileBase> videos);
     }
 }

@@ -6,21 +6,35 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity.Owin;
 using Project_MVC.Models;
 using Project_MVC.Services;
+using static Project_MVC.Models.LevelOneProductCategory;
 using static Project_MVC.Models.ProductCategory;
 
 namespace Project_MVC.Controllers
 {
     public class ProductCategoriesController : Controller
     {
-        private MyDbContext db = new MyDbContext();
+        private MyDbContext _db;
+        public MyDbContext DbContext
+        {
+            get { return _db ?? HttpContext.GetOwinContext().Get<MyDbContext>(); }
+            set { _db = value; }
+        }
         private ICRUDService<ProductCategory> mySQLProductCategoryService;
 
         public ProductCategoriesController()
         {
             mySQLProductCategoryService = new MySQLProductCategoryService();
         }
+
+        //public ActionResult OnMenuProductCategories(string code)
+        //{
+        //    ViewData["category"] = db.LevelOneProductCategories.Find(code);
+        //    var listArticles = db.Articles.Where(s => s.CategoryId == id).ToList(); // lọc theo category
+        //    return View("Index", listArticles);
+        //}
 
         // GET: ProductCategories
         public ActionResult Index(string sortOrder, string searchString, string currentFilter, int? page)
@@ -44,7 +58,7 @@ namespace Project_MVC.Controllers
 
             ViewBag.CurrentFilter = searchString;
 
-            var productCategories = db.ProductCategories.Where(s => s.Status != ProductCategoryStatus.Deleted);
+            var productCategories = DbContext.ProductCategories.Where(s => s.Status != ProductCategoryStatus.Deleted);
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -68,11 +82,31 @@ namespace Project_MVC.Controllers
 
             int pageSize = Constant.PageSize;
             int pageNumber = (page ?? 1);
-            ViewBag.currentPage = pageNumber;
-            ViewBag.totalPage = Math.Ceiling((double)productCategories.Count() / pageSize);
+            ThisPage thisPage = new ThisPage()
+            {
+                CurrentPage = pageNumber,
+                TotalPage = Math.Ceiling((double)productCategories.Count() / pageSize)
+            };
+            ViewBag.Page = thisPage;
             // nếu page == null thì lấy giá trị là 1, nếu không thì giá trị là page
             //return View(students.ToList().ToPagedList(pageNumber, pageSize));
             return View(productCategories.Skip(pageSize * (pageNumber - 1)).Take(pageSize).ToList());
+        }
+
+        public ActionResult GetListLevelOneProductCategories()
+        {
+            //Console.WriteLine("123");
+            //var list = db.ProductCategories.Where(s => s.Status != ProductCategoryStatus.Deleted).ToList();
+            var list = DbContext.LevelOneProductCategories.Where(s => s.Status != LevelOneProductCategoryStatus.Deleted).Select(dep => new
+            {
+                dep.Code,
+                dep.Name
+            });
+            return new JsonResult()
+            {
+                Data = list,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+            };
         }
 
         // GET: ProductCategories/Details/5
@@ -82,7 +116,7 @@ namespace Project_MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ProductCategory productCategory = db.ProductCategories.Find(id);
+            ProductCategory productCategory = DbContext.ProductCategories.Find(id);
             if (productCategory == null || productCategory.IsDeleted())
             {
                 return HttpNotFound();
@@ -101,7 +135,7 @@ namespace Project_MVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Code,Name,Description")] ProductCategory productCategory)
+        public ActionResult Create([Bind(Include = "Code,Name,Description,LevelOneProductCategoryCode")] ProductCategory productCategory)
         {
             //ModelStateDictionary state = ModelState;
             if (mySQLProductCategoryService.Create(productCategory, ModelState))
@@ -119,7 +153,8 @@ namespace Project_MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ProductCategory productCategory = db.ProductCategories.Find(id);
+            ProductCategory productCategory = DbContext.ProductCategories.Find(id);
+            productCategory.LevelOneProductCategoryNameAndCode = productCategory.LevelOneProductCategory.Code + " - " + productCategory.LevelOneProductCategory.Name;
             if (productCategory == null || productCategory.IsDeleted())
             {
                 return HttpNotFound();
@@ -140,7 +175,7 @@ namespace Project_MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var existProductCategory = db.ProductCategories.Find(productCategory.Code);
+            var existProductCategory = DbContext.ProductCategories.Find(productCategory.Code);
             if (existProductCategory == null || existProductCategory.IsDeleted())
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
@@ -160,7 +195,7 @@ namespace Project_MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ProductCategory productCategory = db.ProductCategories.Find(id);
+            ProductCategory productCategory = DbContext.ProductCategories.Find(id);
             if (productCategory == null || productCategory.IsDeleted())
             {
                 return HttpNotFound();
@@ -178,7 +213,7 @@ namespace Project_MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var existProductCategory = db.ProductCategories.Find(id);
+            var existProductCategory = DbContext.ProductCategories.Find(id);
             if (existProductCategory == null || existProductCategory.IsDeleted())
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
@@ -194,7 +229,7 @@ namespace Project_MVC.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                DbContext.Dispose();
             }
             base.Dispose(disposing);
         }

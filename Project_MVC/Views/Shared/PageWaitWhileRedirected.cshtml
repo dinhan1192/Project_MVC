@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "PageWaitWhileRedirected";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    
+    //var indexUrl = @Url.Action("Index", "Products");
+}
+
+    <div style="margin-top:20px;">
+        <div style="color:green;">
+            Hello @ViewBag.UserName , please Confirm Email before Login !
+        </div>
+        <div>
+            Please wait 5 seconds while you are redirected...
+        </div>
+        <div id="back2Index" data-url="@Url.Action("Index", "Products")"></div>
+    </div>
+
+@section scripts{
+    <script>
+        var url = $('#back2Index').attr("data-url");
+        window.setTimeout(function () {
+            location.href = url;
+        }, 5000);
+    </script>
+}
+

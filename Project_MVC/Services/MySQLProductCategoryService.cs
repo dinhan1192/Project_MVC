@@ -29,7 +29,7 @@ namespace Project_MVC.Services
             return false;
         }
 
-        public bool CreateWithImage(ProductCategory item, ModelStateDictionary state, IEnumerable<HttpPostedFileBase> images)
+        public bool CreateWithImage(ProductCategory item, ModelStateDictionary state, IEnumerable<HttpPostedFileBase> images, IEnumerable<HttpPostedFileBase> videos)
         {
             throw new NotImplementedException();
         }

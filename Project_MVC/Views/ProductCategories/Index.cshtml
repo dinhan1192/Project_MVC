@@ -1,18 +1,11 @@
 ﻿@model IEnumerable<Project_MVC.Models.ProductCategory>
+@using Project_MVC.Models
 
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    int currentPage = (int)ViewBag.currentPage;
-    int previousPage = currentPage - 1;
-    int nextPage = currentPage + 1;
-    string currentPageInString = Convert.ToString(currentPage);
-    string previousPageInString = Convert.ToString(previousPage);
-    string nextPageInString = Convert.ToString(nextPage);
-
-    var totalPage = ViewBag.totalPage;
-
+    var thisPage = ViewBag.Page as ThisPage;
     var url = "/ProductCategories/Delete/";
 }
 
@@ -30,6 +23,9 @@
 }
 <table class="table">
     <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.LevelOneProductCategory.Name)
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.Code)
         </th>
@@ -49,6 +45,9 @@
     {
         <tr>
             <td>
+                @Html.DisplayFor(modelItem => item.LevelOneProductCategory.Name)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Code)
             </td>
             <td>
@@ -64,7 +63,7 @@
                 @Html.ActionLink("Edit", "Edit", new { id = item.Code }) |
                 @Html.ActionLink("Details", "Details", new { id = item.Code }) |
                 @*@Html.ActionLink("Delete", "Delete", new { id = item.Code },
-                  new { @class = "btn btn-danger btn-delete-productCategory", @id = "delete-" + item.Code, @tag = "deleteNotifyButton", @value = @url })*@
+                    new { @class = "btn btn-danger btn-delete-productCategory", @id = "delete-" + item.Code, @tag = "deleteNotifyButton", @value = @url })*@
                 @Html.ActionLink("Delete", "Delete", new { id = item.Code },
                   new { @class = "btn btn-danger btn-delete-notify", @id = "delete-" + item.Code, data_request_url = @url });
             </td>
@@ -73,42 +72,7 @@
 
 </table>
 
-<div>
-    Page @currentPage of @totalPage
-</div>
-
-<nav aria-label="Page navigation example">
-    <ul class="pagination">
-        @if (currentPage > 1)
-        {
-            <li class="page-item">
-                @Html.ActionLink("First", "Index", new { page = 1 })
-            </li>
-            <li class="page-item">
-                @Html.ActionLink("Previous", "Index", new { page = currentPage - 1 })
-            </li>
-            <li class="page-item">
-                @Html.ActionLink(previousPageInString, "Index", new { page = currentPage - 1 })
-            </li>
-        }
-        <li class="page-item">
-            @*<a class="page-link" href="@Url.Content(~/Index?page = @currentPage)">@currentPage</a>*@
-            @Html.ActionLink(currentPageInString, "Index", new { page = currentPage })
-        </li>
-        @if (currentPage < totalPage)
-        {
-            <li class="page-item">
-                @Html.ActionLink(nextPageInString, "Index", new { page = currentPage + 1 })
-            </li>
-            <li class="page-item">
-                @Html.ActionLink("Next", "Index", new { page = currentPage + 1 })
-            </li>
-            <li class="page-item">
-                @Html.ActionLink("Final", "Index", new { page = totalPage })
-            </li>
-        }
-    </ul>
-</nav>
+@Html.Partial("_Paginate", thisPage)
 
 @Html.AntiForgeryToken()
 @section scripts{

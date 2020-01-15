@@ -1,0 +1,50 @@
+﻿@model Project_MVC.Models.ThisPage
+
+    @{
+        int currentPage = Model.CurrentPage;
+        int previousPage = currentPage - 1;
+        int nextPage = currentPage + 1;
+        string currentPageInString = Convert.ToString(currentPage);
+        string previousPageInString = Convert.ToString(previousPage);
+        string nextPageInString = Convert.ToString(nextPage);
+
+        var totalPage = Model.TotalPage;
+    }
+
+    <div>
+        Page @currentPage of @totalPage
+    </div>
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            @if (currentPage > 1)
+            {
+                <li class="page-item">
+                    @Html.ActionLink("First", "Index", new { page = 1 })
+                </li>
+                <li class="page-item">
+                    @Html.ActionLink("Previous", "Index", new { page = currentPage - 1 })
+                </li>
+                <li class="page-item">
+                    @Html.ActionLink(previousPageInString, "Index", new { page = currentPage - 1 })
+                </li>
+            }
+            <li class="page-item">
+                @*<a class="page-link" href="@Url.Content(~/Index?page = @currentPage)">@currentPage</a>*@
+                @Html.ActionLink(currentPageInString, "Index", new { page = currentPage })
+            </li>
+            @if (currentPage < totalPage)
+            {
+                <li class="page-item">
+                    @Html.ActionLink(nextPageInString, "Index", new { page = currentPage + 1 })
+                </li>
+                <li class="page-item">
+                    @Html.ActionLink("Next", "Index", new { page = currentPage + 1 })
+                </li>
+                <li class="page-item">
+                    @Html.ActionLink("Final", "Index", new { page = totalPage })
+                </li>
+            }
+        </ul>
+    </nav>
+

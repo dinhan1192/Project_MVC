@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -24,6 +25,13 @@ namespace Project_MVC.Models
         public DateTime? DeletedAt { get; set; }
         public ProductCategoryStatus Status { get; set; }
         public virtual ICollection<Product> Products { get; set; }
+        [ForeignKey("LevelOneProductCategory")]
+        public string LevelOneProductCategoryCode { get; set; }
+        public virtual LevelOneProductCategory LevelOneProductCategory { get; set; }
+        [DisplayName("Level One Product Category")]
+        [NotMapped]
+        [RegularExpression(@"^[0-9A-Z]+\s-\s[0-9a-zA-Z\s+ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]+$", ErrorMessage = "Invalid Product Category")]
+        public string LevelOneProductCategoryNameAndCode { get; set; }
 
         public enum ProductCategoryStatus
         {

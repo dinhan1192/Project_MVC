@@ -6,13 +6,20 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity.Owin;
 using Project_MVC.Models;
 
 namespace Project_MVC.Controllers
 {
+    [Authorize(Roles=Constant.Admin + "," + Constant.Admin01)]
     public class ProductImagesController : Controller
     {
-        private MyDbContext db = new MyDbContext();
+        private MyDbContext _db;
+        public MyDbContext DbContext
+        {
+            get { return _db ?? HttpContext.GetOwinContext().Get<MyDbContext>(); }
+            set { _db = value; }
+        }
 
         // GET: ProductImages
         public ActionResult Index(string searchString, string currentFilter, int? page)
@@ -28,7 +35,7 @@ namespace Project_MVC.Controllers
 
             ViewBag.CurrentFilter = searchString;
 
-            var productImages = db.ProductImages.Where(s => !string.IsNullOrEmpty(s.ProductCode));
+            var productImages = DbContext.ProductImages.Where(s => !string.IsNullOrEmpty(s.ProductCode));
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -37,8 +44,12 @@ namespace Project_MVC.Controllers
 
             int pageSize = Constant.PageSize;
             int pageNumber = (page ?? 1);
-            ViewBag.currentPage = pageNumber;
-            ViewBag.totalPage = Math.Ceiling((double)productImages.Count() / pageSize);
+            ThisPage thisPage = new ThisPage()
+            {
+                CurrentPage = pageNumber,
+                TotalPage = Math.Ceiling((double)productImages.Count() / pageSize)
+            };
+            ViewBag.Page = thisPage;
             // nếu page == null thì lấy giá trị là 1, nếu không thì giá trị là page
             //return View(students.ToList().ToPagedList(pageNumber, pageSize));
             return View(productImages.OrderBy(s => s.ProductCode).Skip(pageSize * (pageNumber - 1)).Take(pageSize).ToList());
@@ -137,13 +148,13 @@ namespace Project_MVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            ProductImage productImage = db.ProductImages.Find(id);
+            ProductImage productImage = DbContext.ProductImages.Find(id);
             if(productImage == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
-            db.ProductImages.Remove(productImage);
-            db.SaveChanges();
+            DbContext.ProductImages.Remove(productImage);
+            DbContext.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -151,7 +162,7 @@ namespace Project_MVC.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                DbContext.Dispose();
             }
             base.Dispose(disposing);
         }
