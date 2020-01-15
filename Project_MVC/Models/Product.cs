@@ -39,6 +39,9 @@ namespace Project_MVC.Models
         #region Images members
         public virtual ICollection<ProductImage> ProductImages { get; set; }
         #endregion
+        #region Videos members
+        public virtual ICollection<ProductVideo> ProductVideos { get; set; }
+        #endregion
 
         public enum ProductStatus
         {

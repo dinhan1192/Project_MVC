@@ -1,18 +1,11 @@
 ﻿@model IEnumerable<Project_MVC.Models.Product>
+@using Project_MVC.Models
 
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    int currentPage = (int)ViewBag.currentPage;
-    int previousPage = currentPage - 1;
-    int nextPage = currentPage + 1;
-    string currentPageInString = Convert.ToString(currentPage);
-    string previousPageInString = Convert.ToString(previousPage);
-    string nextPageInString = Convert.ToString(nextPage);
-
-    var totalPage = ViewBag.totalPage;
-
+    var thisPage = ViewBag.Page as ThisPage;
     var url = "/Products/Delete/";
 }
 
@@ -51,6 +44,9 @@
         <th>
             Product Images
         </th>
+        <th>
+            Product Videos
+        </th>
         <th></th>
     </tr>
 
@@ -82,6 +78,20 @@
         }
     </td>
     <td>
+        @foreach (var video in item.ProductVideos)
+        {
+            @*<a class="player" style="height: 300px; width: 300px; display: block" href='@Url.Action("DownloadFile", "Products", new {fileId = video.Id})'>
+            </a>*@
+            <video controls autoplay>
+                <source src="@Url.Action("Video", "Products", new { fileId = video.Id })" type="video/mp4" />
+                @*(Fallback content for old browsers...)*@
+            </video>
+            @*<video>
+                <source src="data:video;base64,@System.Convert.ToBase64String(video.VideoData)" type='video/mp4' />
+            </video>*@
+        }
+    </td>
+    <td>
         @Html.ActionLink("Edit", "Edit", new { id = item.Code }) |
         @Html.ActionLink("Details", "Details", new { id = item.Code }) |
         @Html.ActionLink("Delete", "Delete", new { id = item.Code },
@@ -89,45 +99,10 @@
     </td>
 </tr>
     }
-
 </table>
 
-<div>
-    Page @currentPage of @totalPage
-</div>
+@Html.Partial("_Paginate", thisPage)
 
-<nav aria-label="Page navigation example">
-    <ul class="pagination">
-        @if (currentPage > 1)
-        {
-            <li class="page-item">
-                @Html.ActionLink("First", "Index", new { page = 1 })
-            </li>
-            <li class="page-item">
-                @Html.ActionLink("Previous", "Index", new { page = currentPage - 1 })
-            </li>
-            <li class="page-item">
-                @Html.ActionLink(previousPageInString, "Index", new { page = currentPage - 1 })
-            </li>
-        }
-        <li class="page-item">
-            @*<a class="page-link" href="@Url.Content(~/Index?page = @currentPage)">@currentPage</a>*@
-            @Html.ActionLink(currentPageInString, "Index", new { page = currentPage })
-        </li>
-        @if (currentPage < totalPage)
-        {
-            <li class="page-item">
-                @Html.ActionLink(nextPageInString, "Index", new { page = currentPage + 1 })
-            </li>
-            <li class="page-item">
-                @Html.ActionLink("Next", "Index", new { page = currentPage + 1 })
-            </li>
-            <li class="page-item">
-                @Html.ActionLink("Final", "Index", new { page = totalPage })
-            </li>
-        }
-    </ul>
-</nav>
 
 @Html.AntiForgeryToken()
 @section scripts{

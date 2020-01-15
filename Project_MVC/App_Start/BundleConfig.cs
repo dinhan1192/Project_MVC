@@ -25,7 +25,8 @@ namespace Project_MVC
             bundles.Add(new ScriptBundle("~/bundles/custom").Include(
                       "~/Scripts/Customs/deleteNotify.js",
                       "~/Scripts/Customs/autocomplete.js",
-                      "~/Scripts/Customs/checkFileSize.js"
+                      "~/Scripts/Customs/checkFileSize.js",
+                      "~/Scripts/Customs/checkboxselectallWithPopup.js"
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/typeahead").Include(
@@ -34,6 +35,22 @@ namespace Project_MVC
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+
+            bundles.Add(new ScriptBundle("~/Js").Include(
+                     "~/Scripts/vendor/bootstrap/js/bootstrap.bundle.min.js",
+                     "~/Scripts/vendor/jquery-easing/jquery.easing.min.js",
+                     "~/Scripts/vendor/chart.js/Chart.min.js",
+                     "~/Scripts/vendor/datatables/jquery.dataTables.js",
+                     "~/Scripts/vendor/datatables/dataTables.bootstrap4.js",
+                     "~/Scripts/js/sb-admin.min.js",
+                     "~/Scripts/js/demo/datatables-demo.js",
+                     "~/Scripts/js/demo/chart-area-demo.js"
+                     ));
+
+            bundles.Add(new StyleBundle("~/Css").Include(
+                      "~/Content/vendor/fontawesome-free/css/all.min.css",
+                      "~/Content/vendor/datatables/dataTables.bootstrap4.css",
+                      "~/Content/css/sb-admin.css"));
         }
     }
 }

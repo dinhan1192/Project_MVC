@@ -27,7 +27,7 @@ namespace Project_MVC.Services
             throw new NotImplementedException();
         }
 
-        public bool CreateWithImage(Product item, ModelStateDictionary state, IEnumerable<HttpPostedFileBase> images)
+        public bool CreateWithImage(Product item, ModelStateDictionary state, IEnumerable<HttpPostedFileBase> images, IEnumerable<HttpPostedFileBase> videos)
         {
             ValidateCode(item, state);
             ValidateCategory(item, state);
@@ -42,6 +42,7 @@ namespace Project_MVC.Services
                 db.Products.Add(item);
                 // add image to table ProductImages
                 item.ProductImages = mySQLImageService.SaveImage2List(item.Code, images);
+                item.ProductVideos = mySQLImageService.SaveVideo2List(item.Code, videos);
                 //
                 db.SaveChanges();
                 return true;

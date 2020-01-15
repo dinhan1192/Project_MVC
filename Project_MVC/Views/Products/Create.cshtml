@@ -72,7 +72,7 @@
             @Html.TextBoxFor(model => model.ProductCategoryNameAndCode, new { @class = "form-control typeahead", @id = "AutoComplete", @name = "AutoComplete", data_provide = "typeahead", data_request_url = @url })
             @*<input id="ProductCategoryId" type="text" name="Autocomplete" value="" class="form-control typeahead" data-provide="typeahead" />*@
             @*<input type="hidden" name="ProductCategoryId" id="hidProductCategoryId" />*@
-            @Html.HiddenFor(model => model.ProductCategoryCode, new { @id = "hidCode", @name = "hidProductCategoryId" })
+            @Html.HiddenFor(model => model.ProductCategoryCode, new { @id = "hidCode" })
             @Html.ValidationMessageFor(model => model.ProductCategoryNameAndCode, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -85,6 +85,16 @@
             @*@Html.ValidationMessageFor(model => model.ProductImageFile, "", new { @class = "text-danger" })*@
         </div>
     </div>
+
+    <div class="form-group">
+        @Html.Label("Product Video", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <input type='file' multiple id='fileVideoUpload' name="videos" accept="video/*" />
+            @*@Html.TextBoxFor(model => model.ProductImageFile, null, new { htmlAttributes = new {  type="file", @class="input-file" } })*@
+            @*@Html.ValidationMessageFor(model => model.ProductImageFile, "", new { @class = "text-danger" })*@
+        </div>
+    </div>
+
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
