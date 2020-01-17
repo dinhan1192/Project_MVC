@@ -1,4 +1,5 @@
-﻿using Project_MVC.Models;
+﻿using Microsoft.AspNet.Identity.Owin;
+using Project_MVC.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Migrations;
@@ -11,11 +12,16 @@ namespace Project_MVC.Services
 {
     public class MySQLLevelOneProductCategoryService : ICRUDService<LevelOneProductCategory>
     {
-        private MyDbContext db;
+        private MyDbContext _db;
+        public MyDbContext DbContext
+        {
+            get { return _db ?? HttpContext.Current.GetOwinContext().Get<MyDbContext>(); }
+            set { _db = value; }
+        }
 
         public MySQLLevelOneProductCategoryService()
         {
-            db = new MyDbContext();
+            DbContext = new MyDbContext();
         }
         public bool Create(LevelOneProductCategory item, ModelStateDictionary state)
         {
@@ -27,8 +33,8 @@ namespace Project_MVC.Services
                 item.UpdatedAt = null;
                 item.DeletedAt = null;
                 item.Status = LevelOneProductCategoryStatus.NotDeleted;
-                db.LevelOneProductCategories.Add(item);
-                db.SaveChanges();
+                DbContext.LevelOneProductCategories.Add(item);
+                DbContext.SaveChanges();
                 return true;
             }
 
@@ -46,8 +52,8 @@ namespace Project_MVC.Services
             {
                 item.Status = LevelOneProductCategoryStatus.Deleted;
                 item.DeletedAt = DateTime.Now;
-                db.LevelOneProductCategories.AddOrUpdate(item);
-                db.SaveChanges();
+                DbContext.LevelOneProductCategories.AddOrUpdate(item);
+                DbContext.SaveChanges();
 
                 return true;
             }
@@ -55,9 +61,9 @@ namespace Project_MVC.Services
             return false;
         }
 
-        public LevelOneProductCategory Detail(LevelOneProductCategory item)
+        public LevelOneProductCategory Detail(string id)
         {
-            throw new NotImplementedException();
+            return DbContext.LevelOneProductCategories.Find(id);
         }
 
         public bool Update(LevelOneProductCategory existItem, LevelOneProductCategory item, ModelStateDictionary state)
@@ -67,8 +73,8 @@ namespace Project_MVC.Services
                 existItem.Name = item.Name;
                 existItem.Description = item.Description;
                 existItem.UpdatedAt = DateTime.Now;
-                db.LevelOneProductCategories.AddOrUpdate(existItem);
-                db.SaveChanges();
+                DbContext.LevelOneProductCategories.AddOrUpdate(existItem);
+                DbContext.SaveChanges();
 
                 return true;
             }
@@ -92,11 +98,21 @@ namespace Project_MVC.Services
             {
                 state.AddModelError("Code", "Level One Product Category Code is required.");
             }
-            var list = db.LevelOneProductCategories.Where(s => s.Code.Contains(item.Code)).ToList();
+            var list = DbContext.LevelOneProductCategories.Where(s => s.Code.Contains(item.Code)).ToList();
             if (list.Count != 0)
             {
                 state.AddModelError("Code", "Level OneProduct Category Code already exist.");
             }
+        }
+
+        public IEnumerable<LevelOneProductCategory> GetList()
+        {
+            return DbContext.LevelOneProductCategories.Where(s => s.Status != LevelOneProductCategoryStatus.Deleted);
+        }
+
+        public void DisposeDb()
+        {
+            DbContext.Dispose();
         }
     }
 }

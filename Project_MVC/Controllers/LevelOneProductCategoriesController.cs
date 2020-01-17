@@ -12,14 +12,15 @@ using Project_MVC.Services;
 
 namespace Project_MVC.Controllers
 {
+    [Authorize(Roles=Constant.Admin + "," + Constant.Employee)]
     public class LevelOneProductCategoriesController : Controller
     {
-        private MyDbContext _db;
-        public MyDbContext DbContext
-        {
-            get { return _db ?? HttpContext.GetOwinContext().Get<MyDbContext>(); }
-            set { _db = value; }
-        }
+        //private MyDbContext _db;
+        //public MyDbContext DbContext
+        //{
+        //    get { return _db ?? HttpContext.GetOwinContext().Get<MyDbContext>(); }
+        //    set { _db = value; }
+        //}
 
         private ICRUDService<LevelOneProductCategory> mySQLLevelOneProductCategoryService;
 
@@ -31,7 +32,7 @@ namespace Project_MVC.Controllers
         // GET: LevalOneProductCategories
         public ActionResult Index()
         {
-            return View(DbContext.LevelOneProductCategories.ToList());
+            return View(mySQLLevelOneProductCategoryService.GetList());
         }
 
         // GET: LevalOneProductCategories/Details/5
@@ -41,7 +42,7 @@ namespace Project_MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            LevelOneProductCategory levelOneProductCategory = DbContext.LevelOneProductCategories.Find(id);
+            LevelOneProductCategory levelOneProductCategory = mySQLLevelOneProductCategoryService.Detail(id);
             if (levelOneProductCategory == null || levelOneProductCategory.IsDeleted())
             {
                 return HttpNotFound();
@@ -77,7 +78,7 @@ namespace Project_MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            LevelOneProductCategory levelOneProductCategory = DbContext.LevelOneProductCategories.Find(id);
+            LevelOneProductCategory levelOneProductCategory = mySQLLevelOneProductCategoryService.Detail(id);
             if (levelOneProductCategory == null || levelOneProductCategory.IsDeleted())
             {
                 return HttpNotFound();
@@ -96,7 +97,7 @@ namespace Project_MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var existLevelOneProductCategory = DbContext.LevelOneProductCategories.Find(levelOneProductCategory.Code);
+            var existLevelOneProductCategory = mySQLLevelOneProductCategoryService.Detail(levelOneProductCategory.Code);
             if (existLevelOneProductCategory == null || existLevelOneProductCategory.IsDeleted())
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
@@ -110,19 +111,19 @@ namespace Project_MVC.Controllers
         }
 
         // GET: LevalOneProductCategories/Delete/5
-        public ActionResult Delete(string id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            LevelOneProductCategory levalOneProductCategory = DbContext.LevelOneProductCategories.Find(id);
-            if (levalOneProductCategory == null)
-            {
-                return HttpNotFound();
-            }
-            return View(levalOneProductCategory);
-        }
+        //public ActionResult Delete(string id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    LevelOneProductCategory levalOneProductCategory = DbContext.LevelOneProductCategories.Find(id);
+        //    if (levalOneProductCategory == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(levalOneProductCategory);
+        //}
 
         // POST: LevalOneProductCategories/Delete/5
         [HttpPost, ActionName("Delete")]
@@ -134,7 +135,7 @@ namespace Project_MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var existLevelOneProductCategory = DbContext.LevelOneProductCategories.Find(id);
+            var existLevelOneProductCategory = mySQLLevelOneProductCategoryService.Detail(id);
             if (existLevelOneProductCategory == null || existLevelOneProductCategory.IsDeleted())
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
@@ -150,7 +151,7 @@ namespace Project_MVC.Controllers
         {
             if (disposing)
             {
-                DbContext.Dispose();
+                mySQLLevelOneProductCategoryService.DisposeDb();
             }
             base.Dispose(disposing);
         }

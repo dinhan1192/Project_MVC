@@ -41,6 +41,19 @@ namespace Project_MVC.Controllers
             }
         }
 
+        private ApplicationSignInManager _signInManager;
+        public ApplicationSignInManager SignInManager
+        {
+            get
+            {
+                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+            }
+            private set
+            {
+                _signInManager = value;
+            }
+        }
+
         //public AccountsController()
         //{
         //    //var roleStore = new RoleStore<AppRole>(dbContext);
@@ -70,7 +83,7 @@ namespace Project_MVC.Controllers
         //    }
         //}
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = Constant.Admin + "," + Constant.Employee)]
         //[Authorize]
         public ActionResult AddUserToRole(string accountId, string roleName)
         {
@@ -96,7 +109,8 @@ namespace Project_MVC.Controllers
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     Gender = user.Gender,
-                    BirthDay = DateTime.Now
+                    BirthDay = DateTime.Now,
+                    CreatedAt = DateTime.Now
                 };
 
                 ViewBag.UserName = user.UserName;
@@ -125,8 +139,9 @@ namespace Project_MVC.Controllers
             return View(user);
         }
 
-        public ActionResult Login()
+        public ActionResult Login(string returnUrl)
         {
+            ViewBag.ReturnUrl = returnUrl;
             return View("Login");
         }
 
@@ -145,6 +160,190 @@ namespace Project_MVC.Controllers
             }
             return View("Login");
         }
+
+        //
+        // POST: /Account/ExternalLogin
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult ExternalLogin(string provider, string returnUrl)
+        {
+            // Request a redirect to the external login provider
+            return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Accounts", new { ReturnUrl = returnUrl }));
+        }
+
+        //
+        // GET: /Account/ExternalLoginCallback
+        [AllowAnonymous]
+        public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
+        {
+            var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
+            if (loginInfo == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            //var user = await UserManager.FindAsync(loginInfo.Login);
+            //if (user == null)
+            //{
+            //    // Register the user. The user must be added to two tables using the built-in methods.
+            //    //var email = loginInfo.DefaultUserName.ToLower().Replace("mydomain\\", "") + "@mydomain.org";  // The email was null on loginInfo, so using the DefaultUserName to build one
+            //    var email = loginInfo.Email;
+            //    var appUser = new AppUser { UserName = email, Email = email };
+            //    var identityResult = await UserManager.CreateAsync(appUser);  // Adds user to AspNetUsers table
+            //    if (identityResult.Succeeded)
+            //    {
+            //        identityResult = await UserManager.AddLoginAsync(appUser.Id, loginInfo.Login);    // Adds user to AspNetUserLogins
+            //        if (!identityResult.Succeeded)
+            //        {
+            //            //await SignInManager.SignInAsync(appUser, isPersistent: false, rememberBrowser: false);
+            //            return RedirectToLocal(returnUrl);
+            //        }
+            //    }
+            //    else
+            //    {
+
+            //    }
+            //}
+
+            // Sign in the user with this external login provider if the user already has a login
+            var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
+            switch (result)
+            {
+                case SignInStatus.Success:
+                    return RedirectToLocal(returnUrl);
+                case SignInStatus.LockedOut:
+                    return View("Lockout");
+                case SignInStatus.RequiresVerification:
+                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
+                //case SignInStatus.Failure:
+                //    return View("ExternalLoginFailure");
+                default:
+                    // If the user does not have an account, then prompt the user to create an account
+                    ViewBag.ReturnUrl = returnUrl;
+                    ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
+                    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
+            }
+        }
+
+        //
+        // POST: /Account/ExternalLoginConfirmation
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Manage");
+            }
+
+            if (ModelState.IsValid)
+            {
+                // Get the information about the user from the external login provider
+                var info = await AuthenticationManager.GetExternalLoginInfoAsync();
+                if (info == null)
+                {
+                    return View("ExternalLoginFailure");
+                }
+                var user = new AppUser { UserName = model.Email, Email = model.Email, Gender = AppUser.GenderStatus.Other };
+                var result = await UserManager.CreateAsync(user);
+                if (result.Succeeded)
+                {
+                    UserManager.AddToRole(user.Id, "User");
+                    result = await UserManager.AddLoginAsync(user.Id, info.Login);
+                    if (result.Succeeded)
+                    {
+                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                        return RedirectToLocal(returnUrl);
+                    }
+                }
+                AddErrors(result);
+            }
+
+            ViewBag.ReturnUrl = returnUrl;
+            return View(model);
+        }
+
+        //
+        // GET: /Account/SendCode
+        [AllowAnonymous]
+        public async Task<ActionResult> SendCode(string returnUrl, bool rememberMe)
+        {
+            var userId = await SignInManager.GetVerifiedUserIdAsync();
+            if (userId == null)
+            {
+                return View("Error");
+            }
+            var userFactors = await UserManager.GetValidTwoFactorProvidersAsync(userId);
+            var factorOptions = userFactors.Select(purpose => new SelectListItem { Text = purpose, Value = purpose }).ToList();
+            return View(new SendCodeViewModel { Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe });
+        }
+
+        //
+        // POST: /Account/SendCode
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> SendCode(SendCodeViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            // Generate the token and send it
+            if (!await SignInManager.SendTwoFactorCodeAsync(model.SelectedProvider))
+            {
+                return View("Error");
+            }
+            return RedirectToAction("VerifyCode", new { Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
+        }
+
+        //
+        // GET: /Account/VerifyCode
+        [AllowAnonymous]
+        public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
+        {
+            // Require that the user has already logged in via username/password or external login
+            if (!await SignInManager.HasBeenVerifiedAsync())
+            {
+                return View("Error");
+            }
+            return View(new VerifyCodeViewModel { Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe });
+        }
+
+        //
+        // POST: /Account/VerifyCode
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> VerifyCode(VerifyCodeViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            // The following code protects for brute force attacks against the two factor codes. 
+            // If a user enters incorrect codes for a specified amount of time then the user account 
+            // will be locked out for a specified amount of time. 
+            // You can configure the account lockout settings in IdentityConfig
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
+            switch (result)
+            {
+                case SignInStatus.Success:
+                    return RedirectToLocal(model.ReturnUrl);
+                case SignInStatus.LockedOut:
+                    return View("Lockout");
+                case SignInStatus.Failure:
+                    return View("ExternalLoginFailure");
+                default:
+                    ModelState.AddModelError("", "Invalid code.");
+                    return View(model);
+            }
+        }
+
 
         // GET: /Account/ConfirmEmail
         [AllowAnonymous]
@@ -252,6 +451,7 @@ namespace Project_MVC.Controllers
             return View();
         }
 
+        [Authorize]
         public ActionResult Logout()
         {
             var authenticationManager = System.Web.HttpContext.Current
@@ -267,5 +467,57 @@ namespace Project_MVC.Controllers
                 ModelState.AddModelError("", error);
             }
         }
+
+        #region Helpers
+
+        private const string XsrfKey = "XsrfId";
+
+        private IAuthenticationManager AuthenticationManager
+        {
+            get
+            {
+                return HttpContext.GetOwinContext().Authentication;
+            }
+        }
+
+        private ActionResult RedirectToLocal(string returnUrl)
+        {
+            if (Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            return RedirectToAction("IndexCustomer", "Products");
+        }
+
+        internal class ChallengeResult : HttpUnauthorizedResult
+        {
+            public ChallengeResult(string provider, string redirectUri)
+                : this(provider, redirectUri, null)
+            {
+            }
+
+            public ChallengeResult(string provider, string redirectUri, string userId)
+            {
+                LoginProvider = provider;
+                RedirectUri = redirectUri;
+                UserId = userId;
+            }
+
+            public string LoginProvider { get; set; }
+            public string RedirectUri { get; set; }
+            public string UserId { get; set; }
+
+            public override void ExecuteResult(ControllerContext context)
+            {
+                var properties = new AuthenticationProperties { RedirectUri = RedirectUri };
+                if (UserId != null)
+                {
+                    properties.Dictionary[XsrfKey] = UserId;
+                }
+                context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
+            }
+        }
+
+        #endregion
     }
 }
