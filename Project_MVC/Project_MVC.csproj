@@ -265,6 +265,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\css\sb-admin.css" />
     <Content Include="Content\css\sb-admin.min.css" />
+    <Content Include="Content\Customs\completeAndInComplete.css" />
     <Content Include="Content\vendor\bootstrap\js\bootstrap.bundle.js" />
     <Content Include="Content\vendor\bootstrap\js\bootstrap.bundle.min.js" />
     <Content Include="Content\vendor\bootstrap\js\bootstrap.js" />
@@ -2010,8 +2011,11 @@
     <Content Include="Scripts\bootstrap3-typeahead.min.js" />
     <Content Include="Scripts\Customs\checkboxselectallWithPopup.js" />
     <Content Include="Scripts\Customs\checkFileSize.js" />
+    <Content Include="Scripts\Customs\customerMustWatchVideo.js" />
     <Content Include="Scripts\Customs\deleteNotify.js" />
     <Content Include="Scripts\Customs\autocomplete.js" />
+    <Content Include="Scripts\Customs\preventSeekingVideo.js" />
+    <Content Include="Scripts\Customs\setStyleDefault.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.js" />

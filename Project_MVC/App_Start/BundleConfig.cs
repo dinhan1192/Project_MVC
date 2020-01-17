@@ -26,7 +26,10 @@ namespace Project_MVC
                       "~/Scripts/Customs/deleteNotify.js",
                       "~/Scripts/Customs/autocomplete.js",
                       "~/Scripts/Customs/checkFileSize.js",
-                      "~/Scripts/Customs/checkboxselectallWithPopup.js"
+                      "~/Scripts/Customs/checkboxselectallWithPopup.js",
+                      "~/Scripts/Customs/customerMustWatchVideo.js",
+                      "~/Scripts/Customs/preventSeekingVideo.js",
+                      "~/Scripts/Customs/setStyleDefault.js"
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/typeahead").Include(
@@ -51,6 +54,12 @@ namespace Project_MVC
                       "~/Content/vendor/fontawesome-free/css/all.min.css",
                       "~/Content/vendor/datatables/dataTables.bootstrap4.css",
                       "~/Content/css/sb-admin.css"));
+
+            bundles.Add(new StyleBundle("~/customs").Include(
+                      "~/Content/Customs/completeAndInComplete.css"
+                      ));
+
+            //BundleTable.EnableOptimizations = true;
         }
     }
 }
