@@ -11,13 +11,15 @@ namespace Project_MVC.Services
 {
     interface ICRUDService<T>
     {
+        IEnumerable<T> GetList();
         bool Create(T item, ModelStateDictionary state);
         bool CreateWithImage(T item, ModelStateDictionary state, IEnumerable<HttpPostedFileBase> images, IEnumerable<HttpPostedFileBase> videos);
         bool Update(T existItem, T item, ModelStateDictionary state);
         bool UpdateWithImage(T existItem, T item, ModelStateDictionary state, IEnumerable<HttpPostedFileBase> images);
         bool Delete(T item, ModelStateDictionary state);
-        T Detail(T item);
+        T Detail(string id);
         void ValidateCode(T item, ModelStateDictionary state);
         void ValidateCategory(T item, ModelStateDictionary state);
+        void DisposeDb();
     }
 }

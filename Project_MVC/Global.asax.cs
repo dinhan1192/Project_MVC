@@ -1,5 +1,9 @@
-﻿using System;
+﻿using Project_MVC.App_Start;
+using Project_MVC.Models;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
@@ -22,6 +26,12 @@ namespace Project_MVC
             config.Formatters.JsonFormatter
                         .SerializerSettings
                         .ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+
+            //if (!WebSecurity.Initialized)
+            //{
+            //    //WebSecurity.InitializeDatabaseConnection("SQLContext", "AspNetRoles", "Id", "Name", true);
+            //    WebSecurity.InitializeDatabaseConnection("SQLContext", "AspNetUsers", "Id", "UserName", true);
+            //}
         }
     }
 }

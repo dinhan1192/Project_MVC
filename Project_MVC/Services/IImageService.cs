@@ -12,5 +12,6 @@ namespace Project_MVC.Services
     {
         List<ProductImage> SaveImage2List(string code, IEnumerable<HttpPostedFileBase> images);
         List<ProductVideo> SaveVideo2List(string code, IEnumerable<HttpPostedFileBase> videos);
+        ProductVideo Detail(int? fileId);
     }
 }

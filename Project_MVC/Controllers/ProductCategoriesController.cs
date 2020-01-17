@@ -14,19 +14,22 @@ using static Project_MVC.Models.ProductCategory;
 
 namespace Project_MVC.Controllers
 {
+    [Authorize(Roles = Constant.Admin + "," + Constant.Employee)]
     public class ProductCategoriesController : Controller
     {
-        private MyDbContext _db;
-        public MyDbContext DbContext
-        {
-            get { return _db ?? HttpContext.GetOwinContext().Get<MyDbContext>(); }
-            set { _db = value; }
-        }
+        //private MyDbContext _db;
+        //public MyDbContext DbContext
+        //{
+        //    get { return _db ?? HttpContext.GetOwinContext().Get<MyDbContext>(); }
+        //    set { _db = value; }
+        //}
         private ICRUDService<ProductCategory> mySQLProductCategoryService;
+        private ICRUDService<LevelOneProductCategory> mySQLLevelOneProductCategoryService;
 
         public ProductCategoriesController()
         {
             mySQLProductCategoryService = new MySQLProductCategoryService();
+            mySQLLevelOneProductCategoryService = new MySQLLevelOneProductCategoryService();
         }
 
         //public ActionResult OnMenuProductCategories(string code)
@@ -58,7 +61,7 @@ namespace Project_MVC.Controllers
 
             ViewBag.CurrentFilter = searchString;
 
-            var productCategories = DbContext.ProductCategories.Where(s => s.Status != ProductCategoryStatus.Deleted);
+            var productCategories = mySQLProductCategoryService.GetList();
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -97,14 +100,15 @@ namespace Project_MVC.Controllers
         {
             //Console.WriteLine("123");
             //var list = db.ProductCategories.Where(s => s.Status != ProductCategoryStatus.Deleted).ToList();
-            var list = DbContext.LevelOneProductCategories.Where(s => s.Status != LevelOneProductCategoryStatus.Deleted).Select(dep => new
+            var list = mySQLLevelOneProductCategoryService.GetList();
+            var newlist = list.Select(dep => new
             {
                 dep.Code,
                 dep.Name
             });
             return new JsonResult()
             {
-                Data = list,
+                Data = newlist,
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet,
             };
         }
@@ -116,7 +120,7 @@ namespace Project_MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ProductCategory productCategory = DbContext.ProductCategories.Find(id);
+            ProductCategory productCategory = mySQLProductCategoryService.Detail(id);
             if (productCategory == null || productCategory.IsDeleted())
             {
                 return HttpNotFound();
@@ -153,7 +157,7 @@ namespace Project_MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ProductCategory productCategory = DbContext.ProductCategories.Find(id);
+            ProductCategory productCategory = mySQLProductCategoryService.Detail(id);
             productCategory.LevelOneProductCategoryNameAndCode = productCategory.LevelOneProductCategory.Code + " - " + productCategory.LevelOneProductCategory.Name;
             if (productCategory == null || productCategory.IsDeleted())
             {
@@ -175,7 +179,7 @@ namespace Project_MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var existProductCategory = DbContext.ProductCategories.Find(productCategory.Code);
+            var existProductCategory = mySQLProductCategoryService.Detail(productCategory.Code);
             if (existProductCategory == null || existProductCategory.IsDeleted())
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
@@ -189,19 +193,19 @@ namespace Project_MVC.Controllers
         }
 
         // GET: ProductCategories/Delete/5
-        public ActionResult Delete(string id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ProductCategory productCategory = DbContext.ProductCategories.Find(id);
-            if (productCategory == null || productCategory.IsDeleted())
-            {
-                return HttpNotFound();
-            }
-            return View(productCategory);
-        }
+        //public ActionResult Delete(string id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    ProductCategory productCategory = DbContext.ProductCategories.Find(id);
+        //    if (productCategory == null || productCategory.IsDeleted())
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(productCategory);
+        //}
 
         // POST: ProductCategories/Delete/5
         [HttpPost, ActionName("Delete")]
@@ -213,7 +217,7 @@ namespace Project_MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var existProductCategory = DbContext.ProductCategories.Find(id);
+            var existProductCategory = mySQLProductCategoryService.Detail(id);
             if (existProductCategory == null || existProductCategory.IsDeleted())
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
@@ -229,7 +233,7 @@ namespace Project_MVC.Controllers
         {
             if (disposing)
             {
-                DbContext.Dispose();
+                mySQLProductCategoryService.DisposeDb();
             }
             base.Dispose(disposing);
         }

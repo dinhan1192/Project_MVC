@@ -1,4 +1,5 @@
 ﻿@using Project_MVC.Utils
+@using Project_MVC.Models
 
 <!DOCTYPE html>
 <html>
@@ -30,7 +31,7 @@
                                 @foreach (var productCategory in MenuUtil.GetProductCategories(levelOneProductCategory.Code))
                                 {
                                     <li>
-                                        @Html.ActionLink(productCategory.Name, "Index", "Products", new
+                                        @Html.ActionLink(productCategory.Name, "IndexCustomer", "Products", new
                                    {
                                        productCategoryCode = productCategory.Code
                                    }, null)
@@ -39,9 +40,11 @@
                             </ul>
                         </li>
                     }
-                    <li>@Html.ActionLink("App User", "Index", "AppUsers")</li>
-                    <li>@Html.ActionLink("Add Role", "Create", "AppRoles")</li>
-                    <li>@Html.ActionLink("Go to Admin Page", "Index", "Products")</li>
+
+                    @if (RolesUtil.IsInAnyRole(User, new string[] { Constant.Admin, Constant.Employee }))
+                    {
+                        <li> @Html.ActionLink("Go to Admin Page", "Index", "Products") </li>
+                    }
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

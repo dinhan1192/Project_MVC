@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity.Owin;
 using Project_MVC.Models;
 using static Project_MVC.Models.Product;
 
@@ -14,7 +15,12 @@ namespace Project_MVC.Services
 {
     public class MySQLProductService : ICRUDService<Product>
     {
-        private MyDbContext db = new MyDbContext();
+        private MyDbContext _db;
+        public MyDbContext DbContext
+        {
+            get { return _db ?? HttpContext.Current.GetOwinContext().Get<MyDbContext>(); }
+            set { _db = value; }
+        }
         private IImageService mySQLImageService;
 
         public MySQLProductService()
@@ -39,12 +45,12 @@ namespace Project_MVC.Services
                 item.UpdatedAt = null;
                 item.DeletedAt = null;
                 item.Status = ProductStatus.NotDeleted;
-                db.Products.Add(item);
+                DbContext.Products.Add(item);
                 // add image to table ProductImages
                 item.ProductImages = mySQLImageService.SaveImage2List(item.Code, images);
                 item.ProductVideos = mySQLImageService.SaveVideo2List(item.Code, videos);
                 //
-                db.SaveChanges();
+                DbContext.SaveChanges();
                 return true;
 
             }
@@ -59,8 +65,8 @@ namespace Project_MVC.Services
             {
                 existProduct.Status = ProductStatus.Deleted;
                 existProduct.DeletedAt = DateTime.Now;
-                db.Products.AddOrUpdate(existProduct);
-                db.SaveChanges();
+                DbContext.Products.AddOrUpdate(existProduct);
+                DbContext.SaveChanges();
 
                 return true;
             }
@@ -68,9 +74,9 @@ namespace Project_MVC.Services
             return false;
         }
 
-        public Product Detail(Product item)
+        public Product Detail(string id)
         {
-            throw new NotImplementedException();
+            return DbContext.Products.Find(id);
         }
 
         public bool Update(Product existItem, Product item, ModelStateDictionary state)
@@ -129,12 +135,12 @@ namespace Project_MVC.Services
                 existItem.Description = item.Description;
                 existItem.UpdatedAt = DateTime.Now;
                 //var list = existItem.ProductImages;
-                db.Products.AddOrUpdate(existItem);
+                DbContext.Products.AddOrUpdate(existItem);
                 // add image to table ProductImages
                 var imageList = mySQLImageService.SaveImage2List(item.Code, images);
-                db.ProductImages.AddRange(imageList);
+                DbContext.ProductImages.AddRange(imageList);
                 //
-                db.SaveChanges();
+                DbContext.SaveChanges();
 
                 return true;
             }
@@ -156,11 +162,21 @@ namespace Project_MVC.Services
             {
                 state.AddModelError("Code", "Product Code is required.");
             }
-            var list = db.Products.Where(s => s.Code.Contains(item.Code)).ToList();
+            var list = DbContext.Products.Where(s => s.Code.Contains(item.Code)).ToList();
             if (list.Count != 0)
             {
                 state.AddModelError("Code", "Product Code already exist.");
             }
         }
-    }
+
+        public IEnumerable<Product> GetList()
+        {
+            return DbContext.Products.Where(s => s.Status != ProductStatus.Deleted).ToList();
+        }
+
+        public void DisposeDb()
+        {
+            DbContext.Dispose();
+        }
+    } 
 }

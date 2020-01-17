@@ -1,4 +1,5 @@
-﻿using Project_MVC.Models;
+﻿using Microsoft.AspNet.Identity.Owin;
+using Project_MVC.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,7 +10,18 @@ namespace Project_MVC.Services
 {
     public class MySQLImageService : IImageService
     {
-        private MyDbContext db = new MyDbContext();
+        private MyDbContext _db;
+        public MyDbContext DbContext
+        {
+            get { return _db ?? HttpContext.Current.GetOwinContext().Get<MyDbContext>(); }
+            set { _db = value; }
+        }
+
+        public ProductVideo Detail(int? fileId)
+        {
+            return DbContext.ProductVideos.Find(fileId);
+        }
+
         public List<ProductImage> SaveImage2List(string code, IEnumerable<HttpPostedFileBase> images)
         {
             if (images != null)

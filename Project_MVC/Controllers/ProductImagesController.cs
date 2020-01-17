@@ -11,7 +11,7 @@ using Project_MVC.Models;
 
 namespace Project_MVC.Controllers
 {
-    [Authorize(Roles=Constant.Admin + "," + Constant.Admin01)]
+    [Authorize(Roles=Constant.Admin + "," + Constant.Employee)]
     public class ProductImagesController : Controller
     {
         private MyDbContext _db;

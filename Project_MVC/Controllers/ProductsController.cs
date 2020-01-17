@@ -17,23 +17,27 @@ namespace Project_MVC.Controllers
 {
     public class ProductsController : Controller
     {
-        private MyDbContext _db;
-        public MyDbContext DbContext
-        {
-            get { return _db ?? HttpContext.GetOwinContext().Get<MyDbContext>(); }
-            set { _db = value; }
-        }
+        //private MyDbContext _db;
+        //public MyDbContext DbContext
+        //{
+        //    get { return _db ?? HttpContext.GetOwinContext().Get<MyDbContext>(); }
+        //    set { _db = value; }
+        //}
         private ICRUDService<Product> mySQLProductService;
+        private ICRUDService<ProductCategory> mySQLProductCategoryService;
+        private IImageService mySQLImageService;
 
         public ProductsController()
         {
             mySQLProductService = new MySQLProductService();
+            mySQLProductCategoryService = new MySQLProductCategoryService();
+            mySQLImageService = new MySQLImageService();
         }
 
         [HttpGet]
         public FileResult Video(int? fileId)
         {
-            var video = DbContext.ProductVideos.Find(fileId);
+            var video = mySQLImageService.Detail(fileId);
             if (video.ContentType == null)
             {
                 return File(video.VideoData, "video/mp4");
@@ -62,7 +66,7 @@ namespace Project_MVC.Controllers
 
             ViewBag.CurrentFilter = searchString;
 
-            var products = DbContext.Products.Where(s => s.Status != ProductStatus.Deleted);
+            var products = mySQLProductService.GetList();
 
             if (!String.IsNullOrEmpty(productCategoryCode))
             {
@@ -103,6 +107,7 @@ namespace Project_MVC.Controllers
             return View(products.Skip(pageSize * (pageNumber - 1)).Take(pageSize).ToList());
         }
 
+        [Authorize(Roles = Constant.Admin + "," + Constant.Employee)]
         // GET: Products
         public ActionResult Index(string productCategoryCode, string sortOrder, string searchString, string currentFilter, int? page)
         {
@@ -125,7 +130,7 @@ namespace Project_MVC.Controllers
 
             ViewBag.CurrentFilter = searchString;
 
-            var products = DbContext.Products.Where(s =>  s.Status != ProductStatus.Deleted);
+            var products = mySQLProductService.GetList();
 
             if(!String.IsNullOrEmpty(productCategoryCode))
             {
@@ -166,23 +171,26 @@ namespace Project_MVC.Controllers
             return View(products.Skip(pageSize * (pageNumber - 1)).Take(pageSize).ToList());
         }
 
+        [Authorize(Roles = Constant.Admin + "," + Constant.Employee)]
         // Cái này là dùng cho AutoComplete
         public ActionResult GetListProductCategories()
      {
             //Console.WriteLine("123");
             //var list = db.ProductCategories.Where(s => s.Status != ProductCategoryStatus.Deleted).ToList();
-            var list = DbContext.ProductCategories.Where(s => s.Status != ProductCategoryStatus.Deleted).Select(dep => new
+            var list = mySQLProductCategoryService.GetList();
+            var newlist = list.Select(dep => new
             {
                 dep.Code,
                 dep.Name
             });
             return new JsonResult()
             {
-                Data = list,
+                Data = newlist,
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet,
         };
         }
 
+        [Authorize(Roles = Constant.Admin + "," + Constant.Employee)]
         // GET: Products/Details/5
         public ActionResult Details(string id)
         {
@@ -190,7 +198,7 @@ namespace Project_MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Product product = DbContext.Products.Find(id);
+            Product product = mySQLProductService.Detail(id);
             if (product == null || product.IsDeleted())
             {
                 return HttpNotFound();
@@ -198,6 +206,7 @@ namespace Project_MVC.Controllers
             return View(product);
         }
 
+        [Authorize(Roles = Constant.Admin + "," + Constant.Employee)]
         // GET: Products/Create
         public ActionResult Create()
         {
@@ -208,6 +217,7 @@ namespace Project_MVC.Controllers
         // POST: Products/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = Constant.Admin + "," + Constant.Employee)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Code,Name,Price,Description,ProductCategoryCode,ProductCategoryNameAndCode")] Product product, IEnumerable<HttpPostedFileBase> images, IEnumerable<HttpPostedFileBase> videos)
@@ -223,13 +233,14 @@ namespace Project_MVC.Controllers
         }
 
         // GET: Products/Edit/5
+        [Authorize(Roles = Constant.Admin + "," + Constant.Employee)]
         public ActionResult Edit(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Product product = DbContext.Products.Find(id);
+            Product product = mySQLProductService.Detail(id);
             product.ProductCategoryNameAndCode = product.ProductCategory.Code + " - " + product.ProductCategory.Name;
             if (product == null || product.IsDeleted())
             {
@@ -242,6 +253,7 @@ namespace Project_MVC.Controllers
         // POST: Products/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = Constant.Admin + "," + Constant.Employee)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Code,Name,Price,Description,ProductCategoryCode")] Product product, IEnumerable<HttpPostedFileBase> images)
@@ -251,7 +263,7 @@ namespace Project_MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var existProduct = DbContext.Products.Find(product.Code);
+            var existProduct = mySQLProductService.Detail(product.Code);
             if (existProduct == null || existProduct.IsDeleted())
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
@@ -265,21 +277,23 @@ namespace Project_MVC.Controllers
         }
 
         // GET: Products/Delete/5
-        public ActionResult Delete(string id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Product product = DbContext.Products.Find(id);
-            if (product == null || product.IsDeleted())
-            {
-                return HttpNotFound();
-            }
-            return View(product);
-        }
+        //[Authorize(Roles = Constant.Admin + "," + Constant.Employee)]
+        //public ActionResult Delete(string id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    Product product = DbContext.Products.Find(id);
+        //    if (product == null || product.IsDeleted())
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(product);
+        //}
 
         // POST: Products/Delete/5
+        [Authorize(Roles = Constant.Admin + "," + Constant.Employee)]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
@@ -290,7 +304,7 @@ namespace Project_MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var existProduct = DbContext.Products.Find(id);
+            var existProduct = mySQLProductService.Detail(id);
             if (existProduct == null || existProduct.IsDeleted())
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
@@ -306,7 +320,7 @@ namespace Project_MVC.Controllers
         {
             if (disposing)
             {
-                DbContext.Dispose();
+                mySQLProductService.DisposeDb();
             }
             base.Dispose(disposing);
         }

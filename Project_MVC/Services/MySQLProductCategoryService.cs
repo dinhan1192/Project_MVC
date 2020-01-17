@@ -4,6 +4,7 @@ using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity.Owin;
 using Project_MVC.Models;
 using static Project_MVC.Models.ProductCategory;
 
@@ -11,7 +12,12 @@ namespace Project_MVC.Services
 {
     public class MySQLProductCategoryService : ICRUDService<ProductCategory>
     {
-        private MyDbContext db = new MyDbContext();
+        private MyDbContext _db;
+        public MyDbContext DbContext
+        {
+            get { return _db ?? HttpContext.Current.GetOwinContext().Get<MyDbContext>(); }
+            set { _db = value; }
+        }
         public bool Create(ProductCategory item, ModelStateDictionary state)
         {
             ValidateCode(item, state);
@@ -21,8 +27,8 @@ namespace Project_MVC.Services
                 item.UpdatedAt = null;
                 item.DeletedAt = null;
                 item.Status = ProductCategoryStatus.NotDeleted;
-                db.ProductCategories.Add(item);
-                db.SaveChanges();
+                DbContext.ProductCategories.Add(item);
+                DbContext.SaveChanges();
                 return true;
             }
 
@@ -40,8 +46,8 @@ namespace Project_MVC.Services
             {
                 item.Status = ProductCategoryStatus.Deleted;
                 item.DeletedAt = DateTime.Now;
-                db.ProductCategories.AddOrUpdate(item);
-                db.SaveChanges();
+                DbContext.ProductCategories.AddOrUpdate(item);
+                DbContext.SaveChanges();
 
                 return true;
             }
@@ -49,9 +55,14 @@ namespace Project_MVC.Services
             return false;
         }
 
-        public ProductCategory Detail(ProductCategory productCategory)
+        public ProductCategory Detail(string id)
         {
-            throw new NotImplementedException();
+            return DbContext.ProductCategories.Find(id);
+        }
+
+        public IEnumerable<ProductCategory> GetList()
+        {
+            return DbContext.ProductCategories.Where(s => s.Status != ProductCategoryStatus.Deleted).ToList();
         }
 
         public bool Update(ProductCategory existItem, ProductCategory item, ModelStateDictionary state)
@@ -61,8 +72,8 @@ namespace Project_MVC.Services
                 existItem.Name = item.Name;
                 existItem.Description = item.Description;
                 existItem.UpdatedAt = DateTime.Now;
-                db.ProductCategories.AddOrUpdate(existItem);
-                db.SaveChanges();
+                DbContext.ProductCategories.AddOrUpdate(existItem);
+                DbContext.SaveChanges();
 
                 return true;
             }
@@ -86,11 +97,16 @@ namespace Project_MVC.Services
             {
                 state.AddModelError("Code", "Product Category Code is required.");
             }
-            var list = db.ProductCategories.Where(s => s.Code.Contains(item.Code)).ToList();
+            var list = DbContext.ProductCategories.Where(s => s.Code.Contains(item.Code)).ToList();
             if (list.Count != 0)
             {
                 state.AddModelError("Code", "Product Category Code already exist.");
             }
+        }
+
+        public void DisposeDb()
+        {
+            DbContext.Dispose();
         }
     }
 }
