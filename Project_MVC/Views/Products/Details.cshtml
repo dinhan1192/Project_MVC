@@ -54,7 +54,40 @@
         </dd>
     </dl>
 </div>
+
+<div>
+    @foreach (var video in Model.ProductVideos)
+    {
+        <video controls id="video">
+            <source src="@Url.Action("Video", "Products", new { fileId = video.Id })" type="video/mp4" />
+        </video>
+    }
+</div>
+<div id="status" class="incomplete">
+    <span>Play status: </span>
+    <span class="status complete">COMPLETE</span>
+    <span class="status incomplete">INCOMPLETE</span>
+    <br />
+</div>
+<div>
+    <span id="played">0</span> seconds out of
+    <span id="duration"></span> seconds. (only updates when the video pauses)
+</div>
+
+<div>
+    @*<a id="nextVideo" href="#" style="visibility:hidden">Next</a>*@
+    <span id="nextVideo" >@Html.ActionLink("Next", "NextVideo")</span>
+</div>
+
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Code }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+
+@section scripts{
+    @Scripts.Render("~/bundles/custom");
+}
+
+@section CustomStyles{
+    @Styles.Render("~/bundles/custom");
+}
