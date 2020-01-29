@@ -217,7 +217,10 @@
     <Compile Include="Controllers\AppRolesController.cs" />
     <Compile Include="Controllers\AppUsersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LecturesController.cs" />
+    <Compile Include="Controllers\LevelOneMenusController.cs" />
     <Compile Include="Controllers\LevelOneProductCategoriesController.cs" />
+    <Compile Include="Controllers\LevelTwoMenusController.cs" />
     <Compile Include="Controllers\ManagesController.cs" />
     <Compile Include="Controllers\ProductCategoriesController.cs" />
     <Compile Include="Controllers\ProductImagesController.cs" />
@@ -225,9 +228,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202001100635520_InitializeDatabases.cs" />
-    <Compile Include="Migrations\202001100635520_InitializeDatabases.Designer.cs">
-      <DependentUpon>202001100635520_InitializeDatabases.cs</DependentUpon>
+    <Compile Include="Migrations\202001280754314_InitializeDatabase.cs" />
+    <Compile Include="Migrations\202001280754314_InitializeDatabase.Designer.cs">
+      <DependentUpon>202001280754314_InitializeDatabase.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AppRole.cs" />
@@ -236,24 +239,30 @@
     <Compile Include="Models\CartInformation.cs" />
     <Compile Include="Models\CartItem.cs" />
     <Compile Include="Models\Constant.cs" />
+    <Compile Include="Models\Lecture.cs" />
+    <Compile Include="Models\LevelOneMenu.cs" />
     <Compile Include="Models\LevelOneProductCategory.cs" />
+    <Compile Include="Models\LevelTwoMenu.cs" />
     <Compile Include="Models\MyDbContext.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\OrderDetail.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\ProductCategory.cs" />
     <Compile Include="Models\ProductImage.cs" />
-    <Compile Include="Models\ProductVideo.cs" />
+    <Compile Include="Models\LectureVideo.cs" />
     <Compile Include="Models\Project_MVCContextFake.cs" />
     <Compile Include="Models\ShoppingCart\ShoppingCart.cs" />
     <Compile Include="Models\ThisPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ICRUDService.cs" />
     <Compile Include="Services\IImageService.cs" />
+    <Compile Include="Services\IUserService.cs" />
     <Compile Include="Services\MySQLImageService.cs" />
+    <Compile Include="Services\MySQLLectureService.cs" />
     <Compile Include="Services\MySQLLevelOneProductCategoryService.cs" />
     <Compile Include="Services\MySQLProductCategoryService.cs" />
     <Compile Include="Services\MySQLProductService.cs" />
+    <Compile Include="Services\UserService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Utils\MenuUtil.cs" />
     <Compile Include="Utils\Utility.cs" />
@@ -263,9 +272,20 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\css\pagination.css" />
     <Content Include="Content\css\sb-admin.css" />
     <Content Include="Content\css\sb-admin.min.css" />
     <Content Include="Content\Customs\completeAndInComplete.css" />
+    <Content Include="Content\LayoutAdminPage\bootstrap.css" />
+    <Content Include="Content\LayoutAdminPage\bootstrap.min.css" />
+    <Content Include="Content\LayoutAdminPage\customAdmin.css" />
+    <Content Include="Content\LayoutAdminPage\fontawesome.css" />
+    <Content Include="Content\LayoutAdminPage\mdb.css" />
+    <Content Include="Content\LayoutAdminPage\mdb.lite.css" />
+    <Content Include="Content\LayoutAdminPage\mdb.lite.min.css" />
+    <Content Include="Content\LayoutAdminPage\mdb.min.css" />
+    <Content Include="Content\LayoutAdminPage\style.css" />
+    <Content Include="Content\LayoutAdminPage\style.min.css" />
     <Content Include="Content\vendor\bootstrap\js\bootstrap.bundle.js" />
     <Content Include="Content\vendor\bootstrap\js\bootstrap.bundle.min.js" />
     <Content Include="Content\vendor\bootstrap\js\bootstrap.js" />
@@ -1847,9 +1867,21 @@
     <Content Include="Content\vendor\fontawesome-free\svgs\solid\x-ray.svg" />
     <Content Include="Content\vendor\fontawesome-free\svgs\solid\yen-sign.svg" />
     <Content Include="Content\vendor\fontawesome-free\svgs\solid\yin-yang.svg" />
+    <Content Include="Content\vendor\fontawesome-free\webfonts\fa-brands-400.eot" />
     <Content Include="Content\vendor\fontawesome-free\webfonts\fa-brands-400.svg" />
+    <Content Include="Content\vendor\fontawesome-free\webfonts\fa-brands-400.ttf" />
+    <Content Include="Content\vendor\fontawesome-free\webfonts\fa-brands-400.woff" />
+    <Content Include="Content\vendor\fontawesome-free\webfonts\fa-brands-400.woff2" />
+    <Content Include="Content\vendor\fontawesome-free\webfonts\fa-regular-400.eot" />
     <Content Include="Content\vendor\fontawesome-free\webfonts\fa-regular-400.svg" />
+    <Content Include="Content\vendor\fontawesome-free\webfonts\fa-regular-400.ttf" />
+    <Content Include="Content\vendor\fontawesome-free\webfonts\fa-regular-400.woff" />
+    <Content Include="Content\vendor\fontawesome-free\webfonts\fa-regular-400.woff2" />
+    <Content Include="Content\vendor\fontawesome-free\webfonts\fa-solid-900.eot" />
     <Content Include="Content\vendor\fontawesome-free\webfonts\fa-solid-900.svg" />
+    <Content Include="Content\vendor\fontawesome-free\webfonts\fa-solid-900.ttf" />
+    <Content Include="Content\vendor\fontawesome-free\webfonts\fa-solid-900.woff" />
+    <Content Include="Content\vendor\fontawesome-free\webfonts\fa-solid-900.woff2" />
     <Content Include="Content\vendor\jquery-easing\jquery.easing.compatibility.js" />
     <Content Include="Content\vendor\jquery-easing\jquery.easing.js" />
     <Content Include="Content\vendor\jquery-easing\jquery.easing.min.js" />
@@ -1993,29 +2025,44 @@
     <Content Include="Content\vendor\fontawesome-free\scss\_shims.scss" />
     <Content Include="Content\vendor\fontawesome-free\scss\_stacked.scss" />
     <Content Include="Content\vendor\fontawesome-free\scss\_variables.scss" />
-    <Content Include="Content\vendor\fontawesome-free\webfonts\fa-brands-400.eot" />
-    <Content Include="Content\vendor\fontawesome-free\webfonts\fa-brands-400.ttf" />
-    <Content Include="Content\vendor\fontawesome-free\webfonts\fa-brands-400.woff" />
-    <Content Include="Content\vendor\fontawesome-free\webfonts\fa-brands-400.woff2" />
-    <Content Include="Content\vendor\fontawesome-free\webfonts\fa-regular-400.eot" />
-    <Content Include="Content\vendor\fontawesome-free\webfonts\fa-regular-400.ttf" />
-    <Content Include="Content\vendor\fontawesome-free\webfonts\fa-regular-400.woff" />
-    <Content Include="Content\vendor\fontawesome-free\webfonts\fa-regular-400.woff2" />
-    <Content Include="Content\vendor\fontawesome-free\webfonts\fa-solid-900.eot" />
-    <Content Include="Content\vendor\fontawesome-free\webfonts\fa-solid-900.ttf" />
-    <Content Include="Content\vendor\fontawesome-free\webfonts\fa-solid-900.woff" />
-    <Content Include="Content\vendor\fontawesome-free\webfonts\fa-solid-900.woff2" />
     <Content Include="Content\vendor\jquery\jquery.min.map" />
     <Content Include="Content\vendor\jquery\jquery.slim.min.map" />
+    <Content Include="Content\font\roboto\Roboto-Bold.eot" />
+    <Content Include="Content\font\roboto\Roboto-Bold.ttf" />
+    <Content Include="Content\font\roboto\Roboto-Bold.woff" />
+    <Content Include="Content\font\roboto\Roboto-Bold.woff2" />
+    <Content Include="Content\font\roboto\Roboto-Light.eot" />
+    <Content Include="Content\font\roboto\Roboto-Light.ttf" />
+    <Content Include="Content\font\roboto\Roboto-Light.woff" />
+    <Content Include="Content\font\roboto\Roboto-Light.woff2" />
+    <Content Include="Content\font\roboto\Roboto-Medium.eot" />
+    <Content Include="Content\font\roboto\Roboto-Medium.ttf" />
+    <Content Include="Content\font\roboto\Roboto-Medium.woff" />
+    <Content Include="Content\font\roboto\Roboto-Medium.woff2" />
+    <Content Include="Content\font\roboto\Roboto-Regular.eot" />
+    <Content Include="Content\font\roboto\Roboto-Regular.ttf" />
+    <Content Include="Content\font\roboto\Roboto-Regular.woff" />
+    <Content Include="Content\font\roboto\Roboto-Regular.woff2" />
+    <Content Include="Content\font\roboto\Roboto-Thin.eot" />
+    <Content Include="Content\font\roboto\Roboto-Thin.ttf" />
+    <Content Include="Content\font\roboto\Roboto-Thin.woff" />
+    <Content Include="Content\font\roboto\Roboto-Thin.woff2" />
+    <Content Include="Content\webfonts\fa-brands-400.woff" />
+    <Content Include="Content\webfonts\fa-brands-400.woff2" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\bootstrap3-typeahead.min.js" />
+    <Content Include="Scripts\Customs\chart.js" />
     <Content Include="Scripts\Customs\checkboxselectallWithPopup.js" />
     <Content Include="Scripts\Customs\checkFileSize.js" />
     <Content Include="Scripts\Customs\customerMustWatchVideo.js" />
+    <Content Include="Scripts\Customs\createPopup.js" />
     <Content Include="Scripts\Customs\deleteNotify.js" />
     <Content Include="Scripts\Customs\autocomplete.js" />
+    <Content Include="Scripts\Customs\initializations.js" />
+    <Content Include="Scripts\Customs\map.js" />
     <Content Include="Scripts\Customs\preventSeekingVideo.js" />
     <Content Include="Scripts\Customs\setStyleDefault.js" />
+    <Content Include="Scripts\Customs\twoDropDownListEvent.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.js" />
@@ -2031,6 +2078,10 @@
     <Content Include="Scripts\js\demo\datatables-demo.js" />
     <Content Include="Scripts\js\sb-admin.js" />
     <Content Include="Scripts\js\sb-admin.min.js" />
+    <Content Include="Scripts\LayoutAdminPage\bootstrap.min.js" />
+    <Content Include="Scripts\LayoutAdminPage\jquery-3.4.1.min.js" />
+    <Content Include="Scripts\LayoutAdminPage\mdb.min.js" />
+    <Content Include="Scripts\LayoutAdminPage\popper.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\vendor\bootstrap\js\bootstrap.bundle.js" />
     <Content Include="Scripts\vendor\bootstrap\js\bootstrap.bundle.min.js" />
@@ -3613,9 +3664,21 @@
     <Content Include="Scripts\vendor\fontawesome-free\svgs\solid\x-ray.svg" />
     <Content Include="Scripts\vendor\fontawesome-free\svgs\solid\yen-sign.svg" />
     <Content Include="Scripts\vendor\fontawesome-free\svgs\solid\yin-yang.svg" />
+    <Content Include="Scripts\vendor\fontawesome-free\webfonts\fa-brands-400.eot" />
     <Content Include="Scripts\vendor\fontawesome-free\webfonts\fa-brands-400.svg" />
+    <Content Include="Scripts\vendor\fontawesome-free\webfonts\fa-brands-400.ttf" />
+    <Content Include="Scripts\vendor\fontawesome-free\webfonts\fa-brands-400.woff" />
+    <Content Include="Scripts\vendor\fontawesome-free\webfonts\fa-brands-400.woff2" />
+    <Content Include="Scripts\vendor\fontawesome-free\webfonts\fa-regular-400.eot" />
     <Content Include="Scripts\vendor\fontawesome-free\webfonts\fa-regular-400.svg" />
+    <Content Include="Scripts\vendor\fontawesome-free\webfonts\fa-regular-400.ttf" />
+    <Content Include="Scripts\vendor\fontawesome-free\webfonts\fa-regular-400.woff" />
+    <Content Include="Scripts\vendor\fontawesome-free\webfonts\fa-regular-400.woff2" />
+    <Content Include="Scripts\vendor\fontawesome-free\webfonts\fa-solid-900.eot" />
     <Content Include="Scripts\vendor\fontawesome-free\webfonts\fa-solid-900.svg" />
+    <Content Include="Scripts\vendor\fontawesome-free\webfonts\fa-solid-900.ttf" />
+    <Content Include="Scripts\vendor\fontawesome-free\webfonts\fa-solid-900.woff" />
+    <Content Include="Scripts\vendor\fontawesome-free\webfonts\fa-solid-900.woff2" />
     <Content Include="Scripts\vendor\jquery-easing\jquery.easing.compatibility.js" />
     <Content Include="Scripts\vendor\jquery-easing\jquery.easing.js" />
     <Content Include="Scripts\vendor\jquery-easing\jquery.easing.min.js" />
@@ -3797,18 +3860,6 @@
     <Content Include="Scripts\vendor\fontawesome-free\scss\_shims.scss" />
     <Content Include="Scripts\vendor\fontawesome-free\scss\_stacked.scss" />
     <Content Include="Scripts\vendor\fontawesome-free\scss\_variables.scss" />
-    <Content Include="Scripts\vendor\fontawesome-free\webfonts\fa-brands-400.eot" />
-    <Content Include="Scripts\vendor\fontawesome-free\webfonts\fa-brands-400.ttf" />
-    <Content Include="Scripts\vendor\fontawesome-free\webfonts\fa-brands-400.woff" />
-    <Content Include="Scripts\vendor\fontawesome-free\webfonts\fa-brands-400.woff2" />
-    <Content Include="Scripts\vendor\fontawesome-free\webfonts\fa-regular-400.eot" />
-    <Content Include="Scripts\vendor\fontawesome-free\webfonts\fa-regular-400.ttf" />
-    <Content Include="Scripts\vendor\fontawesome-free\webfonts\fa-regular-400.woff" />
-    <Content Include="Scripts\vendor\fontawesome-free\webfonts\fa-regular-400.woff2" />
-    <Content Include="Scripts\vendor\fontawesome-free\webfonts\fa-solid-900.eot" />
-    <Content Include="Scripts\vendor\fontawesome-free\webfonts\fa-solid-900.ttf" />
-    <Content Include="Scripts\vendor\fontawesome-free\webfonts\fa-solid-900.woff" />
-    <Content Include="Scripts\vendor\fontawesome-free\webfonts\fa-solid-900.woff2" />
     <Content Include="Scripts\vendor\jquery\jquery.min.map" />
     <Content Include="Scripts\vendor\jquery\jquery.slim.min.map" />
     <Content Include="Views\Shared\_LayoutCustomerPage.cshtml" />
@@ -3824,6 +3875,22 @@
     <Content Include="Views\Manages\ManageLogins.cshtml" />
     <Content Include="Views\Manages\SetPassword.cshtml" />
     <Content Include="Views\Manages\VerifyPhoneNumber.cshtml" />
+    <Content Include="Views\LevelOneMenus\Create.cshtml" />
+    <Content Include="Views\LevelOneMenus\Details.cshtml" />
+    <Content Include="Views\LevelOneMenus\Edit.cshtml" />
+    <Content Include="Views\LevelOneMenus\Index.cshtml" />
+    <Content Include="Views\LevelTwoMenus\Create.cshtml" />
+    <Content Include="Views\LevelTwoMenus\Delete.cshtml" />
+    <Content Include="Views\LevelTwoMenus\Details.cshtml" />
+    <Content Include="Views\LevelTwoMenus\Edit.cshtml" />
+    <Content Include="Views\LevelTwoMenus\Index.cshtml" />
+    <Content Include="Views\Shared\_Layout02.cshtml" />
+    <Content Include="Views\Shared\_Test.cshtml" />
+    <Content Include="Views\Products\_Lectures.cshtml" />
+    <Content Include="Views\Products\_CreateProduct.cshtml" />
+    <Content Include="Views\Lectures\AddLecture.cshtml" />
+    <Content Include="Views\Lectures\Details.cshtml" />
+    <Content Include="Views\Lectures\_LectureVideos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -3842,8 +3909,8 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202001100635520_InitializeDatabases.resx">
-      <DependentUpon>202001100635520_InitializeDatabases.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202001280754314_InitializeDatabase.resx">
+      <DependentUpon>202001280754314_InitializeDatabase.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

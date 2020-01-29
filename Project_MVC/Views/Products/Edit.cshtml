@@ -8,8 +8,8 @@
 <h2>Edit</h2>
 
 
-@using (Html.BeginForm("Edit", "Products", FormMethod.Post, new 
-                                       { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("Edit", "Products", FormMethod.Post, new
+{ enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
@@ -34,6 +34,23 @@
             @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
         </div>
     </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Instructor, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Instructor, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Instructor, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    @*<div class="form-group">
+            @Html.LabelFor(model => model.NumberOfLeture, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.NumberOfLeture, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.NumberOfLeture, "", new { @class = "text-danger" })
+            </div>
+            <a href="javascript:void(0);" class="addLecture" id="addLecture" data-id="@Model.Code" data-parameter="@numberOfLecture" data-oldLecture="@Model.NumberOfLeture" data-type="@thisType" >Save Number of Lecture</a>
+        </div>*@
 
     <div class="form-group">
         @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -71,19 +88,81 @@
         </div>
     </div>
 
+    @*@Html.Partial("_Lectures", Model)*@
+    @*<table class="table">
+            <tr>
+                @for (var i = 1; i <= Model.NumberOfLeture; i++)
+                {
+                    <th>
+                        Lecture @i:
+                    </th>
+                }
+            </tr>
+
+            @foreach (var item in Model.Lectures)
+            {
+                <tr>
+                    <td>
+                        Add Lecture
+                    </td>
+                </tr>
+            }
+        </table>*@
+
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Save" class="btn btn-default" />
+            <button type="submit" class="btn btn-w-m btn-primary" name="ActionName" value="Save">Save</button>
+            <button type="submit" class="btn btn-w-m btn-primary" name="ActionName" value="AddLecture">Add Lecture</button>
         </div>
     </div>
 </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
+@Html.Partial("_Lectures", Model.Lectures)
+
+<div class="col-md-offset-2 col-md-10">
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-info" })
 </div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/custom")
+    @*<script type="text/javascript">
+        $('#NumberOfLeture').change(function(){
+            var value = $(this).val();
+            document.getElementById("addLecture").setAttribute("data-parameter", value);
+        });
+        </script>*@
+    @*<script>
+            var TeamDetailPostBackURL = '/Products/EditNumberOfLecture';
+            //console.log("1111");
+            $(".addLecture").click(function () {
+                debugger;
+                //console.log("890")
+                // do AJAX and store tree structure to a PHP array
+                //(to be saved later in database)
+                //debugger;
+                var $buttonClicked = $(this);
+                var id = $buttonClicked.attr('data-id');
+                var parameter = $buttonClicked.attr('data-parameter');
+                var oldLecture = $buttonClicked.attr('data-oldLecture');
+                if (parameter === oldLecture) {
+                    alert("Chưa thay đổi số bài giảng")
+                }
+                //var name = document.getElementsByName("addItemName")[0].getAttribute("data-parameter");
+                //console.log(name);
+                //console.log(id);
+                $.ajax({
+                    type: 'POST',
+                    url: TeamDetailPostBackURL,
+                    data: { "id": id, "numberOfLectures": parameter },
+                    success: (
+                        alert("Successful save number of lectures!")
+                    ),
+                    error: function (req, status, error) { }
+                });
+
+                //var setValues = document.getElementById("addItem").setAttribute('data-parameter', "")
+            });
+        </script>*@
 }

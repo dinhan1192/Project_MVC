@@ -21,12 +21,15 @@ namespace Project_MVC.Models
         }
 
         public DbSet<AppRole> IdentityRoles { get; set; }
+        public DbSet<LevelOneMenu> LevelOneMenus { get; set; }
+        public DbSet<LevelTwoMenu> LevelTwoMenus { get; set; }
         public DbSet<LevelOneProductCategory> LevelOneProductCategories { get; set; }
         public DbSet<ProductCategory> ProductCategories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
-        public DbSet<ProductVideo> ProductVideos { get; set; }
+        public DbSet<LectureVideo> LectureVideos { get; set; }
+        public DbSet<Lecture> Lectures { get; set; }
     }
 }

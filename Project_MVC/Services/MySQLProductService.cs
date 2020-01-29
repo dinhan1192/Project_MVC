@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity.Migrations;
 using System.Data.Entity.Validation;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -21,16 +22,37 @@ namespace Project_MVC.Services
             get { return _db ?? HttpContext.Current.GetOwinContext().Get<MyDbContext>(); }
             set { _db = value; }
         }
+
+        private IUserService userService;
+
         private IImageService mySQLImageService;
 
         public MySQLProductService()
         {
             mySQLImageService = new MySQLImageService();
+            userService = new UserService();
         }
 
         public bool Create(Product item, ModelStateDictionary state)
         {
-            throw new NotImplementedException();
+            ValidateCode(item, state);
+            if (state.IsValid)
+            {
+                //product.ProductCategoryId = Utils.Utility.GetNullableInt(product.ProductCategoryNameAndId.Split(' ')[0]);
+                //product.ProductCategoryName = product.ProductCategoryNameAndId.Substring(product.ProductCategoryNameAndId.IndexOf('-') + 2);
+                item.CreatedAt = DateTime.Now;
+                item.UpdatedAt = null;
+                item.DeletedAt = null;
+                item.CreatedBy = userService.GetCurrentUserName();
+                item.Status = ProductStatus.NotDeleted;
+                DbContext.Products.Add(item);
+                DbContext.SaveChanges();
+                return true;
+
+            }
+
+            //ViewBag.ProductCategoryId = new SelectList(db.ProductCategories, "Id", "Name", product.ProductCategoryId);
+            return false;
         }
 
         public bool CreateWithImage(Product item, ModelStateDictionary state, IEnumerable<HttpPostedFileBase> images, IEnumerable<HttpPostedFileBase> videos)
@@ -44,11 +66,12 @@ namespace Project_MVC.Services
                 item.CreatedAt = DateTime.Now;
                 item.UpdatedAt = null;
                 item.DeletedAt = null;
+                item.CreatedBy = userService.GetCurrentUserName();
                 item.Status = ProductStatus.NotDeleted;
                 DbContext.Products.Add(item);
                 // add image to table ProductImages
                 item.ProductImages = mySQLImageService.SaveImage2List(item.Code, images);
-                item.ProductVideos = mySQLImageService.SaveVideo2List(item.Code, videos);
+                //item.ProductVideos = mySQLImageService.SaveVideo2List(item.Code, videos);
                 //
                 DbContext.SaveChanges();
                 return true;
@@ -65,6 +88,7 @@ namespace Project_MVC.Services
             {
                 existProduct.Status = ProductStatus.Deleted;
                 existProduct.DeletedAt = DateTime.Now;
+                existProduct.DeletedBy = userService.GetCurrentUserName();
                 DbContext.Products.AddOrUpdate(existProduct);
                 DbContext.SaveChanges();
 
@@ -132,8 +156,10 @@ namespace Project_MVC.Services
                 existItem.Name = item.Name;
                 existItem.Price = item.Price;
                 existItem.ProductCategoryCode = item.ProductCategoryCode;
+                //existItem.NumberOfLeture = item.NumberOfLeture;
                 existItem.Description = item.Description;
                 existItem.UpdatedAt = DateTime.Now;
+                existItem.UpdatedBy = userService.GetCurrentUserName();
                 //var list = existItem.ProductImages;
                 DbContext.Products.AddOrUpdate(existItem);
                 // add image to table ProductImages
@@ -148,9 +174,65 @@ namespace Project_MVC.Services
             return false;
         }
 
+        //public bool UpdateNumber(Product existItem, Product item, ModelStateDictionary state)
+        //{
+        //    if (state.IsValid)
+        //    {
+        //        if(existItem.Lectures.Count == 0 || existItem.Lectures == null)
+        //        {
+        //            for (var i = 0; i < item.NumberOfLeture; i++)
+        //            {
+        //                var lecture = new Lecture()
+        //                {
+        //                    CreatedAt = DateTime.Now,
+        //                    CreatedBy = userService.GetCurrentUserName(),
+        //                };
+        //                DbContext.Lectures.Add(lecture);
+        //            }
+        //        } else
+        //        {
+        //            if(existItem.NumberOfLeture > item.NumberOfLeture)
+        //            {
+        //                var listDeleted = DbContext.Lectures.Skip(item.NumberOfLeture).ToList();
+        //                foreach(var itemDeleted in listDeleted)
+        //                {
+        //                    itemDeleted.DeletedAt = DateTime.Now;
+        //                    itemDeleted.DeletedBy = userService.GetCurrentUserName();
+        //                    itemDeleted.Status = Lecture.LectureStatus.Deleted;
+        //                }
+        //                DbContext.Lectures.AddRange(listDeleted);
+        //            }
+        //            else
+        //            {
+        //                for (var i = 0; i < (item.NumberOfLeture - existItem.NumberOfLeture); i++)
+        //                {
+        //                    var lecture = new Lecture()
+        //                    {
+        //                        CreatedAt = DateTime.Now,
+        //                        CreatedBy = userService.GetCurrentUserName(),
+        //                    };
+        //                    DbContext.Lectures.Add(lecture);
+        //                }
+        //            }
+        //        }
+
+        //        existItem.NumberOfLeture = item.NumberOfLeture;
+        //        existItem.UpdatedAt = DateTime.Now;
+        //        existItem.UpdatedBy = userService.GetCurrentUserName();
+        //        //var list = existItem.ProductImages;
+        //        DbContext.Products.AddOrUpdate(existItem);
+
+        //        DbContext.SaveChanges();
+
+        //        return true;
+        //    }
+
+        //    return false;
+        //}
+
         public void ValidateCategory(Product item, ModelStateDictionary state)
         {
-            if (string.IsNullOrEmpty(item.ProductCategoryNameAndCode))
+            if (string.IsNullOrEmpty(item.ProductCategoryCode))
             {
                 state.AddModelError("ProductCategoryNameAndCode", "Product Category is required.");
             }
@@ -173,10 +255,21 @@ namespace Project_MVC.Services
         {
             return DbContext.Products.Where(s => s.Status != ProductStatus.Deleted).ToList();
         }
-
+       
         public void DisposeDb()
         {
             DbContext.Dispose();
+        }
+
+        public bool ValidateStringCode(string code)
+        {
+            var list = DbContext.Products.Where(s => s.Code.Contains(code)).ToList();
+            if (list.Count != 0)
+            {
+                return false;
+            }
+
+            return true;
         }
     } 
 }

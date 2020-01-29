@@ -27,6 +27,11 @@ namespace Project_MVC
                       "~/Scripts/Customs/autocomplete.js",
                       "~/Scripts/Customs/checkFileSize.js",
                       "~/Scripts/Customs/checkboxselectallWithPopup.js",
+                      "~/Scripts/Customs/twoDropDownListEvent.js",
+                      "~/Scripts/Customs/createPopup.js"
+                      ));
+
+            bundles.Add(new ScriptBundle("~/bundles/video").Include(
                       "~/Scripts/Customs/customerMustWatchVideo.js",
                       "~/Scripts/Customs/preventSeekingVideo.js",
                       "~/Scripts/Customs/setStyleDefault.js"
@@ -42,24 +47,42 @@ namespace Project_MVC
             bundles.Add(new ScriptBundle("~/Js").Include(
                      "~/Scripts/vendor/bootstrap/js/bootstrap.bundle.min.js",
                      "~/Scripts/vendor/jquery-easing/jquery.easing.min.js",
-                     "~/Scripts/vendor/chart.js/Chart.min.js",
+                     //"~/Scripts/vendor/chart.js/Chart.min.js",
                      "~/Scripts/vendor/datatables/jquery.dataTables.js",
                      "~/Scripts/vendor/datatables/dataTables.bootstrap4.js",
                      "~/Scripts/js/sb-admin.min.js",
-                     "~/Scripts/js/demo/datatables-demo.js",
-                     "~/Scripts/js/demo/chart-area-demo.js"
+                     "~/Scripts/js/demo/datatables-demo.js"
+                     //"~/Scripts/js/demo/chart-area-demo.js"
                      ));
 
             bundles.Add(new StyleBundle("~/Css").Include(
                       "~/Content/vendor/fontawesome-free/css/all.min.css",
-                      "~/Content/vendor/datatables/dataTables.bootstrap4.css",
-                      "~/Content/css/sb-admin.css"));
+                      //"~/Content/vendor/datatables/dataTables.bootstrap4.css",
+                      "~/Content/css/sb-admin.css"
+                      ));
 
             bundles.Add(new StyleBundle("~/customs").Include(
                       "~/Content/Customs/completeAndInComplete.css"
                       ));
 
-            //BundleTable.EnableOptimizations = true;
+            bundles.Add(new StyleBundle("~/Content/layoutAdminPage").Include(
+                     "~/Content/LayoutAdminPage/bootstrap.min.css",
+                     "~/Content/LayoutAdminPage/mdb.min.css",
+                     "~/Content/LayoutAdminPage/style.min.css",
+                     "~/Content/LayoutAdminPage/customAdmin.css"
+                     ));
+
+            bundles.Add(new StyleBundle("~/Content/fonts").Include(
+                    "~/Content/LayoutAdminPage/fontawesome.css"
+                    ));
+
+
+            bundles.Add(new ScriptBundle("~/bundles/layoutAdminPage").Include(
+                      "~/Scripts/LayoutAdminPage/popper.min.js",
+                      "~/Scripts/LayoutAdminPage/mdb.min.js"
+                      ));
+
+            // BundleTable.EnableOptimizations = true;
         }
     }
 }

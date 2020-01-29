@@ -12,9 +12,9 @@
 <h2>IndexCustomer</h2>
 
 @*<p>
-    @Html.ActionLink("Create New", "Create")
-</p>*@
-@using (Html.BeginForm("Index", "Products", FormMethod.Get))
+        @Html.ActionLink("Create New", "Create")
+    </p>*@
+@using (Html.BeginForm("IndexCustomer", "Products", FormMethod.Get))
 {
     <p>
         Find by Product Name or Code: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control" })
@@ -30,7 +30,10 @@
             @Html.DisplayNameFor(model => model.Code)
         </th>
         <th>
-            @Html.ActionLink("Product Name", "Index", new { sortOrder = ViewBag.NameSortParm })
+            @Html.ActionLink("Product Name", "IndexCustomer", new { sortOrder = ViewBag.NameSortParm })
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Instructor)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Price)
@@ -39,7 +42,7 @@
             @Html.DisplayNameFor(model => model.Description)
         </th>
         <th>
-            @Html.ActionLink("Created At", "Index", new { sortOrder = ViewBag.DateSortParm })
+            @Html.ActionLink("Created At", "IndexCustomer", new { sortOrder = ViewBag.DateSortParm })
         </th>
         <th>
             Product Images
@@ -60,6 +63,9 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Instructor)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
@@ -75,11 +81,11 @@
                 }
             </td>
             @*<td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Code }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Code }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Code },
-              new { @class = "btn btn-danger btn-delete-notify", @id = "delete-" + item.Code, data_request_url = @url })
-            </td>*@
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Code }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Code }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Code },
+                  new { @class = "btn btn-danger btn-delete-notify", @id = "delete-" + item.Code, data_request_url = @url })
+                </td>*@
         </tr>
     }
 </table>

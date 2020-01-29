@@ -191,6 +191,14 @@ namespace Project_MVC.Controllers
         }
 
         [Authorize(Roles = Constant.Admin + "," + Constant.Employee)]
+        [HttpPost]
+        public JsonResult ValidateCode(string code)
+        {
+            bool isValid = mySQLProductService.ValidateStringCode(code);
+            return Json(isValid);
+        }
+
+        [Authorize(Roles = Constant.Admin + "," + Constant.Employee)]
         // GET: Products/Details/5
         public ActionResult Details(string id)
         {
@@ -212,6 +220,30 @@ namespace Project_MVC.Controllers
         {
             //ViewBag.ProductCategoryId = new SelectList(db.ProductCategories, "Id", "Name");
             return View();
+        }
+
+        [Authorize(Roles = Constant.Admin + "," + Constant.Employee)]
+        // GET: Products/Create
+        public PartialViewResult CreatePopup()
+        {
+            //ViewBag.ProductCategoryId = new SelectList(db.ProductCategories, "Id", "Name");
+            return PartialView("_CreateProduct");
+        }
+
+        [Authorize(Roles = Constant.Admin + "," + Constant.Employee)]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreatePopup([Bind(Include = "Code,Name")] Product product)
+        {
+            //ModelStateDictionary state = ModelState;
+
+            if (mySQLProductService.Create(product, ModelState))
+            {
+                return RedirectToAction("Edit", new { id = product.Code });
+            }
+
+            return PartialView("_CreateProduct", product);
+            //return RedirectToAction("Index");
         }
 
         // POST: Products/Create
@@ -241,7 +273,13 @@ namespace Project_MVC.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Product product = mySQLProductService.Detail(id);
-            product.ProductCategoryNameAndCode = product.ProductCategory.Code + " - " + product.ProductCategory.Name;
+            if(product.ProductCategory == null)
+            {
+                product.ProductCategoryNameAndCode = "";
+            } else
+            {
+                product.ProductCategoryNameAndCode = product.ProductCategory.Code + " - " + product.ProductCategory.Name;
+            }
             if (product == null || product.IsDeleted())
             {
                 return HttpNotFound();
@@ -256,7 +294,7 @@ namespace Project_MVC.Controllers
         [Authorize(Roles = Constant.Admin + "," + Constant.Employee)]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Code,Name,Price,Description,ProductCategoryCode")] Product product, IEnumerable<HttpPostedFileBase> images)
+        public ActionResult Edit([Bind(Include = "Code,Name,Price,Description,ProductCategoryCode")] Product product, IEnumerable<HttpPostedFileBase> images, string ActionName)
         {
             //ModelStateDictionary state = ModelState;
             if (product == null || product.Code == null)
@@ -270,11 +308,45 @@ namespace Project_MVC.Controllers
             }
             if (mySQLProductService.UpdateWithImage(existProduct, product, ModelState, images))
             {
-                return RedirectToAction("Index");
+                switch (ActionName)
+                {
+                    case "Save":
+                        return RedirectToAction("Index");
+                    case "AddLecture":
+                        return RedirectToAction("AddLecture", "Lectures", new { id = product.Code });
+                }
+            }
+
+            if(product.Lectures == null)
+            {
+                product.Lectures = new List<Lecture>();
             }
 
             return View(product);
         }
+
+        //[Authorize(Roles = Constant.Admin + "," + Constant.Employee)]
+        //[HttpPost]
+        //public ActionResult EditNumberOfLecture(string id, string numberOfLectures)
+        //{
+        //    //ModelStateDictionary state = ModelState;
+        //    var number = Convert.ToInt32(numberOfLectures);
+        //    var existProduct = mySQLProductService.Detail(id);
+        //    if (existProduct == null || existProduct.IsDeleted())
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+        //    }
+        //    var product = new Product()
+        //    {
+        //        NumberOfLeture = number
+        //    };
+        //    if (mySQLProductService.UpdateNumber(existProduct, product, ModelState))
+        //    {
+        //        existProduct.NumberOfLeture = product.NumberOfLeture;
+        //    }
+
+        //    return View(existProduct);
+        //}
 
         // GET: Products/Delete/5
         //[Authorize(Roles = Constant.Admin + "," + Constant.Employee)]

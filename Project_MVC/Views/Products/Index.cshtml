@@ -7,13 +7,38 @@
 
     var thisPage = ViewBag.Page as ThisPage;
     var url = "/Products/Delete/";
+    var urlPopup = "/Products/CreatePopup";
+
+    string ids = "";
+    var thisType = "AtView";
 }
 
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @*@Html.ActionLink("Create New", "Create")*@
+    <a href="javascript:void(0);" class="anchorDetail" data-parameter="@ids" id="addItem-@thisType" name="addItemName" data-type="@thisType" data-urlPopup="@urlPopup">Create New</a>
 </p>
+
+@*<div id='myModal' class='modal'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>*@
+
+<div id='myModal' class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div id='myModalContent'></div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @using (Html.BeginForm("Index", "Products", FormMethod.Get))
 {
     <p>
@@ -33,6 +58,9 @@
             @Html.ActionLink("Product Name", "Index", new { sortOrder = ViewBag.NameSortParm })
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.Instructor)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.Price)
         </th>
         <th>
@@ -44,60 +72,47 @@
         <th>
             Product Images
         </th>
-        <th>
-            Product Videos
-        </th>
         <th></th>
     </tr>
 
     @foreach (var item in Model)
     {
-<tr>
-    <td>
-        @Html.DisplayFor(modelItem => item.ProductCategory.Name)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Code)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Name)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Price)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Description)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.CreatedAt)
-    </td>
-    <td>
-        @foreach (var image in item.ProductImages)
-        {
-            <img src="data:image;base64,@System.Convert.ToBase64String(image.ImageData)" width="80" height="80" />
-        }
-    </td>
-    <td>
-        @foreach (var video in item.ProductVideos)
-        {
-            @*<a class="player" style="height: 300px; width: 300px; display: block" href='@Url.Action("DownloadFile", "Products", new {fileId = video.Id})'>
-            </a>*@
-            <video controls autoplay>
-                <source src="@Url.Action("Video", "Products", new { fileId = video.Id })" type="video/mp4" />
-                @*(Fallback content for old browsers...)*@
-            </video>
-            @*<video>
-                <source src="data:video;base64,@System.Convert.ToBase64String(video.VideoData)" type='video/mp4' />
-            </video>*@
-        }
-    </td>
-    <td>
-        @Html.ActionLink("Edit", "Edit", new { id = item.Code }) |
-        @Html.ActionLink("Details", "Details", new { id = item.Code }) |
-        @Html.ActionLink("Delete", "Delete", new { id = item.Code },
-      new { @class = "btn btn-danger btn-delete-notify", @id = "delete-" + item.Code, data_request_url = @url })
-    </td>
-</tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductCategory.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Instructor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                @foreach (var image in item.ProductImages)
+                {
+                    <img src="data:image;base64,@System.Convert.ToBase64String(image.ImageData)" width="80" height="80" />
+                }
+            </td>
+
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Code }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Code }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Code },
+              new { @class = "btn btn-danger btn-delete-notify", @id = "delete-" + item.Code, data_request_url = @url })
+            </td>
+        </tr>
     }
 </table>
 

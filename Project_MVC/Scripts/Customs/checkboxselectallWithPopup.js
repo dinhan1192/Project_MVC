@@ -1,10 +1,10 @@
-﻿var lstType = document.querySelectorAll('a[name="addItemName"]');
+﻿var lstLink = document.querySelectorAll('a[name="addItemName"]');
 var strType = "";
-for (i = 0; i < lstType.length; i++) {
-    var type = lstType[i].getAttribute("data-type");
-    if (type === "AtView") {
+for (i = 0; i < lstLink.length; i++) {
+    var id = lstLink[i].getAttribute("data-type");
+    if (id === "AtView") {
         strType = "AtView";
-    } else if (type === "AtPopup") {
+    } else if (id === "AtPopup") {
         strType = "AtPopup";
     }
 }
@@ -33,22 +33,21 @@ function manageCheckboxGroup(masterCheckboxId, slaveCheckboxesClass) {
             //console.log("checked");
         } else if (!this.checked) {
             values = "";
-            console.log(values);
+            //console.log(values);
             //console.log("unchecked");
         }
-        console.log(values);
-        console.log(strType);
+        //console.log(values);
+        //console.log(strType);
         var setValues = document.getElementById("addItem-" + strType).setAttribute('data-parameter', values);
-
-        //if (document.getElementById("addItem" + strType).getAttribute("data-parameter") === "") {
-        //    var name01 = document.getElementById("addItem" + strType).getAttribute("data-parameter");
+        //if (document.getElementById("addItem-" + strType).getAttribute("data-parameter") === "") {
+        //    var name01 = document.getElementById("addItem-" + strType).getAttribute("data-parameter");
         //    console.log(name01)
+        //    console.log("rỗng !!!")
         //} else {
-        //    var name01 = document.getElementById("addItem" + strType).getAttribute("data-parameter");
+        //    var name01 = document.getElementById("addItem-" + strType).getAttribute("data-parameter");
         //    console.log(name01)
         //    console.log("Không rỗng !!!")
         //}
-        //console.log(values);
     });
 
     $("." + slaveCheckboxesClass).click(function () {

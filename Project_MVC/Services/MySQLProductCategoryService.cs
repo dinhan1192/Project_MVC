@@ -18,6 +18,14 @@ namespace Project_MVC.Services
             get { return _db ?? HttpContext.Current.GetOwinContext().Get<MyDbContext>(); }
             set { _db = value; }
         }
+
+        private IUserService userService;
+
+        public MySQLProductCategoryService()
+        {
+            userService = new UserService();
+        }
+
         public bool Create(ProductCategory item, ModelStateDictionary state)
         {
             ValidateCode(item, state);
@@ -26,6 +34,7 @@ namespace Project_MVC.Services
                 item.CreatedAt = DateTime.Now;
                 item.UpdatedAt = null;
                 item.DeletedAt = null;
+                item.CreatedBy = userService.GetCurrentUserName();
                 item.Status = ProductCategoryStatus.NotDeleted;
                 DbContext.ProductCategories.Add(item);
                 DbContext.SaveChanges();
@@ -46,6 +55,7 @@ namespace Project_MVC.Services
             {
                 item.Status = ProductCategoryStatus.Deleted;
                 item.DeletedAt = DateTime.Now;
+                item.DeletedBy = userService.GetCurrentUserName();
                 DbContext.ProductCategories.AddOrUpdate(item);
                 DbContext.SaveChanges();
 
@@ -72,6 +82,7 @@ namespace Project_MVC.Services
                 existItem.Name = item.Name;
                 existItem.Description = item.Description;
                 existItem.UpdatedAt = DateTime.Now;
+                existItem.UpdatedBy = userService.GetCurrentUserName();
                 DbContext.ProductCategories.AddOrUpdate(existItem);
                 DbContext.SaveChanges();
 
@@ -107,6 +118,16 @@ namespace Project_MVC.Services
         public void DisposeDb()
         {
             DbContext.Dispose();
+        }
+
+        public bool UpdateNumber(ProductCategory existItem, ProductCategory item, ModelStateDictionary state)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool ValidateStringCode(string code)
+        {
+            throw new NotImplementedException();
         }
     }
 }

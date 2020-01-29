@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Project_MVC.Models.LectureVideo>
+
+@{
+    var url = "/Lectures/DeleteVideo/";
+}
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @{ 
+                    var removeFirstDigits = string.Concat(item.Name.SkipWhile(char.IsDigit));
+                    var trimFirstEndSpaceChar = removeFirstDigits.Trim(' ');
+                }
+                @Html.DisplayFor(modelItem => trimFirstEndSpaceChar)
+            </td>
+            <td>
+                @Html.ActionLink("Delete", "DeleteVideo", new { id = item.Id },
+              new { @class = "btn btn-danger btn-delete-notify", @id = "delete-" + item.Id, data_request_url = @url })
+            </td>
+        </tr>
+    }
+</table>
+
+<script src="~/Scripts/Customs/deleteNotify.js"></script>
