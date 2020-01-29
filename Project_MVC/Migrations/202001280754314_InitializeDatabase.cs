@@ -3,7 +3,7 @@ namespace Project_MVC.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class InitializeDatabases : DbMigration
+    public partial class InitializeDatabase : DbMigration
     {
         public override void Up()
         {
@@ -36,35 +36,41 @@ namespace Project_MVC.Migrations
                 .Index(t => t.RoleId);
             
             CreateTable(
-                "dbo.LevelOneProductCategories",
+                "dbo.Lectures",
                 c => new
                     {
-                        Code = c.String(nullable: false, maxLength: 128),
-                        Name = c.String(nullable: false),
+                        Id = c.Int(nullable: false, identity: true),
+                        Name = c.String(),
                         Description = c.String(),
                         CreatedAt = c.DateTime(),
                         UpdatedAt = c.DateTime(),
                         DeletedAt = c.DateTime(),
+                        CreatedBy = c.String(),
+                        UpdatedBy = c.String(),
+                        DeletedBy = c.String(),
                         Status = c.Int(nullable: false),
+                        ProductCode = c.String(maxLength: 128),
                     })
-                .PrimaryKey(t => t.Code);
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Products", t => t.ProductCode)
+                .Index(t => t.ProductCode);
             
             CreateTable(
-                "dbo.ProductCategories",
+                "dbo.LectureVideos",
                 c => new
                     {
-                        Code = c.String(nullable: false, maxLength: 128),
-                        Name = c.String(nullable: false),
-                        Description = c.String(),
+                        Id = c.Int(nullable: false, identity: true),
+                        Name = c.String(),
+                        VideoData = c.Binary(),
+                        ContentType = c.String(),
+                        LectureId = c.Int(),
+                        DisplayOrder = c.Int(nullable: false),
                         CreatedAt = c.DateTime(),
-                        UpdatedAt = c.DateTime(),
-                        DeletedAt = c.DateTime(),
-                        Status = c.Int(nullable: false),
-                        LevelOneProductCategoryCode = c.String(maxLength: 128),
+                        CreatedBy = c.String(),
                     })
-                .PrimaryKey(t => t.Code)
-                .ForeignKey("dbo.LevelOneProductCategories", t => t.LevelOneProductCategoryCode)
-                .Index(t => t.LevelOneProductCategoryCode);
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Lectures", t => t.LectureId)
+                .Index(t => t.LectureId);
             
             CreateTable(
                 "dbo.Products",
@@ -77,12 +83,52 @@ namespace Project_MVC.Migrations
                         CreatedAt = c.DateTime(),
                         UpdatedAt = c.DateTime(),
                         DeletedAt = c.DateTime(),
+                        CreatedBy = c.String(),
+                        UpdatedBy = c.String(),
+                        DeletedBy = c.String(),
                         Status = c.Int(nullable: false),
                         ProductCategoryCode = c.String(maxLength: 128),
                     })
                 .PrimaryKey(t => t.Code)
                 .ForeignKey("dbo.ProductCategories", t => t.ProductCategoryCode)
                 .Index(t => t.ProductCategoryCode);
+            
+            CreateTable(
+                "dbo.ProductCategories",
+                c => new
+                    {
+                        Code = c.String(nullable: false, maxLength: 128),
+                        Name = c.String(nullable: false),
+                        Description = c.String(),
+                        CreatedAt = c.DateTime(),
+                        UpdatedAt = c.DateTime(),
+                        DeletedAt = c.DateTime(),
+                        CreatedBy = c.String(),
+                        UpdatedBy = c.String(),
+                        DeletedBy = c.String(),
+                        Status = c.Int(nullable: false),
+                        LevelOneProductCategoryCode = c.String(maxLength: 128),
+                    })
+                .PrimaryKey(t => t.Code)
+                .ForeignKey("dbo.LevelOneProductCategories", t => t.LevelOneProductCategoryCode)
+                .Index(t => t.LevelOneProductCategoryCode);
+            
+            CreateTable(
+                "dbo.LevelOneProductCategories",
+                c => new
+                    {
+                        Code = c.String(nullable: false, maxLength: 128),
+                        Name = c.String(nullable: false),
+                        Description = c.String(),
+                        CreatedAt = c.DateTime(),
+                        UpdatedAt = c.DateTime(),
+                        DeletedAt = c.DateTime(),
+                        CreatedBy = c.String(),
+                        UpdatedBy = c.String(),
+                        DeletedBy = c.String(),
+                        Status = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Code);
             
             CreateTable(
                 "dbo.ProductImages",
@@ -95,6 +141,47 @@ namespace Project_MVC.Migrations
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Products", t => t.ProductCode)
                 .Index(t => t.ProductCode);
+            
+            CreateTable(
+                "dbo.LevelOneMenus",
+                c => new
+                    {
+                        Code = c.String(nullable: false, maxLength: 128),
+                        Name = c.String(nullable: false),
+                        ActionName = c.String(),
+                        ControllerName = c.String(),
+                        Description = c.String(),
+                        CreatedAt = c.DateTime(),
+                        UpdatedAt = c.DateTime(),
+                        DeletedAt = c.DateTime(),
+                        CreatedBy = c.String(),
+                        UpdatedBy = c.String(),
+                        DeletedBy = c.String(),
+                        Status = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Code);
+            
+            CreateTable(
+                "dbo.LevelTwoMenus",
+                c => new
+                    {
+                        Code = c.String(nullable: false, maxLength: 128),
+                        Name = c.String(nullable: false),
+                        ActionName = c.String(),
+                        ControllerName = c.String(),
+                        Description = c.String(),
+                        CreatedAt = c.DateTime(),
+                        UpdatedAt = c.DateTime(),
+                        DeletedAt = c.DateTime(),
+                        CreatedBy = c.String(),
+                        UpdatedBy = c.String(),
+                        DeletedBy = c.String(),
+                        Status = c.Int(nullable: false),
+                        LevelOneMenuCode = c.String(maxLength: 128),
+                    })
+                .PrimaryKey(t => t.Code)
+                .ForeignKey("dbo.LevelOneMenus", t => t.LevelOneMenuCode)
+                .Index(t => t.LevelOneMenuCode);
             
             CreateTable(
                 "dbo.OrderDetails",
@@ -138,7 +225,7 @@ namespace Project_MVC.Migrations
                         FirstName = c.String(),
                         LastName = c.String(),
                         Gender = c.Int(nullable: false),
-                        BirthDay = c.DateTime(nullable: false),
+                        BirthDay = c.DateTime(),
                         CreatedAt = c.DateTime(),
                         UpdatedAt = c.DateTime(),
                         DeletedAt = c.DateTime(),
@@ -192,17 +279,23 @@ namespace Project_MVC.Migrations
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
             DropForeignKey("dbo.OrderDetails", "ProductCode", "dbo.Products");
             DropForeignKey("dbo.OrderDetails", "Order_Id", "dbo.Orders");
+            DropForeignKey("dbo.LevelTwoMenus", "LevelOneMenuCode", "dbo.LevelOneMenus");
+            DropForeignKey("dbo.Lectures", "ProductCode", "dbo.Products");
             DropForeignKey("dbo.ProductImages", "ProductCode", "dbo.Products");
             DropForeignKey("dbo.Products", "ProductCategoryCode", "dbo.ProductCategories");
             DropForeignKey("dbo.ProductCategories", "LevelOneProductCategoryCode", "dbo.LevelOneProductCategories");
+            DropForeignKey("dbo.LectureVideos", "LectureId", "dbo.Lectures");
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
             DropIndex("dbo.AspNetUsers", "UserNameIndex");
             DropIndex("dbo.OrderDetails", new[] { "Order_Id" });
             DropIndex("dbo.OrderDetails", new[] { "ProductCode" });
+            DropIndex("dbo.LevelTwoMenus", new[] { "LevelOneMenuCode" });
             DropIndex("dbo.ProductImages", new[] { "ProductCode" });
-            DropIndex("dbo.Products", new[] { "ProductCategoryCode" });
             DropIndex("dbo.ProductCategories", new[] { "LevelOneProductCategoryCode" });
+            DropIndex("dbo.Products", new[] { "ProductCategoryCode" });
+            DropIndex("dbo.LectureVideos", new[] { "LectureId" });
+            DropIndex("dbo.Lectures", new[] { "ProductCode" });
             DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
@@ -211,10 +304,14 @@ namespace Project_MVC.Migrations
             DropTable("dbo.AspNetUsers");
             DropTable("dbo.Orders");
             DropTable("dbo.OrderDetails");
+            DropTable("dbo.LevelTwoMenus");
+            DropTable("dbo.LevelOneMenus");
             DropTable("dbo.ProductImages");
-            DropTable("dbo.Products");
-            DropTable("dbo.ProductCategories");
             DropTable("dbo.LevelOneProductCategories");
+            DropTable("dbo.ProductCategories");
+            DropTable("dbo.Products");
+            DropTable("dbo.LectureVideos");
+            DropTable("dbo.Lectures");
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetRoles");
         }

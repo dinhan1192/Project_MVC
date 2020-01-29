@@ -19,10 +19,13 @@ namespace Project_MVC.Services
             set { _db = value; }
         }
 
+        private IUserService userService;
+
         public MySQLLevelOneProductCategoryService()
         {
-            DbContext = new MyDbContext();
+            userService = new UserService();
         }
+
         public bool Create(LevelOneProductCategory item, ModelStateDictionary state)
         {
             ValidateCode(item, state);
@@ -32,6 +35,7 @@ namespace Project_MVC.Services
                 item.CreatedAt = DateTime.Now;
                 item.UpdatedAt = null;
                 item.DeletedAt = null;
+                item.CreatedBy = userService.GetCurrentUserName();
                 item.Status = LevelOneProductCategoryStatus.NotDeleted;
                 DbContext.LevelOneProductCategories.Add(item);
                 DbContext.SaveChanges();
@@ -52,6 +56,7 @@ namespace Project_MVC.Services
             {
                 item.Status = LevelOneProductCategoryStatus.Deleted;
                 item.DeletedAt = DateTime.Now;
+                item.DeletedBy = userService.GetCurrentUserName();
                 DbContext.LevelOneProductCategories.AddOrUpdate(item);
                 DbContext.SaveChanges();
 
@@ -73,6 +78,7 @@ namespace Project_MVC.Services
                 existItem.Name = item.Name;
                 existItem.Description = item.Description;
                 existItem.UpdatedAt = DateTime.Now;
+                existItem.UpdatedBy = userService.GetCurrentUserName();
                 DbContext.LevelOneProductCategories.AddOrUpdate(existItem);
                 DbContext.SaveChanges();
 
@@ -113,6 +119,16 @@ namespace Project_MVC.Services
         public void DisposeDb()
         {
             DbContext.Dispose();
+        }
+
+        public bool UpdateNumber(LevelOneProductCategory existItem, LevelOneProductCategory item, ModelStateDictionary state)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool ValidateStringCode(string code)
+        {
+            throw new NotImplementedException();
         }
     }
 }

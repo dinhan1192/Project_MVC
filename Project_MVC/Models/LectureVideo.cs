@@ -7,14 +7,18 @@ using System.Web;
 
 namespace Project_MVC.Models
 {
-    public class ProductVideo
+    public class LectureVideo
     {
         public int? Id { get; set; }
-        [ForeignKey("Product")]
-        public string ProductCode { get; set; }
+        public string Name { get; set; }
         [DisplayName("Video")]
         public byte[] VideoData { get; set; }
         public string ContentType { get; set; }
-        public virtual Product Product { get; set; }
+        [ForeignKey("Lecture")]
+        public int? LectureId { get; set; }
+        public virtual Lecture Lecture { get; set; }
+        public int DisplayOrder { get; set; }
+        public DateTime? CreatedAt { get; set; }
+        public string CreatedBy { get; set; }
     }
 }

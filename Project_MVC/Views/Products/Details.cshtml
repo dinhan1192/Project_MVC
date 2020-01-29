@@ -38,6 +38,14 @@
         </dd>
 
         <dt>
+            @Html.DisplayNameFor(model => model.Instructor)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Instructor)
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.Price)
         </dt>
 
@@ -55,29 +63,31 @@
     </dl>
 </div>
 
-<div>
-    @foreach (var video in Model.ProductVideos)
-    {
-        <video controls id="video">
-            <source src="@Url.Action("Video", "Products", new { fileId = video.Id })" type="video/mp4" />
-        </video>
-    }
-</div>
-<div id="status" class="incomplete">
-    <span>Play status: </span>
-    <span class="status complete">COMPLETE</span>
-    <span class="status incomplete">INCOMPLETE</span>
-    <br />
-</div>
-<div>
-    <span id="played">0</span> seconds out of
-    <span id="duration"></span> seconds. (only updates when the video pauses)
-</div>
+@Html.Partial("_Lectures", Model.Lectures)
 
-<div>
-    @*<a id="nextVideo" href="#" style="visibility:hidden">Next</a>*@
-    <span id="nextVideo" >@Html.ActionLink("Next", "NextVideo")</span>
-</div>
+@*<div>
+        @foreach (var video in Model.ProductVideos)
+        {
+            <video controls id="video">
+                <source src="@Url.Action("Video", "Products", new { fileId = video.Id })" type="video/mp4" />
+            </video>
+        }
+    </div>*@
+@*<div id="status" class="incomplete">
+        <span>Play status: </span>
+        <span class="status complete">COMPLETE</span>
+        <span class="status incomplete">INCOMPLETE</span>
+        <br />
+    </div>
+    <div>
+        <span id="played">0</span> seconds out of
+        <span id="duration"></span> seconds. (only updates when the video pauses)
+    </div>
+
+    <div>
+        <a id="nextVideo" href="#" style="visibility:hidden">Next</a>
+        <span id="nextVideo" >@Html.ActionLink("Next", "NextVideo")</span>
+    </div>*@
 
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Code }) |
@@ -85,7 +95,7 @@
 </p>
 
 @section scripts{
-    @Scripts.Render("~/bundles/custom");
+    @Scripts.Render("~/bundles/video");
 }
 
 @section CustomStyles{

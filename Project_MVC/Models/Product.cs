@@ -19,12 +19,21 @@ namespace Project_MVC.Models
         [Required]
         [RegularExpression(@"^[0-9a-zA-Z\s+ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]+$", ErrorMessage = "Invalid Product Category")]
         public string Name { get; set; }
+        //[Required]
+        //[DisplayName("Number of Lectures")]
+        //[Range(1, Int32.MaxValue, ErrorMessage = "Number of Lectures can not be smaller than 1")]
+        //public int NumberOfLeture { get; set; }
         [Required]
         public double Price { get; set; }
+        public string Instructor { get; set; }
+        public int Rating { get; set; }
         public string Description { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
+        public string CreatedBy { get; set; }
+        public string UpdatedBy { get; set; }
+        public string DeletedBy { get; set; }
         public ProductStatus Status { get; set; }
         [ForeignKey("ProductCategory")]
         public string ProductCategoryCode { get; set; }
@@ -39,8 +48,8 @@ namespace Project_MVC.Models
         #region Images members
         public virtual ICollection<ProductImage> ProductImages { get; set; }
         #endregion
-        #region Videos members
-        public virtual ICollection<ProductVideo> ProductVideos { get; set; }
+        #region Lectures members
+        public virtual ICollection<Lecture> Lectures { get; set; }
         #endregion
 
         public enum ProductStatus

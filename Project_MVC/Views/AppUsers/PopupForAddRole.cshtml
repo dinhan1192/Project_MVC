@@ -1,6 +1,8 @@
 ﻿@model IEnumerable<Project_MVC.Models.AppRole>
 
 @{
+    Layout = null;
+
     var userIds = ViewBag.userIds;
     var roleNames = "";
     var thisType = "AtPopup";
@@ -8,8 +10,8 @@
 <div>
 
     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         <h4 class="modal-title" id="myModalLabel">List of Role</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
     </div>
 
     @*<div>@userIds</div>*@
@@ -86,6 +88,11 @@
 
         window.location.href = `/AppUsers/Index`;
         //var setValues = document.getElementById("addItem").setAttribute('data-parameter', "")
+    });
+
+    $(".close").click(function () {
+        $('#myModal').modal('hide');
+        window.location.href = `/AppUsers/Index`;
     });
 </script>
 

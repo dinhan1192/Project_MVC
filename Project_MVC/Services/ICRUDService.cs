@@ -16,10 +16,12 @@ namespace Project_MVC.Services
         bool CreateWithImage(T item, ModelStateDictionary state, IEnumerable<HttpPostedFileBase> images, IEnumerable<HttpPostedFileBase> videos);
         bool Update(T existItem, T item, ModelStateDictionary state);
         bool UpdateWithImage(T existItem, T item, ModelStateDictionary state, IEnumerable<HttpPostedFileBase> images);
+        //bool UpdateNumber(T existItem, T item, ModelStateDictionary state);
         bool Delete(T item, ModelStateDictionary state);
         T Detail(string id);
         void ValidateCode(T item, ModelStateDictionary state);
         void ValidateCategory(T item, ModelStateDictionary state);
+        bool ValidateStringCode(string code);
         void DisposeDb();
     }
 }

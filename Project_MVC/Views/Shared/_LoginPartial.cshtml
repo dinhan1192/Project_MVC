@@ -8,11 +8,14 @@
         <ul class="nav navbar-nav navbar-right">
             <li>
                 @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manages", routeValues: null, htmlAttributes: new { title = "Manage" })
-                @*<span> &nbsp; &nbsp; &nbsp;</span>*@
+                @*@if (RolesUtil.IsInAnyRole(User, new string[] { Constant.Admin, Constant.Employee }))
+                    {
+                        <span> &nbsp; &nbsp; &nbsp;</span>
+                    }*@
             </li>
             <li>
-            @*<input type="submit" value="Log off"/>*@
-            <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+                @*<input type="submit" value="Log off"/>*@
+                <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
             </li>
         </ul>
     }

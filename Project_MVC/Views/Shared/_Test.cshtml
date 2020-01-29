@@ -1,0 +1,12 @@
+﻿@*
+        <td>
+                @foreach (var video in item.ProductVideos)
+                {
+
+    <video controls autoplay>
+        <source src="@Url.Action("Video", "Products", new { fileId = video.Id })" type="video/mp4" />
+
+    </video>
+            }
+        </td>*@
+
