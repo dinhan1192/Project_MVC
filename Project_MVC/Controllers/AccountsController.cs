@@ -3,6 +3,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Project_MVC.App_Start;
 using Project_MVC.Models;
+using Project_MVC.Utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -156,7 +157,29 @@ namespace Project_MVC.Controllers
                 var userIdentity = UserManager.CreateIdentity(
                     user, DefaultAuthenticationTypes.ApplicationCookie);
                 authenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = false }, userIdentity);
-                return Redirect("/Products/Index");
+
+                var roleNames = UserManager.GetRoles(user.Id);
+                string roleName = null;
+                roleName = roleName ?? (roleNames.Contains(Constant.Admin) ? Constant.Admin : null);
+                roleName = roleName ?? (roleNames.Contains(Constant.Employee) ? Constant.Employee : null);
+
+                switch (roleName)
+                {
+                    case Constant.Admin:
+                        return Redirect("/Products/Index");
+                    case Constant.Employee:
+                        return Redirect("/Products/Index");
+                    default:
+                        return Redirect("/Products/IndexCustomer");
+                }
+
+                //if (UserManager.IsInRole(user.Id, Constant.Admin) || UserManager.IsInRole(user.Id, Constant.Employee))
+                //{
+                //    return Redirect("/Products/Index");
+                //} else
+                //{
+                //    return Redirect("/Products/IndexCustomer");
+                //}
             }
             return View("Login");
         }

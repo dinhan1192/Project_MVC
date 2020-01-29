@@ -12,7 +12,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Project_MVC.Controllers
 {
-    [Authorize(Roles = Constant.Admin + "," + Constant.Employee)]
+    [Authorize(Roles = Constant.Admin)]
     public class AppUsersController : Controller
     {
         // GET: AppUsers
