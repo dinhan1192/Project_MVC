@@ -39,6 +39,7 @@ namespace Project_MVC.App_Start
             mail.To.Add(message.Destination);
             mail.Subject = message.Subject;
             mail.Body = message.Body;
+            mail.IsBodyHtml = true;
 
             smtpServer.Send(mail);
             // Plug in your email Service here to send mail

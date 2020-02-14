@@ -21,12 +21,12 @@
 </p>
 
 @*<div id='myModal' class='modal'>
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div id='myModalContent'></div>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div id='myModalContent'></div>
+            </div>
         </div>
-    </div>
-</div>*@
+    </div>*@
 
 <div id='myModal' class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
@@ -58,7 +58,7 @@
             @Html.ActionLink("Product Name", "Index", new { sortOrder = ViewBag.NameSortParm })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Instructor)
+            @Html.DisplayNameFor(model => model.OwnerOfCourse.Name)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Price)
@@ -88,7 +88,7 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Instructor)
+                @Html.DisplayFor(modelItem => item.OwnerOfCourse.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Price)

@@ -2,12 +2,16 @@
 
 @{
     var url = "/Lectures/DeleteVideo/";
+    var type = "Partial";
 }
 
 <table class="table">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DisplayOrder)
         </th>
         <th></th>
     </tr>
@@ -16,18 +20,22 @@
     {
         <tr>
             <td>
-                @{ 
+                @{
                     var removeFirstDigits = string.Concat(item.Name.SkipWhile(char.IsDigit));
                     var trimFirstEndSpaceChar = removeFirstDigits.Trim(' ');
                 }
                 @Html.DisplayFor(modelItem => trimFirstEndSpaceChar)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.DisplayOrder)
+            </td>
+            <td>
                 @Html.ActionLink("Delete", "DeleteVideo", new { id = item.Id },
-              new { @class = "btn btn-danger btn-delete-notify", @id = "delete-" + item.Id, data_request_url = @url })
+              new { @class = "btn btn-danger btn-delete-notify", Name = "deleteNotify" , @id = "delete-" + item.Id, data_request_url = @url, data_type = @type })
             </td>
         </tr>
     }
 </table>
 
+<script src="~/Scripts/jquery-3.3.1.min.js" type="text/javascript"></script>
 <script src="~/Scripts/Customs/deleteNotify.js"></script>

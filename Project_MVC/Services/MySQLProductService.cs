@@ -35,7 +35,7 @@ namespace Project_MVC.Services
 
         public bool Create(Product item, ModelStateDictionary state)
         {
-            ValidateCode(item, state);
+            Validate(item, state);
             if (state.IsValid)
             {
                 //product.ProductCategoryId = Utils.Utility.GetNullableInt(product.ProductCategoryNameAndId.Split(' ')[0]);
@@ -57,7 +57,7 @@ namespace Project_MVC.Services
 
         public bool CreateWithImage(Product item, ModelStateDictionary state, IEnumerable<HttpPostedFileBase> images, IEnumerable<HttpPostedFileBase> videos)
         {
-            ValidateCode(item, state);
+            Validate(item, state);
             ValidateCategory(item, state);
             if (state.IsValid)
             {
@@ -156,6 +156,7 @@ namespace Project_MVC.Services
                 existItem.Name = item.Name;
                 existItem.Price = item.Price;
                 existItem.ProductCategoryCode = item.ProductCategoryCode;
+                existItem.OwnerOfCourseCode = item.OwnerOfCourseCode;
                 //existItem.NumberOfLeture = item.NumberOfLeture;
                 existItem.Description = item.Description;
                 existItem.UpdatedAt = DateTime.Now;
@@ -236,9 +237,13 @@ namespace Project_MVC.Services
             {
                 state.AddModelError("ProductCategoryNameAndCode", "Product Category is required.");
             }
+            if (string.IsNullOrEmpty(item.OwnerOfCourseCode))
+            {
+                state.AddModelError("OwnerOfCourseNameAndCode", "Owner Of Course is required.");
+            }
         }
 
-        public void ValidateCode(Product item, ModelStateDictionary state)
+        public void Validate(Product item, ModelStateDictionary state)
         {
             if (string.IsNullOrEmpty(item.Code))
             {

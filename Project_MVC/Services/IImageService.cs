@@ -16,5 +16,6 @@ namespace Project_MVC.Services
         LectureVideo Detail(int? fileId);
         bool Delete(LectureVideo existItem, ModelStateDictionary state);
         void ValidateVideo(string videoName, ModelStateDictionary state);
+        void ValidateVideoDisplayOrder(int displayOrder, int parentId, ModelStateDictionary state);
     }
 }

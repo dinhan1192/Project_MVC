@@ -15,5 +15,7 @@ namespace Project_MVC.Models
         [DisplayName("Image")]
         public byte[] ImageData { get; set; }
         public virtual Product Product { get; set; }
+        public DateTime? CreatedAt { get; set; }
+        public string CreatedBy { get; set; }
     }
 }

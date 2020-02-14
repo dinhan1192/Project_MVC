@@ -57,6 +57,8 @@ namespace Project_MVC.Services
                             var data = br.ReadBytes(image.ContentLength);
                             var img = new ProductImage { ProductCode = code };
                             img.ImageData = data;
+                            img.CreatedAt = DateTime.Now;
+                            img.CreatedBy = userService.GetCurrentUserName();
                             imageList.Add(img);
                         }
                     }
@@ -89,8 +91,9 @@ namespace Project_MVC.Services
                             }
                             else
                             {
-                                vid.DisplayOrder = vid.Name[0];
+                                vid.DisplayOrder = Convert.ToInt32(vid.Name[0].ToString());
                             }
+                            ValidateVideoDisplayOrder(vid.DisplayOrder, (int)id, state);
                             vid.VideoData = data;
                             vid.ContentType = contentType;
                             vid.CreatedAt = DateTime.Now;
@@ -109,7 +112,21 @@ namespace Project_MVC.Services
         {
             if (!char.IsDigit(videoName[0]))
             {
-                state.AddModelError("LectureVideoValidation", "Lecture Video File Name must have a number as first character.");
+                state.AddModelError("LectureVideoValidation", "Tên file của Video bài giảng phải bắt đầu bằng số.");
+            }
+        }
+
+        public void ValidateVideoDisplayOrder(int displayOrder, int parentId, ModelStateDictionary state)
+        {
+            var list = DbContext.LectureVideos.Where(s => s.DisplayOrder == displayOrder && s.LectureId == parentId).ToList();
+            if (list.Count != 0)
+            {
+                state.AddModelError("LectureVideoValidation", "Có video trùng thứ tự sắp xếp.");
+            }
+
+            if(displayOrder < Constant.FirstDisplayOrder)
+            {
+                state.AddModelError("LectureVideoValidation", "Số thứ tự không thể nhỏ hơn 1");
             }
         }
     }

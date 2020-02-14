@@ -51,14 +51,16 @@ namespace Project_MVC
                      "~/Scripts/vendor/datatables/jquery.dataTables.js",
                      "~/Scripts/vendor/datatables/dataTables.bootstrap4.js",
                      "~/Scripts/js/sb-admin.min.js",
-                     "~/Scripts/js/demo/datatables-demo.js"
+                     "~/Scripts/js/demo/datatables-demo.js",
+                     "~/Scripts/Customs/jquery-confirmPopup.js"
                      //"~/Scripts/js/demo/chart-area-demo.js"
                      ));
 
             bundles.Add(new StyleBundle("~/Css").Include(
                       "~/Content/vendor/fontawesome-free/css/all.min.css",
                       //"~/Content/vendor/datatables/dataTables.bootstrap4.css",
-                      "~/Content/css/sb-admin.css"
+                      "~/Content/css/sb-admin.css",
+                      "~/Content/css/jquery-confirmPopup.css"
                       ));
 
             bundles.Add(new StyleBundle("~/customs").Include(
@@ -81,6 +83,28 @@ namespace Project_MVC
                       "~/Scripts/LayoutAdminPage/popper.min.js",
                       "~/Scripts/LayoutAdminPage/mdb.min.js"
                       ));
+
+            bundles.Add(new StyleBundle("~/bundles/customCustomerPageCSS").Include(
+               "~/Content/CustomCustomerPage/Phong.css",
+               "~/Content/CustomCustomerPage/bootstrap.css",
+               "~/Content/CustomCustomerPage/animate.css",
+               "~/Content/CustomCustomerPage/owl.carousel.min.css",
+               "~/Content/CustomCustomerPage/style.css",
+               "~/Content/CustomCustomerPage/bootstrap.css.map",
+               "~/Content/css/jquery-confirmPopup.css"
+               ));
+
+            bundles.Add(new ScriptBundle("~/bundles/customCustomerPageJS").Include(
+                     //"~/Scripts/CustomCustomerPage/jquery-3.2.1.min.js",
+                     "~/Scripts/CustomCustomerPage/jquery-migrate-3.0.0.js",
+                     "~/Scripts/CustomCustomerPage/popper.min.js",
+                     "~/Scripts/CustomCustomerPage/bootstrap.min.js",
+                     "~/Scripts/CustomCustomerPage/owl.carousel.min.js",
+                     "~/Scripts/CustomCustomerPage/jquery.waypoints.min.js",
+                     "~/Scripts/CustomCustomerPage/jquery.stellar.min.js",
+                     "~/Scripts/CustomCustomerPage/main.js",
+                     "~/Scripts/Customs/jquery-confirmPopup.js"
+                     ));
 
             // BundleTable.EnableOptimizations = true;
         }

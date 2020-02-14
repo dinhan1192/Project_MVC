@@ -10,6 +10,9 @@
             @Html.DisplayNameFor(model => model.Name)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.DisplayOrder)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.Description)
         </th>
         <th>
@@ -25,6 +28,9 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.DisplayOrder)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
@@ -32,7 +38,7 @@
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", "Lectures", new { id = item.Id }, null) |
-                @Html.ActionLink("Details", "Details", "Lectures" ,new { id = item.Id }, null) |
+                @Html.ActionLink("Details", "Details", "Lectures", new { id = item.Id }, null) |
                 @Html.ActionLink("Delete", "Delete", "Lectures", new { id = item.Id },
               new { @class = "btn btn-danger btn-delete-notify", @id = "delete-" + item.Id, data_request_url = @url })
             </td>

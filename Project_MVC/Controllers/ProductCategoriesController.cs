@@ -96,6 +96,34 @@ namespace Project_MVC.Controllers
             return View(productCategories.Skip(pageSize * (pageNumber - 1)).Take(pageSize).ToList());
         }
 
+        //public ActionResult IndexCustomer(string levelOneProductCategoryCode, int? page)
+        //{
+        //    // lúc đầu vừa vào thì sortOrder là null, cho nên gán NameSortParm = name_desc
+        //    // Ấn vào link Full name thì lúc đó NameSortParm có giá trị là name_desc, sortOrder trên view được gán = NameSortParm cho nên sortOrder != null
+        //    // và NameSortParm = ""
+        //    // Ấn tiếp vào link Full Name thì sortOrder = "" cho nên NameSortParm = name_desc
+
+        //    var productCategories = mySQLProductCategoryService.GetList();
+
+        //    if (!String.IsNullOrEmpty(levelOneProductCategoryCode))
+        //    {
+        //        productCategories = productCategories.Where(s => s.LevelOneProductCategoryCode == levelOneProductCategoryCode);
+        //    }
+
+        //    int pageSize = Constant.PageSize;
+        //    int pageNumber = (page ?? 1);
+        //    ThisPage thisPage = new ThisPage()
+        //    {
+        //        CurrentPage = pageNumber,
+        //        TotalPage = Math.Ceiling((double)productCategories.Count() / pageSize)
+        //    };
+        //    ViewBag.Page = thisPage;
+
+        //    // nếu page == null thì lấy giá trị là 1, nếu không thì giá trị là page
+        //    //return View(students.ToList().ToPagedList(pageNumber, pageSize));
+        //    return View(productCategories.Skip(pageSize * (pageNumber - 1)).Take(pageSize).ToList());
+        //}
+
         public ActionResult GetListLevelOneProductCategories()
         {
             //Console.WriteLine("123");

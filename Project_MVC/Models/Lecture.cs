@@ -13,6 +13,8 @@ namespace Project_MVC.Models
         [Required]
         public string Name { get; set; }
         public string Description { get; set; }
+        [Required]
+        public int DisplayOrder { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
@@ -26,7 +28,6 @@ namespace Project_MVC.Models
         public virtual ICollection<LectureVideo> LectureVideos { get; set; }
         [NotMapped]
         public string LectureVideoValidation { get; set; }
-
 
         public enum LectureStatus
         {

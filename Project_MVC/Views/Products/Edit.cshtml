@@ -3,6 +3,9 @@
 @{
     ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var ownerOfCourse = "Owner";
+    var productCategory = "Category";
 }
 
 <h2>Edit</h2>
@@ -36,10 +39,13 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.Instructor, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.OwnerOfCourseNameAndCode, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.Instructor, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Instructor, "", new { @class = "text-danger" })
+            @Html.TextBoxFor(model => model.OwnerOfCourseNameAndCode, new { @class = "form-control typeahead", @id = "AutoComplete", Name = "AutoComplete", data_provide = "typeahead", data_request_url = "/Products/GetListOwnerOfCourses", data_type = ownerOfCourse })
+            @*<input id="ProductCategoryId" type="text" name="Autocomplete" value="" class="form-control typeahead" data-provide="typeahead" />*@
+            @*<input type="hidden" name="ProductCategoryId" id="hidProductCategoryId" />*@
+            @Html.HiddenFor(model => model.OwnerOfCourseCode, new { @id = "hidCode" + ownerOfCourse })
+            @Html.ValidationMessageFor(model => model.OwnerOfCourseNameAndCode, "", new { @class = "text-danger" })
         </div>
     </div>
 
@@ -71,10 +77,10 @@
     <div class="form-group">
         @Html.LabelFor(model => model.ProductCategoryNameAndCode, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.TextBoxFor(model => model.ProductCategoryNameAndCode, new { @class = "form-control typeahead", @id = "AutoComplete", @name = "AutoComplete", data_provide = "typeahead", data_request_url = "/Products/GetListProductCategories" })
+            @Html.TextBoxFor(model => model.ProductCategoryNameAndCode, new { @class = "form-control typeahead", @id = "AutoComplete", Name = "AutoComplete", data_provide = "typeahead", data_request_url = "/Products/GetListProductCategories", data_type = productCategory})
             @*<input id="ProductCategoryId" type="text" name="Autocomplete" value="" class="form-control typeahead" data-provide="typeahead" />*@
             @*<input type="hidden" name="ProductCategoryId" id="hidProductCategoryId" />*@
-            @Html.HiddenFor(model => model.ProductCategoryCode, new { @id = "hidCode", @name = "hidProductCategoryId" })
+            @Html.HiddenFor(model => model.ProductCategoryCode, new { @id = "hidCode" + productCategory })
             @Html.ValidationMessageFor(model => model.ProductCategoryNameAndCode, "", new { @class = "text-danger" })
         </div>
     </div>

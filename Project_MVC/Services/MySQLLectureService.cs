@@ -38,7 +38,9 @@ namespace Project_MVC.Services
         public bool CreateWithImage(Lecture item, ModelStateDictionary state, IEnumerable<HttpPostedFileBase> images, IEnumerable<HttpPostedFileBase> videos)
         {
             //var error = state.Values.SelectMany(s => s.Errors);
-            item.LectureVideos = mySQLImageService.SaveVideo2List(item.Id, videos, state);
+            Validate(item, state);
+            var maxId = DbContext.Lectures.OrderByDescending(s => s.Id).FirstOrDefault().Id;
+            item.LectureVideos = mySQLImageService.SaveVideo2List(maxId + 1, videos, state);
             if (state.IsValid)
             {
                 //product.ProductCategoryId = Utils.Utility.GetNullableInt(product.ProductCategoryNameAndId.Split(' ')[0]);
@@ -104,7 +106,7 @@ namespace Project_MVC.Services
 
         public IEnumerable<Lecture> GetList()
         {
-            throw new NotImplementedException();
+            return DbContext.Lectures.Where(s => s.Status != LectureStatus.Deleted).ToList();
         }
 
         public bool Update(Lecture existItem, Lecture item, ModelStateDictionary state)
@@ -114,16 +116,22 @@ namespace Project_MVC.Services
 
         public bool UpdateWithImage(Lecture existItem, Lecture item, ModelStateDictionary state, IEnumerable<HttpPostedFileBase> videos)
         {
+            if (existItem.DisplayOrder != item.DisplayOrder)
+            {
+                Validate(item, state);
+            }
+            var videoList = mySQLImageService.SaveVideo2List(item.Id, videos, state);
+            var errors = state.Values.SelectMany(s => s.Errors);
             if (state.IsValid)
             {
                 existItem.Name = item.Name;
                 existItem.Description = item.Description;
+                existItem.DisplayOrder = item.DisplayOrder;
                 existItem.UpdatedAt = DateTime.Now;
                 existItem.UpdatedBy = userService.GetCurrentUserName();
                 //var list = existItem.ProductImages;
                 DbContext.Lectures.AddOrUpdate(existItem);
                 // add image to table ProductImages
-                var videoList = mySQLImageService.SaveVideo2List(item.Id, videos, state);
                 DbContext.LectureVideos.AddRange(videoList);
                 DbContext.SaveChanges();
 
@@ -138,9 +146,17 @@ namespace Project_MVC.Services
             throw new NotImplementedException();
         }
 
-        public void ValidateCode(Lecture item, ModelStateDictionary state)
+        public void Validate(Lecture item, ModelStateDictionary state)
         {
-            throw new NotImplementedException();
+            if (item.DisplayOrder < Constant.FirstDisplayOrder)
+            {
+                state.AddModelError("DisplayOrder", "Thứ tự bài giảng không thể nhỏ hơn 1");
+            }
+            var list = DbContext.Lectures.Where(s => s.DisplayOrder == item.DisplayOrder && s.ProductCode == item.ProductCode).ToList();
+            if (list.Count != 0)
+            {
+                state.AddModelError("DisplayOrder", "Thứ tự bài giảng đã tồn tại");
+            }
         }
 
         public bool ValidateStringCode(string code)

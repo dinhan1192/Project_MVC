@@ -1,0 +1,35 @@
+﻿@model IEnumerable<Project_MVC.Models.Product>
+
+<section class="site-section bg-light">
+    <div class="container">
+        <div class="row justify-content-center mb-5">
+            <div class="col-md-7 text-center">
+                <h2>Các Môn học phổ biến</h2>
+                <p class="lead">Các xu hướng hiện hành luôn được cập nhật!</p>
+            </div>
+        </div>
+        <div class="row top-course">
+            @foreach (var item in Model.OrderByDescending(s => s.CreatedAt).Take(6))
+            {
+                <div class="col-lg-2 col-md-4 col-sm-6 col-12">
+                    <a href="#" class="course">
+                        @*<img src="/images/webdesign.jpg" alt="Image placeholder">*@
+                        @if (item.ProductImages != null && item.ProductImages.Count > 0)
+                        {
+                            <img src="data:image;base64,@System.Convert.ToBase64String(item.ProductImages.OrderByDescending(s => s.CreatedAt).FirstOrDefault().ImageData)" alt="Image placeholder" />
+                        }
+                        <h2>@item.Name</h2>
+                        <p>Đăng ký ngay</p>
+                    </a>
+                </div>
+            }
+            @*<div class="col-lg-2 col-md-4 col-sm-6 col-12">
+                <a href="#" class="course">
+                    <img src="~/images/webdesign.jpg" alt="Image placeholder">
+                    <h2>Web Design 101</h2>
+                    <p>Đăng ký ngay</p>
+                </a>
+            </div>*@
+        </div>
+    </div>
+</section>

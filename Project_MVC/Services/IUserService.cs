@@ -9,5 +9,6 @@ namespace Project_MVC.Services
     interface IUserService
     {
         string GetCurrentUserName();
+        string GetCurrentUserId();
     }
 }

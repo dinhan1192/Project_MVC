@@ -171,15 +171,18 @@
                 return false;
             }
 
-            var booleanValue = CheckAvailability();
+            var booleanValue = CheckAvailability(code);
             if (booleanValue === false) {
+                $.alert({
+                    title: 'Code!',
+                    content: code + ' đã tồn tại!',
+                });
                 return false;
             }
         });
     });
 
-    function CheckAvailability() {
-        var code = $("#Code").val();
+    function CheckAvailability(code) {
         var validation = false;
         $.ajax({
             async: false,
@@ -200,7 +203,6 @@
                     //Email not available.
                     //message.css("color", "red");
                     //message.html("Email is NOT available");
-                    alert(code + ' đã tồn tại.');
                     validation = response;
                 }
             }

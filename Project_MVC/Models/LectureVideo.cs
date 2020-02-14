@@ -20,5 +20,13 @@ namespace Project_MVC.Models
         public int DisplayOrder { get; set; }
         public DateTime? CreatedAt { get; set; }
         public string CreatedBy { get; set; }
+
+        #region Rating
+
+        public int Rating { get; set; }
+        public int TotalRaters { get; set; }
+        public double AverageRating { get; set; }
+
+        #endregion
     }
 }

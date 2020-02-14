@@ -28,7 +28,7 @@ namespace Project_MVC.Services
 
         public bool Create(LevelOneProductCategory item, ModelStateDictionary state)
         {
-            ValidateCode(item, state);
+            Validate(item, state);
             //var errors = state.Values.SelectMany(v => v.Errors);
             if (state.IsValid)
             {
@@ -98,7 +98,7 @@ namespace Project_MVC.Services
             throw new NotImplementedException();
         }
 
-        public void ValidateCode(LevelOneProductCategory item, ModelStateDictionary state)
+        public void Validate(LevelOneProductCategory item, ModelStateDictionary state)
         {
             if (string.IsNullOrEmpty(item.Code))
             {
