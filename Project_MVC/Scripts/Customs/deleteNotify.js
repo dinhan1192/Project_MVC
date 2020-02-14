@@ -1,6 +1,16 @@
 ﻿$(document).ready(function () {
+    //debugger;
+    //var lstLink = document.querySelectorAll('[name="deleteNotify"]');
+    //var strType = "";
+    //for (i = 0; i < lstLink.length; i++) {
+    //    var id = lstLink[i].getAttribute("data-type");
+    //    if (id === "Partial") {
+    //        strType = "Partial";
+    //    }
+    //}
     //console.log("123")
     $('.btn-delete-notify').click(function () {
+        debugger;
         var link = $(this).data('request-url');
         var id = $(this).attr("id").replace("delete-", "");
         if (confirm("Are you sure want to delete this item ?")) {

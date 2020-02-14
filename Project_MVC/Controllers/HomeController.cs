@@ -1,4 +1,5 @@
 ﻿using Project_MVC.Models;
+using Project_MVC.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,16 @@ namespace Project_MVC.Controllers
 {
     public class HomeController : Controller
     {
+        private ICRUDService<Product> mySQLProductService;
+
+        public HomeController()
+        {
+            mySQLProductService = new MySQLProductService();
+        }
+
         public ActionResult Index()
         {
-            return View();
+            return View(mySQLProductService.GetList().OrderBy(s => s.CreatedAt).Take(6));
         }
 
         public ActionResult About()

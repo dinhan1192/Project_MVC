@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using static Project_MVC.Models.Lecture;
 
 namespace Project_MVC.Controllers
 {
@@ -14,17 +15,21 @@ namespace Project_MVC.Controllers
     public class LecturesController : Controller
     {
         private ICRUDService<Lecture> mySQLLectureService;
+        private ICRUDService<Product> mySQLProductService;
         private IImageService mySQLImageService;
 
         public LecturesController()
         {
             mySQLLectureService = new MySQLLectureService();
             mySQLImageService = new MySQLImageService();
+            mySQLProductService = new MySQLProductService();
         }
         // GET: Lectures
-        public ActionResult Index()
+        public ActionResult Index(string productCode)
         {
-            return View();
+            ViewBag.ListTopCourse = mySQLProductService.GetList();
+            ViewBag.CurrentCourse = mySQLProductService.Detail(productCode);
+            return View(mySQLLectureService.GetList().Where(s => s.ProductCode == productCode && s.Status == LectureStatus.NotDeleted));
         }
 
         public ActionResult AddLecture(string id)
@@ -37,7 +42,7 @@ namespace Project_MVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddLecture([Bind(Include = "Name,Description,ProductCode")] Lecture lecture, IEnumerable<HttpPostedFileBase> videos)
+        public ActionResult AddLecture([Bind(Include = "Name,Description,ProductCode,DisplayOrder")] Lecture lecture, IEnumerable<HttpPostedFileBase> videos)
         {
             //ModelStateDictionary state = ModelState;
 
@@ -63,6 +68,35 @@ namespace Project_MVC.Controllers
             return View(lecture);
         }
 
+        public ActionResult DetailVideos(string id, int? page)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Lecture lecture = mySQLLectureService.Detail(id);
+            if (lecture == null || lecture.IsDeleted())
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+
+            ViewBag.CurrentCourse = mySQLProductService.Detail(lecture.ProductCode);
+            ViewBag.ListLectureVideos = lecture.LectureVideos.ToList();
+
+            int pageSize = Constant.PageVideoSize;
+            int pageNumber = (page ?? 1);
+            ThisPage thisPage = new ThisPage()
+            {
+                CurrentPage = pageNumber,
+                TotalPage = Math.Ceiling((double)lecture.LectureVideos.Count() / pageSize)
+            };
+            ViewBag.Page = thisPage;
+
+            // nếu page == null thì lấy giá trị là 1, nếu không thì giá trị là page
+            //return View(students.ToList().ToPagedList(pageNumber, pageSize));
+            return View(lecture.LectureVideos.OrderBy(s => s.DisplayOrder).Skip(pageSize * (pageNumber - 1)).Take(pageSize).ToList());
+        }
+
         public ActionResult Edit(string id)
         {
             if (id == null)
@@ -70,6 +104,7 @@ namespace Project_MVC.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Lecture lecture = mySQLLectureService.Detail(id);
+            ViewBag.ProductCode = lecture.ProductCode;
             if (lecture == null || lecture.IsDeleted())
             {
                 return HttpNotFound();
@@ -80,7 +115,7 @@ namespace Project_MVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Name,Description")] Lecture lecture, IEnumerable<HttpPostedFileBase> videos)
+        public ActionResult Edit([Bind(Include = "Id,Name,Description,ProductCode,DisplayOrder")] Lecture lecture, IEnumerable<HttpPostedFileBase> videos)
         {
             //ModelStateDictionary state = ModelState;
             if (lecture == null)
@@ -125,7 +160,7 @@ namespace Project_MVC.Controllers
 
         [HttpPost, ActionName("DeleteVideo")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteVideoConfirmed(string id)
+        public ActionResult DeleteVideo(string id)
         {
             //ModelStateDictionary state = ModelState;
 

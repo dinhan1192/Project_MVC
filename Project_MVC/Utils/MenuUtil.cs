@@ -33,10 +33,7 @@ namespace Project_MVC.Utils
 
         public static List<LevelOneProductCategory> GetLevelOneProductCategories()
         {
-            if (_listLevelOneProductCategories == null || _listLevelOneProductCategories.Count == 0)
-            {
-                _listLevelOneProductCategories = DbContext.LevelOneProductCategories.ToList();
-            }
+            _listLevelOneProductCategories = DbContext.LevelOneProductCategories.ToList();
             return _listLevelOneProductCategories;
         }
 
@@ -51,7 +48,14 @@ namespace Project_MVC.Utils
             //{
             //    _listProductCategories = DbContext.ProductCategories.Where(s => s.LevelOneProductCategory.Code == Code).ToList();
             //}
-            _listProductCategories = DbContext.ProductCategories.Where(s => s.LevelOneProductCategory.Code == Code).ToList();
+            if (string.IsNullOrEmpty(Code))
+            {
+                _listProductCategories = DbContext.ProductCategories.ToList();
+            }
+            else
+            {
+                _listProductCategories = DbContext.ProductCategories.Where(s => s.LevelOneProductCategory.Code == Code).ToList();
+            }
             return _listProductCategories;
         }
 

@@ -31,5 +31,7 @@ namespace Project_MVC.Models
         public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<LectureVideo> LectureVideos { get; set; }
         public DbSet<Lecture> Lectures { get; set; }
+        public DbSet<OwnerOfCourse> OwnerOfCourses { get; set; }
+        public DbSet<UserProduct> UserProducts { get; set; }
     }
 }

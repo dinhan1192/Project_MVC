@@ -28,7 +28,7 @@ namespace Project_MVC.Services
 
         public bool Create(ProductCategory item, ModelStateDictionary state)
         {
-            ValidateCode(item, state);
+            Validate(item, state);
             if (state.IsValid)
             {
                 item.CreatedAt = DateTime.Now;
@@ -102,7 +102,7 @@ namespace Project_MVC.Services
             throw new NotImplementedException();
         }
 
-        public void ValidateCode(ProductCategory item, ModelStateDictionary state)
+        public void Validate(ProductCategory item, ModelStateDictionary state)
         {
             if (string.IsNullOrEmpty(item.Code))
             {

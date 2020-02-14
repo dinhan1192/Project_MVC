@@ -1,0 +1,65 @@
+﻿@using Project_MVC.Utils
+@using Project_MVC.Models
+
+<header role="banner">
+
+    <nav class="navbar navbar-expand-md navbar-dark bg-light">
+        <div class="container">
+            @Html.ActionLink("Skwela", "Index", "Home", new { }, new { @class = "navbar-brand absolute" })
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample05" aria-controls="navbarsExample05" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse navbar-light" id="navbarsExample05">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        @Html.ActionLink("Trang chủ", "Index", "Home", new { }, new { @class = "nav-link" })
+                    </li>
+                    @foreach (var levelOneProductCategory in MenuUtil.GetLevelOneProductCategories())
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@levelOneProductCategory.Name</a>
+                            <div class="dropdown-menu" aria-labelledby="dropdown04">
+                                @foreach (var productCategory in MenuUtil.GetProductCategories(levelOneProductCategory.Code))
+                                {
+                                    @Html.ActionLink(productCategory.Name, "IndexCustomer", "Products", new { productCategoryCode = productCategory.Code }, new { @class = "dropdown-item" })
+                                }
+                                @*<a class="dropdown-item" href="~/Views/Home/courses.cshtml">HTML</a>
+                                    <a class="dropdown-item" href="~/Views/Home/courses.cshtml">WordPress</a>
+                                    <a class="dropdown-item" href="~/Views/Home/courses.cshtml">Web Development</a>
+                                    <a class="dropdown-item" href="~/Views/Home/courses.cshtml">Javascript</a>
+                                    <a class="dropdown-item" href="~/Views/Home/courses.cshtml">Photoshop</a>*@
+                            </div>
+                        </li>
+                    }
+
+                    @*<li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Đào tạo</a>
+                            <div class="dropdown-menu" aria-labelledby="dropdown05">
+                                <a class="dropdown-item" href="#">HTML</a>
+                                <a class="dropdown-item" href="#">WordPress</a>
+                                <a class="dropdown-item" href="#">Web Development</a>
+                                <a class="dropdown-item" href="#">Javascript</a>
+                                <a class="dropdown-item" href="#">Photoshop</a>
+                            </div>
+
+                        </li>*@
+                    <li class="nav-item">
+                        @Html.ActionLink("Blog", "blog", new { }, new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Khám phá", "about", new { }, new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Góp ý kiến", "Contact", new { }, new { @class = "nav-link" })
+                    </li>
+                    @if (RolesUtil.IsInAnyRole(User, new string[] { Constant.Admin, Constant.Employee }))
+                    {
+                        <li> @Html.ActionLink("Đến trang Admin", "Index", "Products", new { }, new { @class = "nav-link" }) </li>
+                    }
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </nav>
+</header>

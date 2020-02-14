@@ -66,6 +66,39 @@ namespace Project_MVC.Controllers
         {
         }
 
+        private void Validate(AppUser appUser)
+        {
+            if (string.IsNullOrEmpty(appUser.FirstName))
+            {
+                ModelState.AddModelError("FirstName", "Phần tên không thể để trống");
+            }
+
+            if (string.IsNullOrEmpty(appUser.LastName))
+            {
+                ModelState.AddModelError("LastName", "Phần họ không thể để trống");
+            }
+
+            if (string.IsNullOrEmpty(appUser.UserName))
+            {
+                ModelState.AddModelError("UserName", "Tên tài khoản không thể để trống");
+            }
+
+            if (string.IsNullOrEmpty(appUser.Email))
+            {
+                ModelState.AddModelError("Email", "Email không thể để trống");
+            }
+
+            if (string.IsNullOrEmpty(appUser.Password))
+            {
+                ModelState.AddModelError("Password", "Mật khẩu không thể để trống");
+            }
+
+            if (string.IsNullOrEmpty(appUser.ConfirmPassword))
+            {
+                ModelState.AddModelError("ConfirmPassword", "Xác nhận mật khẩu không thể để trống");
+            }
+        }
+
         //public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         //{
         //    UserManager = userManager;
@@ -101,6 +134,8 @@ namespace Project_MVC.Controllers
         [HttpPost]
         public async Task<ActionResult> Register(AppUser user)
         {
+            Validate(user);
+            
             if (ModelState.IsValid)
             {
                 var account = new AppUser()
@@ -147,10 +182,11 @@ namespace Project_MVC.Controllers
         }
 
         [HttpPost]
-        public ActionResult ProcessLogin(string username, string password)
+        public ActionResult Login(AppUser appUser, string returnUrl)
         {
-            var user = UserManager.Find(username, password);
-            if (user != null)
+            var user = UserManager.Find(appUser.UserName, appUser.Password);
+
+            if (user != null && user.EmailConfirmed == true)
             {
                 var authenticationManager = System.Web.HttpContext.Current
                     .GetOwinContext().Authentication;
@@ -158,10 +194,15 @@ namespace Project_MVC.Controllers
                     user, DefaultAuthenticationTypes.ApplicationCookie);
                 authenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = false }, userIdentity);
 
-                var roleNames = UserManager.GetRoles(user.Id);
+                if (!string.IsNullOrEmpty(returnUrl))
+                {
+                    return Redirect(returnUrl);
+                }
+
+                var lstRoleName = UserManager.GetRoles(user.Id);
                 string roleName = null;
-                roleName = roleName ?? (roleNames.Contains(Constant.Admin) ? Constant.Admin : null);
-                roleName = roleName ?? (roleNames.Contains(Constant.Employee) ? Constant.Employee : null);
+                roleName = roleName ?? (lstRoleName.Contains(Constant.Admin) ? Constant.Admin : null);
+                roleName = roleName ?? (lstRoleName.Contains(Constant.Employee) ? Constant.Employee : null);
 
                 switch (roleName)
                 {
@@ -170,7 +211,7 @@ namespace Project_MVC.Controllers
                     case Constant.Employee:
                         return Redirect("/Products/Index");
                     default:
-                        return Redirect("/Products/IndexCustomer");
+                        return Redirect("/Home/Index");
                 }
 
                 //if (UserManager.IsInRole(user.Id, Constant.Admin) || UserManager.IsInRole(user.Id, Constant.Employee))
@@ -181,7 +222,21 @@ namespace Project_MVC.Controllers
                 //    return Redirect("/Products/IndexCustomer");
                 //}
             }
-            return View("Login");
+            else if (user != null && user.EmailConfirmed == false)
+            {
+                ModelState.AddModelError("UserName", "Email chưa confirm");
+            }
+            else
+            {
+                ModelState.AddModelError("UserName", "UserName hoặc Password nhập sai");
+            }
+
+            //if (user.EmailConfirmed == false)
+            //{
+            //    ModelState.AddModelError("UserName", "Email chưa confirm");
+            //}
+
+            return View(appUser);
         }
 
         //

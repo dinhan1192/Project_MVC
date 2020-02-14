@@ -1,19 +1,36 @@
 ﻿@{
-    ViewBag.Title = "PageWaitWhileRedirected";
+    ViewBag.Title = "Mời chờ đợi cho đến khi trở lại trang chủ";
     Layout = "~/Views/Shared/_LayoutCustomerPage.cshtml";
-    
+
     //var indexUrl = @Url.Action("Index", "Products");
 }
 
-    <div style="margin-top:20px;">
-        <div style="color:green;">
-            Hello @ViewBag.UserName , please Confirm Email before Login !
+<section class="site-hero site-hero-innerpage overlay" data-stellar-background-ratio="0.5" style="background-image: url(/images/big_image_1.jpg);">
+    <div class="container">
+        <div class="row align-items-center site-hero-inner justify-content-center">
+            <div class="col-md-8 text-center">
+
+                <div class="mb-5 element-animate ">
+                    <h1>@ViewBag.Title</h1>
+                </div>
+            </div>
         </div>
-        <div>
-            Please wait 5 seconds while you are redirected...
-        </div>
-        <div id="back2Index" data-url="@Url.Action("Index", "Products")"></div>
     </div>
+</section>
+
+<section class="site-section bg-light">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-5 box">
+                <h2 class="mb-5">Xin chào @ViewBag.UserName , mời xác nhận Email trước khi Login !</h2>
+                <div>
+                    Mời chờ đợi 5 giây trước khi trở lại trang chủ...
+                </div>
+                <div id="back2Index" data-url="@Url.Action("Index", "Home")"></div>
+            </div>
+        </div>
+    </div>
+</section>
 
 @section scripts{
     <script>

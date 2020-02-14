@@ -34,7 +34,7 @@ function videoStoppedPlaying(event) {
     }
 
     if (timePlayed >= duration && event.type == "ended") {
-        document.getElementById("status").className = "complete";
+        //document.getElementById("status").className = "complete";
         document.getElementById("nextVideo").style.visibility = "visible";
     }
 }

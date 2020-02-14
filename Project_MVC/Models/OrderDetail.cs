@@ -13,7 +13,8 @@ namespace Project_MVC.Models
         [Key, Column(Order = 0)]
         public string ProductCode { get; set; }
         [Key, Column(Order = 1)]
-        public string OrderId { get; set; }
+        [ForeignKey("Order")]
+        public int? OrderId { get; set; }
         public virtual Order Order { get; set; }
         public virtual Product Product { get; set; }
         public int Quantity { get; set; }

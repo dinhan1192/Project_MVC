@@ -19,7 +19,7 @@ namespace Project_MVC.Services
         //bool UpdateNumber(T existItem, T item, ModelStateDictionary state);
         bool Delete(T item, ModelStateDictionary state);
         T Detail(string id);
-        void ValidateCode(T item, ModelStateDictionary state);
+        void Validate(T item, ModelStateDictionary state);
         void ValidateCategory(T item, ModelStateDictionary state);
         bool ValidateStringCode(string code);
         void DisposeDb();
