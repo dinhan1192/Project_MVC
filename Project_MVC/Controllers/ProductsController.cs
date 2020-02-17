@@ -275,11 +275,11 @@ namespace Project_MVC.Controllers
             };
             ViewBag.Page = thisPage;
 
-            //var productCategory = mySQLProductCategoryService.Detail(productCategoryCode);
+            var productCategory = mySQLProductCategoryService.Detail(productCategoryCode);
 
-            //var list = productCategory.OwnerOfCourses.ToList();
+            var list = productCategory.OwnerOfCourses.ToList();
 
-            //ViewBag.Teachers = list;
+            ViewBag.Teachers = list;
 
             // nếu page == null thì lấy giá trị là 1, nếu không thì giá trị là page
             //return View(students.ToList().ToPagedList(pageNumber, pageSize));
