@@ -43,7 +43,7 @@ namespace Project_MVC.Controllers
 
         public ActionResult AddLecture(string id)
         {
-            if(string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(id))
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             ViewBag.ProductCode = id;
             return View();
@@ -97,16 +97,11 @@ namespace Project_MVC.Controllers
             ThisPage thisPage = new ThisPage()
             {
                 CurrentPage = pageNumber,
-                TotalPage = Math.Ceiling((double)lecture.LectureVideos.Count() / pageSize)
+                TotalPage = Math.Ceiling((double)lecture.LectureVideos.Count() / pageSize),
+                LectureId = id
             };
             ViewBag.Page = thisPage;
-            var listCustomerLectureInteract = customerLectureInteractService.GetListByLectureId(lecture.Id);
-            var countListCustomerLectureInteract = listCustomerLectureInteract.Count;
-            var totalRatingLecture = listCustomerLectureInteract.Select(s => s.Rating).Sum();
-            if (listCustomerLectureInteract != null && countListCustomerLectureInteract != 0)
-            {
-                ViewBag.CurrentRating = totalRatingLecture / countListCustomerLectureInteract;
-            }
+            ViewBag.CurrentRating = lecture.Rating;
 
             // nếu page == null thì lấy giá trị là 1, nếu không thì giá trị là page
             //return View(students.ToList().ToPagedList(pageNumber, pageSize));

@@ -11,6 +11,8 @@ namespace Project_MVC.Services
     {
         void CreateRating(decimal rating, int? lectureId, string userId);
         void UpdateRating(decimal rating, int? customerLectureInteractId);
+        void UpdateProductRating(string productCode);
+        string UpdateLectureRating(decimal rating, int? lectureId, string type);
         CustomerLectureInteract DetailByLectureIdAndUserId(int? lectureId);
         List<CustomerLectureInteract> GetListByLectureId(int? lectureId);
     }

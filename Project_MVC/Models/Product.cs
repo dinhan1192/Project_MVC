@@ -25,7 +25,7 @@ namespace Project_MVC.Models
         //public int NumberOfLeture { get; set; }
         [Required]
         public double Price { get; set; }
-        public int Rating { get; set; }
+        public decimal? Rating { get; set; }
         public string Description { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }

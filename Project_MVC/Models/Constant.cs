@@ -19,6 +19,9 @@ namespace Project_MVC.Models
         public const int EmailConfirmed = 1;
         public const int FirstDisplayOrder = 1;
         public const string Customer = "Customer";
+        public const string CreateRating = "CreateRating";
+        public const string UpdateRating = "UpdateRating";
+        
         #region Images
 
         public const int ProductImage = 1;
