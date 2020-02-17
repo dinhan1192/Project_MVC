@@ -186,7 +186,14 @@ namespace Project_MVC.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             ProductCategory productCategory = mySQLProductCategoryService.Detail(id);
-            productCategory.LevelOneProductCategoryNameAndCode = productCategory.LevelOneProductCategory.Code + " - " + productCategory.LevelOneProductCategory.Name;
+            if (productCategory.LevelOneProductCategory == null)
+            {
+                productCategory.LevelOneProductCategoryNameAndCode = "";
+            }
+            else
+            {
+                productCategory.LevelOneProductCategoryNameAndCode = productCategory.LevelOneProductCategory.Code + " - " + productCategory.LevelOneProductCategory.Name;
+            }
             if (productCategory == null || productCategory.IsDeleted())
             {
                 return HttpNotFound();
@@ -199,7 +206,7 @@ namespace Project_MVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Code,Name,Description")] ProductCategory productCategory)
+        public ActionResult Edit([Bind(Include = "Code,Name,Description,LevelOneProductCategoryCode")] ProductCategory productCategory)
         {
             //ModelStateDictionary state = ModelState;
 

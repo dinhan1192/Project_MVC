@@ -9,6 +9,16 @@
     string nextPageInString = Convert.ToString(nextPage);
 
     var totalPage = Model.TotalPage;
+    var type = Model.CurrentType;
+    var categoryCode = Model.ProductCategoryCode;
+    if (string.IsNullOrEmpty(type))
+    {
+        type = "";
+    }
+    if (string.IsNullOrEmpty(categoryCode))
+    {
+        categoryCode = "";
+    }
 }
 
 <div>
@@ -20,29 +30,29 @@
         @if (currentPage > 1)
         {
             <li class="page-item">
-                @Html.ActionLink("First", "Index", new { page = 1 }, new { @class = "page-link" })
+                @Html.ActionLink("First", "Index" + @type, new { page = 1, productCategoryCode = categoryCode }, new { @class = "page-link" })
             </li>
             <li class="page-item">
-                @Html.ActionLink("Previous", "Index", new { page = currentPage - 1 }, new { @class = "page-link" })
+                @Html.ActionLink("Previous", "Index" + @type, new { page = currentPage - 1, productCategoryCode = categoryCode }, new { @class = "page-link" })
             </li>
             <li class="page-item">
-                @Html.ActionLink(previousPageInString, "Index", new { page = currentPage - 1 }, new { @class = "page-link" })
+                @Html.ActionLink(previousPageInString, "Index" + @type, new { page = currentPage - 1, productCategoryCode = categoryCode }, new { @class = "page-link" })
             </li>
         }
         <li class="page-item active">
             @*<a class="page-link" href="@Url.Content(~/Index?page = @currentPage)">@currentPage</a>*@
-            @Html.ActionLink(currentPageInString, "Index", new { page = currentPage }, new { @class = "page-link" })
+            @Html.ActionLink(currentPageInString, "Index" + @type, new { page = currentPage, productCategoryCode = categoryCode }, new { @class = "page-link" })
         </li>
         @if (currentPage < totalPage)
         {
             <li class="page-item">
-                @Html.ActionLink(nextPageInString, "Index", new { page = currentPage + 1 }, new { @class = "page-link" })
+                @Html.ActionLink(nextPageInString, "Index" + @type, new { page = currentPage + 1, productCategoryCode = categoryCode }, new { @class = "page-link" })
             </li>
             <li class="page-item">
-                @Html.ActionLink("Next", "Index", new { page = currentPage + 1 }, new { @class = "page-link" })
+                @Html.ActionLink("Next", "Index" + @type, new { page = currentPage + 1, productCategoryCode = categoryCode }, new { @class = "page-link" })
             </li>
             <li class="page-item">
-                @Html.ActionLink("Final", "Index", new { page = totalPage }, new { @class = "page-link" })
+                @Html.ActionLink("Final", "Index" + @type, new { page = totalPage, productCategoryCode = categoryCode }, new { @class = "page-link" })
             </li>
         }
     </ul>
