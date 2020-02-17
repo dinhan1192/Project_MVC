@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity.Owin;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using Project_MVC.Models;
 using System;
 using System.Collections.Generic;
@@ -13,10 +14,12 @@ namespace Project_MVC.Services
     {
         private MyDbContext _db;
         private IUserService userService;
+        private ICustomerLectureInteractService customerLectureInteractService;
 
         public MySQLImageService()
         {
             userService = new UserService();
+            customerLectureInteractService = new MySQLCustomerLectureInteractService();
         }
 
         public MyDbContext DbContext
@@ -43,7 +46,25 @@ namespace Project_MVC.Services
             return DbContext.LectureVideos.Find(fileId);
         }
 
-        public List<ProductImage> SaveImage2List(string code, IEnumerable<HttpPostedFileBase> images)
+        public bool Rating(decimal rating, int? lectureId)
+        {
+            var userId = HttpContext.Current.User.Identity.GetUserId();
+            var customerLectureInteractList = DbContext.CustomerLectureInteracts.Where(s => s.LectureId == lectureId
+            && s.UserId == userId).ToList();
+
+            if(customerLectureInteractList.Count == 0 || customerLectureInteractList == null)
+            {
+                customerLectureInteractService.CreateRating(rating, lectureId, HttpContext.Current.User.Identity.GetUserId());
+            }
+            else
+            {
+                customerLectureInteractService.UpdateRating(rating, customerLectureInteractList.FirstOrDefault().Id);
+            }
+
+            return false;
+        }
+
+        public List<ProductImage> SaveImage2List(string code, int? type, IEnumerable<HttpPostedFileBase> images)
         {
             if (images != null)
             {
@@ -55,7 +76,18 @@ namespace Project_MVC.Services
                         using (var br = new BinaryReader(image.InputStream))
                         {
                             var data = br.ReadBytes(image.ContentLength);
-                            var img = new ProductImage { ProductCode = code };
+                            var img = new ProductImage();
+                            switch (type)
+                            {
+                                case Constant.ProductImage:
+                                    img.ProductCode = code;
+                                    break;
+                                case Constant.OwnerOfCourseImage:
+                                    //img.OwnerOfCourseCode = code;
+                                    break;
+                                default:
+                                    break;
+                            }
                             img.ImageData = data;
                             img.CreatedAt = DateTime.Now;
                             img.CreatedBy = userService.GetCurrentUserName();

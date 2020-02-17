@@ -18,6 +18,12 @@ namespace Project_MVC.Models
         public const int EmailNotConfirmed = 0; 
         public const int EmailConfirmed = 1;
         public const int FirstDisplayOrder = 1;
+        #region Images
+
+        public const int ProductImage = 1;
+        public const int OwnerOfCourseImage = 2;
+
+        #endregion
 
         public static List<SelectListItem> ListActionName = new List<SelectListItem>()
         {

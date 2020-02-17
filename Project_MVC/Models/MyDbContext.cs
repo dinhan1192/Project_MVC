@@ -12,7 +12,8 @@ namespace Project_MVC.Models
     {
         public MyDbContext() : base("name=SQLContext")
         {
-
+            //this.Configuration.ProxyCreationEnabled = false;
+            //this.Configuration.LazyLoadingEnabled = false;
         }
 
         public static MyDbContext Create()
@@ -33,5 +34,6 @@ namespace Project_MVC.Models
         public DbSet<Lecture> Lectures { get; set; }
         public DbSet<OwnerOfCourse> OwnerOfCourses { get; set; }
         public DbSet<UserProduct> UserProducts { get; set; }
+        public DbSet<CustomerLectureInteract> CustomerLectureInteracts { get; set; }
     }
 }

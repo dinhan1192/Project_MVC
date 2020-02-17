@@ -11,6 +11,7 @@ namespace Project_MVC.Migrations
         {
             AutomaticMigrationsEnabled = true;
             AutomaticMigrationDataLossAllowed = true;
+            this.ContextKey = "Project_MVC.Migrations.Configuration";
         }
 
         protected override void Seed(Project_MVC.Models.MyDbContext context)

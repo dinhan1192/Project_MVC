@@ -3,14 +3,16 @@
 @{
     ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var productCategory = "Category";
 }
 
 <h2>Edit</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Edit", "OwnerOfCourses", FormMethod.Post, new
+{ enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>OwnerOfCourse</h4>
         <hr />
@@ -26,10 +28,38 @@
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.Occupation, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Occupation, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Occupation, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
             @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ProductCategoryNameAndCode, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.ProductCategoryNameAndCode, new { @class = "form-control typeahead", @id = "AutoComplete", Name = "AutoComplete", data_provide = "typeahead", data_request_url = "/Products/GetListProductCategories", data_type = productCategory })
+                @*<input id="ProductCategoryId" type="text" name="Autocomplete" value="" class="form-control typeahead" data-provide="typeahead" />*@
+                @*<input type="hidden" name="ProductCategoryId" id="hidProductCategoryId" />*@
+                @Html.HiddenFor(model => model.ProductCategoryCode, new { @id = "hidCode" + productCategory })
+                @Html.ValidationMessageFor(model => model.ProductCategoryNameAndCode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Owner Of Course Image", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type='file' multiple id='fileUpload' name="images" accept="image/*" />
+                @*@Html.TextBoxFor(model => model.ProductImageFile, null, new { htmlAttributes = new {  type="file", @class="input-file" } })*@
+                @*@Html.ValidationMessageFor(model => model.ProductImageFile, "", new { @class = "text-danger" })*@
             </div>
         </div>
 
@@ -44,3 +74,8 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/custom")
+}

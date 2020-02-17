@@ -9,6 +9,12 @@
     var currentCourse = ViewBag.CurrentCourse as Product;
     var lstLectureVideos = ViewBag.ListLectureVideos as List<LectureVideo>;
     var image = currentCourse.ProductImages.OrderByDescending(s => s.CreatedAt).FirstOrDefault();
+
+    var rating = (decimal?)ViewBag.CurrentRating;
+    if (rating == null)
+    {
+        rating = 0;
+    }
 }
 
 <section class="site-hero overlay" data-stellar-background-ratio="0.5" style="background-image: url(data:image;base64,@System.Convert.ToBase64String(image.ImageData));">
@@ -84,8 +90,27 @@
         <div class="row justify-content-center">
             <div class="col-md-5 box">
                 <h2 class="mb-5">Đánh giá</h2>
-                <div class="stars-outer">
-                    <div class="stars-inner"></div>
+                <div class="stars-outer ratingCourse">
+                    <div class="stars-inner">
+
+                    </div>
+                    <div class="stars-finalinner"></div>
+                </div>
+
+                <div>
+                    @using (Html.BeginForm("RatingLectureVideo", "Lectures", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.Hidden("rating")
+                        @Html.Hidden("currentLectureId", Model.FirstOrDefault().LectureId)
+                        @Html.Hidden("currentPage", thisPage.CurrentPage)
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Đánh giá" class="btn btn-default" />
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
@@ -94,24 +119,69 @@
 
 @section scripts{
     @Scripts.Render("~/bundles/video");
+    <script>
+        var getRating = @rating;
+        const starTotal = 5;
+        var previousPercentage = 0;
+
+         const ratings = {
+            ratingCourse: getRating,
+        };
+
+        for (const rating in ratings) {
+            // 2
+            const starPercentage = (ratings[rating] / starTotal) * 100;
+            // 3
+            const starPercentageRounded = `${(Math.round(starPercentage / 10) * 10)}%`;
+            // 4
+            document.querySelector(`.${rating} .stars-inner`).style.width = starPercentageRounded;
+            previousPercentage = starPercentage;
+            };
+
+        $(".stars-outer").click(function (e) {
+            var thisOffset = $(this).offset().left;
+            var relX = e.pageX - thisOffset;
+             var perc = relX / $(this).width() * 100;
+          //var perc = (e.pageX - this.offsetLeft) / $(this).outerWidth() * 100;
+            getRating = starTotal / 100 * perc;
+
+             const ratings = {
+            ratingCourse: getRating,
+        };
+
+        for (const rating in ratings) {
+            // 2
+            const starPercentage = (ratings[rating] / starTotal) * 100;
+            //const ratingStarPercentage = (starPercentage / previousPercentage) * 100;
+            // 3
+            const starPercentageRounded = `${(Math.round(starPercentage / 10) * 10)}%`;
+            // 4
+            
+            document.querySelector(`.${rating} .stars-finalinner`).style.width = starPercentageRounded;
+            };
+
+             $('#rating').val(getRating);
+        })
+
+    </script>
 }
 
 @section CustomStyles{
     <style>
         /*#watchVideo {
-            margin-top: 100px;
-        }
-        #video{
-            margin-top: 1px;
-        }
-        #nameOfVid{
-            margin-bottom: 2px;
-        }*/
+                margin-top: 100px;
+            }
+            #video{
+                margin-top: 1px;
+            }
+            #nameOfVid{
+                margin-bottom: 2px;
+            }*/
         #video {
             /*position: absolute;
-            z-index: -1;
-            top: 0;
-            left: 0;*/
+                z-index: -1;
+                top: 0;
+                left: 0;*/
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -162,6 +232,19 @@
             .stars-inner::before {
                 content: "\f005 \f005 \f005 \f005 \f005";
                 color: #f8ce0b;
+            }
+
+        .stars-finalinner {
+            position: absolute;
+            top: 0;
+            left: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            width: 0;
+        }
+        .stars-finalinner::before {
+                content: "\f005 \f005 \f005 \f005 \f005";
+                 color: red;
             }
     </style>
 }

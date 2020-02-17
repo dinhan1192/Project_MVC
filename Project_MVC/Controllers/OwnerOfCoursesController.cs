@@ -7,17 +7,25 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Project_MVC.Models;
+using Project_MVC.Services;
 
 namespace Project_MVC.Controllers
 {
     public class OwnerOfCoursesController : Controller
     {
         private MyDbContext db = new MyDbContext();
+        private ICRUDService<OwnerOfCourse> mySQLOwnerOfCourseService;
+
+        public OwnerOfCoursesController()
+        {
+            mySQLOwnerOfCourseService = new MySQLOwnerOfCourseService();
+        }
 
         // GET: OwnerOfCourses
         public ActionResult Index()
         {
-            return View(db.OwnerOfCourses.ToList());
+            var list = db.OwnerOfCourses.ToList();
+            return View(list);
         }
 
         // GET: OwnerOfCourses/Details/5
@@ -46,12 +54,10 @@ namespace Project_MVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Code,Name,Description,CreatedAt,UpdatedAt,DeletedAt,CreatedBy,UpdatedBy,DeletedBy,Status")] OwnerOfCourse ownerOfCourse)
+        public ActionResult Create([Bind(Include = "Code,Name,Description,ProductCategoryCode,Occupation")] OwnerOfCourse ownerOfCourse, IEnumerable<HttpPostedFileBase> images)
         {
-            if (ModelState.IsValid)
+            if (mySQLOwnerOfCourseService.CreateWithImage(ownerOfCourse, ModelState, images, null))
             {
-                db.OwnerOfCourses.Add(ownerOfCourse);
-                db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -66,6 +72,14 @@ namespace Project_MVC.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             OwnerOfCourse ownerOfCourse = db.OwnerOfCourses.Find(id);
+            if (ownerOfCourse.ProductCategory == null)
+            {
+                ownerOfCourse.ProductCategoryNameAndCode = "";
+            }
+            else
+            {
+                ownerOfCourse.ProductCategoryNameAndCode = ownerOfCourse.ProductCategory.Code + " - " + ownerOfCourse.ProductCategory.Name;
+            }
             if (ownerOfCourse == null)
             {
                 return HttpNotFound();
@@ -78,14 +92,22 @@ namespace Project_MVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Code,Name,Description,CreatedAt,UpdatedAt,DeletedAt,CreatedBy,UpdatedBy,DeletedBy,Status")] OwnerOfCourse ownerOfCourse)
+        public ActionResult Edit([Bind(Include = "Code,Name,Description,ProductCategoryCode,Occupation")] OwnerOfCourse ownerOfCourse, IEnumerable<HttpPostedFileBase> images)
         {
-            if (ModelState.IsValid)
+            if (ownerOfCourse == null || ownerOfCourse.Code == null)
             {
-                db.Entry(ownerOfCourse).State = EntityState.Modified;
-                db.SaveChanges();
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var existOwnerOfCourse = mySQLOwnerOfCourseService.Detail(ownerOfCourse.Code);
+            if (existOwnerOfCourse == null || existOwnerOfCourse.IsDeleted())
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            if (mySQLOwnerOfCourseService.UpdateWithImage(existOwnerOfCourse, ownerOfCourse, ModelState, images))
+            {
                 return RedirectToAction("Index");
             }
+
             return View(ownerOfCourse);
         }
 
