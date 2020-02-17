@@ -8,6 +8,7 @@
     var currentCourse = ViewBag.CurrentCourse as Product;
 
     var image = currentCourse.ProductImages.OrderByDescending(s => s.CreatedAt).FirstOrDefault();
+    var teachers = ViewBag.Teachers as List<OwnerOfCourse>;
 }
 
 <section class="site-hero overlay" data-stellar-background-ratio="0.5" style="background-image: url(data:image;base64,@System.Convert.ToBase64String(image.ImageData));">
@@ -49,65 +50,65 @@
             </div>
         }
         @*<div class="row bg-light align-items-center p-4 episode">
-            <div class="col-md-3">
-                <span class="episode-number">1</span>
+                <div class="col-md-3">
+                    <span class="episode-number">1</span>
+                </div>
+                <div class="col-md-9">
+                    <p class="meta">Phần 1 <a href="#">Runtime 2:53</a></p>
+                    <h2><a href="#">Một số tiêu đề ở đây cho video</a></h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto, fugit!</p>
+                </div>
             </div>
-            <div class="col-md-9">
-                <p class="meta">Phần 1 <a href="#">Runtime 2:53</a></p>
-                <h2><a href="#">Một số tiêu đề ở đây cho video</a></h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto, fugit!</p>
-            </div>
-        </div>
 
-        <div class="row align-items-center p-4 episode">
-            <div class="col-md-3">
-                <span class="episode-number">2</span>
+            <div class="row align-items-center p-4 episode">
+                <div class="col-md-3">
+                    <span class="episode-number">2</span>
+                </div>
+                <div class="col-md-9">
+                    <p class="meta">Phần 2 <a href="#">Runtime 5:12</a></p>
+                    <h2><a href="#">Some Title Here For The Video</a></h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto, fugit!</p>
+                </div>
             </div>
-            <div class="col-md-9">
-                <p class="meta">Phần 2 <a href="#">Runtime 5:12</a></p>
-                <h2><a href="#">Some Title Here For The Video</a></h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto, fugit!</p>
-            </div>
-        </div>
 
-        <div class="row bg-light align-items-center p-4 episode">
-            <div class="col-md-3">
-                <span class="episode-number">3</span>
+            <div class="row bg-light align-items-center p-4 episode">
+                <div class="col-md-3">
+                    <span class="episode-number">3</span>
+                </div>
+                <div class="col-md-9">
+                    <p class="meta">Episode 3 <a href="#">Runtime 5:12</a></p>
+                    <h2><a href="#">Some Title Here For The Video</a></h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto, fugit!</p>
+                </div>
             </div>
-            <div class="col-md-9">
-                <p class="meta">Episode 3 <a href="#">Runtime 5:12</a></p>
-                <h2><a href="#">Some Title Here For The Video</a></h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto, fugit!</p>
-            </div>
-        </div>
 
-        <div class="row align-items-center p-4 episode">
-            <div class="col-md-3">
-                <span class="episode-number">4</span>
+            <div class="row align-items-center p-4 episode">
+                <div class="col-md-3">
+                    <span class="episode-number">4</span>
+                </div>
+                <div class="col-md-9">
+                    <p class="meta">Episode 4 <a href="#">Runtime 6:55</a></p>
+                    <h2><a href="#">Some Title Here For The Video</a></h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto, fugit!</p>
+                </div>
             </div>
-            <div class="col-md-9">
-                <p class="meta">Episode 4 <a href="#">Runtime 6:55</a></p>
-                <h2><a href="#">Some Title Here For The Video</a></h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto, fugit!</p>
-            </div>
-        </div>
 
-        <div class="row bg-light align-items-center p-4 episode">
-            <div class="col-md-3">
-                <span class="episode-number">5</span>
-            </div>
-            <div class="col-md-9">
-                <p class="meta">Episode 5 <a href="#">Runtime 14:33</a></p>
-                <h2><a href="#">Some Title Here For The Video</a></h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto, fugit!</p>
-            </div>
-        </div>*@
+            <div class="row bg-light align-items-center p-4 episode">
+                <div class="col-md-3">
+                    <span class="episode-number">5</span>
+                </div>
+                <div class="col-md-9">
+                    <p class="meta">Episode 5 <a href="#">Runtime 14:33</a></p>
+                    <h2><a href="#">Some Title Here For The Video</a></h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto, fugit!</p>
+                </div>
+            </div>*@
     </div>
 </section>
 
 @Html.Partial("_TopCourses", @listTopCourse)
 
-@Html.Partial("_Teachers")
+@Html.Partial("_Teachers", @teachers)
 
 <section class="section-cover bg-dark">
     <div class="container">

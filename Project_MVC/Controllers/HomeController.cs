@@ -19,7 +19,8 @@ namespace Project_MVC.Controllers
 
         public ActionResult Index()
         {
-            return View(mySQLProductService.GetList().OrderBy(s => s.CreatedAt).Take(6));
+            var list = mySQLProductService.GetList();
+            return View(list);
         }
 
         public ActionResult About()

@@ -70,7 +70,7 @@ namespace Project_MVC.Services
                 item.Status = ProductStatus.NotDeleted;
                 DbContext.Products.Add(item);
                 // add image to table ProductImages
-                item.ProductImages = mySQLImageService.SaveImage2List(item.Code, images);
+                item.ProductImages = mySQLImageService.SaveImage2List(item.Code, Constant.OwnerOfCourseImage, images);
                 //item.ProductVideos = mySQLImageService.SaveVideo2List(item.Code, videos);
                 //
                 DbContext.SaveChanges();
@@ -164,7 +164,7 @@ namespace Project_MVC.Services
                 //var list = existItem.ProductImages;
                 DbContext.Products.AddOrUpdate(existItem);
                 // add image to table ProductImages
-                var imageList = mySQLImageService.SaveImage2List(item.Code, images);
+                var imageList = mySQLImageService.SaveImage2List(item.Code, Constant.ProductImage, images);
                 DbContext.ProductImages.AddRange(imageList);
                 //
                 DbContext.SaveChanges();

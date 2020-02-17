@@ -69,6 +69,7 @@ namespace Project_MVC.Controllers
             }
             ViewBag.ListTopCourse = mySQLProductService.GetList();
             ViewBag.ReturnUrlCourseIntro = Request.RawUrl;
+            ViewBag.Teachers = mySQLProductCategoryService.Detail(mySQLProductService.Detail(productCode).ProductCategoryCode).OwnerOfCourses.ToList();
             return View(mySQLProductService.Detail(productCode));
         }
 
@@ -274,6 +275,12 @@ namespace Project_MVC.Controllers
             };
             ViewBag.Page = thisPage;
 
+            //var productCategory = mySQLProductCategoryService.Detail(productCategoryCode);
+
+            //var list = productCategory.OwnerOfCourses.ToList();
+
+            //ViewBag.Teachers = list;
+
             // nếu page == null thì lấy giá trị là 1, nếu không thì giá trị là page
             //return View(students.ToList().ToPagedList(pageNumber, pageSize));
             return View(products.Skip(pageSize * (pageNumber - 1)).Take(pageSize).ToList());
@@ -478,6 +485,14 @@ namespace Project_MVC.Controllers
             else
             {
                 product.ProductCategoryNameAndCode = product.ProductCategory.Code + " - " + product.ProductCategory.Name;
+            }
+            if (product.OwnerOfCourse == null)
+            {
+                product.OwnerOfCourseNameAndCode = "";
+            }
+            else
+            {
+                product.OwnerOfCourseNameAndCode = product.OwnerOfCourse.Code + " - " + product.OwnerOfCourse.Name;
             }
             if (product == null || product.IsDeleted())
             {

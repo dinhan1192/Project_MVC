@@ -28,6 +28,7 @@ namespace Project_MVC.Models
         public string DeletedBy { get; set; }
         public ProductCategoryStatus Status { get; set; }
         public virtual ICollection<Product> Products { get; set; }
+        public virtual ICollection<OwnerOfCourse> OwnerOfCourses { get; set; }
         [ForeignKey("LevelOneProductCategory")]
         public string LevelOneProductCategoryCode { get; set; }
         public virtual LevelOneProductCategory LevelOneProductCategory { get; set; }

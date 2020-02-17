@@ -16,19 +16,28 @@ namespace Project_MVC.Controllers
     {
         private ICRUDService<Lecture> mySQLLectureService;
         private ICRUDService<Product> mySQLProductService;
+        private ICRUDService<ProductCategory> mySQLProductCategoryService;
         private IImageService mySQLImageService;
+        private ICustomerLectureInteractService customerLectureInteractService;
 
         public LecturesController()
         {
             mySQLLectureService = new MySQLLectureService();
             mySQLImageService = new MySQLImageService();
             mySQLProductService = new MySQLProductService();
+            mySQLProductCategoryService = new MySQLProductCategoryService();
+            customerLectureInteractService = new MySQLCustomerLectureInteractService();
         }
         // GET: Lectures
         public ActionResult Index(string productCode)
         {
+            if (string.IsNullOrEmpty(productCode))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
             ViewBag.ListTopCourse = mySQLProductService.GetList();
             ViewBag.CurrentCourse = mySQLProductService.Detail(productCode);
+            ViewBag.Teachers = mySQLProductCategoryService.Detail(mySQLProductService.Detail(productCode).ProductCategoryCode).OwnerOfCourses.ToList();
             return View(mySQLLectureService.GetList().Where(s => s.ProductCode == productCode && s.Status == LectureStatus.NotDeleted));
         }
 
@@ -91,6 +100,13 @@ namespace Project_MVC.Controllers
                 TotalPage = Math.Ceiling((double)lecture.LectureVideos.Count() / pageSize)
             };
             ViewBag.Page = thisPage;
+            var listCustomerLectureInteract = customerLectureInteractService.GetListByLectureId(lecture.Id);
+            var countListCustomerLectureInteract = listCustomerLectureInteract.Count;
+            var totalRatingLecture = listCustomerLectureInteract.Select(s => s.Rating).Sum();
+            if (listCustomerLectureInteract != null && countListCustomerLectureInteract != 0)
+            {
+                ViewBag.CurrentRating = totalRatingLecture / countListCustomerLectureInteract;
+            }
 
             // nếu page == null thì lấy giá trị là 1, nếu không thì giá trị là page
             //return View(students.ToList().ToPagedList(pageNumber, pageSize));
@@ -133,6 +149,20 @@ namespace Project_MVC.Controllers
             }
 
             return View(lecture);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult RatingLectureVideo(string rating, string currentLectureId, int? currentPage)
+        {
+            var rate = Convert.ToDecimal(rating);
+            //ModelStateDictionary state = ModelState;
+            if (mySQLImageService.Rating(rate, Convert.ToInt32(currentLectureId)))
+            {
+                return RedirectToAction("DetailVideos", new { id = currentLectureId, page = currentPage });
+            }
+
+            return RedirectToAction("DetailVideos", new { id = currentLectureId, page = currentPage });
         }
 
         [HttpPost, ActionName("Delete")]

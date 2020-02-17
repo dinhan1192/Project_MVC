@@ -9,8 +9,10 @@
             </div>
         </div>
         <div class="row top-course">
-            @foreach (var item in Model.OrderByDescending(s => s.CreatedAt).Take(6))
-            {
+            @foreach (var item in Model.OrderBy(s => s.CreatedAt).Take(6))
+                //    .ToList().Select(s =>
+                //new { s.Name, s.ProductImages })
+                {
                 <div class="col-lg-2 col-md-4 col-sm-6 col-12">
                     <a href="#" class="course">
                         @*<img src="/images/webdesign.jpg" alt="Image placeholder">*@
@@ -24,12 +26,12 @@
                 </div>
             }
             @*<div class="col-lg-2 col-md-4 col-sm-6 col-12">
-                <a href="#" class="course">
-                    <img src="~/images/webdesign.jpg" alt="Image placeholder">
-                    <h2>Web Design 101</h2>
-                    <p>Đăng ký ngay</p>
-                </a>
-            </div>*@
+                    <a href="#" class="course">
+                        <img src="~/images/webdesign.jpg" alt="Image placeholder">
+                        <h2>Web Design 101</h2>
+                        <p>Đăng ký ngay</p>
+                    </a>
+                </div>*@
         </div>
     </div>
 </section>
