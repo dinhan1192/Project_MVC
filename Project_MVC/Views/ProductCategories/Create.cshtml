@@ -4,6 +4,7 @@
     ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var url = "/ProductCategories/GetListLevelOneProductCategories";
+    var productCategory = "ProductCategory";
 }
 
 <h2>Create</h2>
@@ -36,10 +37,10 @@
     <div class="form-group">
         @Html.LabelFor(model => model.LevelOneProductCategoryNameAndCode, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.TextBoxFor(model => model.LevelOneProductCategoryNameAndCode, new { @class = "form-control typeahead", @id = "AutoComplete", @name = "AutoComplete", data_provide = "typeahead", data_request_url = @url })
+            @Html.TextBoxFor(model => model.LevelOneProductCategoryNameAndCode, new { @class = "form-control typeahead", @id = "AutoComplete", @name = "AutoComplete", data_provide = "typeahead", data_request_url = @url, data_type = productCategory })
             @*<input id="ProductCategoryId" type="text" name="Autocomplete" value="" class="form-control typeahead" data-provide="typeahead" />*@
             @*<input type="hidden" name="ProductCategoryId" id="hidProductCategoryId" />*@
-            @Html.HiddenFor(model => model.LevelOneProductCategoryCode, new { @id = "hidCode" })
+            @Html.HiddenFor(model => model.LevelOneProductCategoryCode, new { @id = "hidCode" + productCategory })
             @Html.ValidationMessageFor(model => model.LevelOneProductCategoryNameAndCode, "", new { @class = "text-danger" })
         </div>
     </div>

@@ -259,6 +259,9 @@ namespace Project_MVC.Controllers
             if (!String.IsNullOrEmpty(productCategoryCode))
             {
                 products = products.Where(s => s.ProductCategoryCode == productCategoryCode);
+                var productCategory = mySQLProductCategoryService.Detail(productCategoryCode);
+                var list = productCategory.OwnerOfCourses.ToList();
+                ViewBag.Teachers = list;
             }
 
             if (!String.IsNullOrEmpty(searchString))
@@ -271,19 +274,15 @@ namespace Project_MVC.Controllers
             ThisPage thisPage = new ThisPage()
             {
                 CurrentPage = pageNumber,
-                TotalPage = Math.Ceiling((double)products.Count() / pageSize)
+                TotalPage = Math.Ceiling((double)products.Count() / pageSize),
+                ProductCategoryCode = productCategoryCode,
+                CurrentType = Constant.Customer
             };
             ViewBag.Page = thisPage;
 
-            var productCategory = mySQLProductCategoryService.Detail(productCategoryCode);
-
-            var list = productCategory.OwnerOfCourses.ToList();
-
-            ViewBag.Teachers = list;
-
             // nếu page == null thì lấy giá trị là 1, nếu không thì giá trị là page
             //return View(students.ToList().ToPagedList(pageNumber, pageSize));
-            return View(products.Skip(pageSize * (pageNumber - 1)).Take(pageSize).ToList());
+            return View(products.Skip(pageSize * (pageNumber - 1)).Take(pageSize).OrderByDescending(s => s.UpdatedAt).ToList());
         }
 
         [Authorize(Roles = Constant.Admin + "," + Constant.Employee)]
@@ -326,10 +325,10 @@ namespace Project_MVC.Controllers
                     products = products.OrderByDescending(s => s.Name);
                     break;
                 case "Date":
-                    products = products.OrderBy(s => s.CreatedAt);
+                    products = products.OrderBy(s => s.UpdatedAt);
                     break;
                 case "date_desc":
-                    products = products.OrderByDescending(s => s.CreatedAt);
+                    products = products.OrderByDescending(s => s.UpdatedAt);
                     break;
                 default:
                     products = products.OrderBy(s => s.Name);
@@ -347,7 +346,7 @@ namespace Project_MVC.Controllers
 
             // nếu page == null thì lấy giá trị là 1, nếu không thì giá trị là page
             //return View(students.ToList().ToPagedList(pageNumber, pageSize));
-            return View(products.Skip(pageSize * (pageNumber - 1)).Take(pageSize).ToList());
+            return View(products.Skip(pageSize * (pageNumber - 1)).Take(pageSize).OrderByDescending(s => s.UpdatedAt).ToList());
         }
 
         [Authorize(Roles = Constant.Admin + "," + Constant.Employee)]

@@ -67,7 +67,7 @@
             @Html.DisplayNameFor(model => model.Description)
         </th>
         <th>
-            @Html.ActionLink("Created At", "Index", new { sortOrder = ViewBag.DateSortParm })
+            @Html.ActionLink("Date of Update", "Index", new { sortOrder = ViewBag.DateSortParm })
         </th>
         <th>
             Product Images
@@ -97,7 +97,7 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
+                @Html.DisplayFor(modelItem => item.UpdatedAt)
             </td>
             <td>
                 @foreach (var image in item.ProductImages)

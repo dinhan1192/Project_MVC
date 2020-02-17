@@ -81,6 +81,7 @@ namespace Project_MVC.Services
             {
                 existItem.Name = item.Name;
                 existItem.Description = item.Description;
+                existItem.LevelOneProductCategoryCode = item.LevelOneProductCategoryCode;
                 existItem.UpdatedAt = DateTime.Now;
                 existItem.UpdatedBy = userService.GetCurrentUserName();
                 DbContext.ProductCategories.AddOrUpdate(existItem);
