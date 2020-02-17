@@ -51,15 +51,23 @@ namespace Project_MVC.Services
             var userId = HttpContext.Current.User.Identity.GetUserId();
             var customerLectureInteractList = DbContext.CustomerLectureInteracts.Where(s => s.LectureId == lectureId
             && s.UserId == userId).ToList();
+            var type = "";
 
             if(customerLectureInteractList.Count == 0 || customerLectureInteractList == null)
             {
                 customerLectureInteractService.CreateRating(rating, lectureId, HttpContext.Current.User.Identity.GetUserId());
+                type = Constant.CreateRating;
             }
             else
             {
                 customerLectureInteractService.UpdateRating(rating, customerLectureInteractList.FirstOrDefault().Id);
+                type = Constant.UpdateRating;
             }
+
+            var productCode = customerLectureInteractService.UpdateLectureRating(rating, lectureId, type);
+
+            customerLectureInteractService.UpdateProductRating(productCode);
+            //existProduct.Rating = rating;
 
             return false;
         }

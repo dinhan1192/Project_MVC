@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<Project_MVC.Models.Lecture>
 @using Project_MVC.Models
+@using System.Text;
 
 @{
     ViewBag.Title = "Index";
@@ -7,7 +8,16 @@
     var listTopCourse = ViewBag.ListTopCourse as List<Product>;
     var currentCourse = ViewBag.CurrentCourse as Product;
 
-    var image = currentCourse.ProductImages.OrderByDescending(s => s.CreatedAt).FirstOrDefault();
+    var lstImage = currentCourse.ProductImages.OrderByDescending(s => s.CreatedAt);
+    var image = new ProductImage();
+    if (lstImage != null && lstImage.ToList().Count != 0)
+    {
+        image = lstImage.FirstOrDefault();
+    }
+    else
+    {
+        image.ImageData = Encoding.ASCII.GetBytes("");
+    }
     var teachers = ViewBag.Teachers as List<OwnerOfCourse>;
 }
 

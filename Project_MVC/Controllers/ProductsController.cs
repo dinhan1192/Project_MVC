@@ -69,7 +69,13 @@ namespace Project_MVC.Controllers
             }
             ViewBag.ListTopCourse = mySQLProductService.GetList();
             ViewBag.ReturnUrlCourseIntro = Request.RawUrl;
-            ViewBag.Teachers = mySQLProductCategoryService.Detail(mySQLProductService.Detail(productCode).ProductCategoryCode).OwnerOfCourses.ToList();
+            var productCategoryCode = mySQLProductService.Detail(productCode).ProductCategoryCode;
+            var listTeachers = mySQLProductCategoryService.Detail(productCategoryCode).OwnerOfCourses.ToList();
+            if(listTeachers != null && listTeachers.Count != 0)
+            {
+                ViewBag.Teachers = listTeachers;
+            }
+            
             return View(mySQLProductService.Detail(productCode));
         }
 

@@ -89,6 +89,7 @@ namespace Project_MVC
                "~/Content/CustomCustomerPage/bootstrap.css",
                "~/Content/CustomCustomerPage/animate.css",
                "~/Content/CustomCustomerPage/owl.carousel.min.css",
+               //"~/Content/CustomCustomerPage/commentStyle.css",
                "~/Content/CustomCustomerPage/style.css",
                "~/Content/CustomCustomerPage/bootstrap.css.map",
                "~/Content/css/jquery-confirmPopup.css"

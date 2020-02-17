@@ -15,6 +15,7 @@ namespace Project_MVC.Models
         public string Description { get; set; }
         [Required]
         public int DisplayOrder { get; set; }
+        public decimal? Rating { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }

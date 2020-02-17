@@ -291,6 +291,7 @@
     <Content Include="Content\css\sb-admin.min.css" />
     <Content Include="Content\CustomCustomerPage\animate.css" />
     <Content Include="Content\CustomCustomerPage\bootstrap.css" />
+    <Content Include="Content\CustomCustomerPage\commentStyle.css" />
     <Content Include="Content\CustomCustomerPage\fonts\flaticon\backup.txt" />
     <Content Include="Content\CustomCustomerPage\fonts\flaticon\font\flaticon.css" />
     <Content Include="Content\CustomCustomerPage\fonts\flaticon\font\flaticon.html" />

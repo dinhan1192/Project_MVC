@@ -11,5 +11,6 @@ namespace Project_MVC.Models
         public double TotalPage { get; set; }
         public string ProductCategoryCode { get; set; }
         public string CurrentType { get; set; }
+        public string LectureId { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<Project_MVC.Models.LectureVideo>
 @using Project_MVC.Models
+@using System.Text;
 
 @{
     ViewBag.Title = "DetailVideos";
@@ -8,7 +9,16 @@
     var thisPage = ViewBag.Page as ThisPage;
     var currentCourse = ViewBag.CurrentCourse as Product;
     var lstLectureVideos = ViewBag.ListLectureVideos as List<LectureVideo>;
-    var image = currentCourse.ProductImages.OrderByDescending(s => s.CreatedAt).FirstOrDefault();
+    var lstImage = currentCourse.ProductImages.OrderByDescending(s => s.CreatedAt);
+    var image = new ProductImage();
+    if (lstImage != null && lstImage.ToList().Count != 0)
+    {
+        image = lstImage.FirstOrDefault();
+    }
+    else
+    {
+        image.ImageData = Encoding.ASCII.GetBytes("");
+    }
 
     var rating = (decimal?)ViewBag.CurrentRating;
     if (rating == null)
@@ -21,12 +31,16 @@
     <div class="container">
         <div class="row align-items-center site-hero-inner justify-content-center">
             <div class="col-md-3 list-group">
+                @*@{ 
+                    var indexOfVideo = 1;
+                }*@
                 @foreach (var item in lstLectureVideos)
                 {
+                    var indexOfVideo = lstLectureVideos.IndexOf(item);
                     var removeFirstDigits = string.Concat(item.Name.SkipWhile(char.IsDigit));
                     var trimFirstEndSpaceChar = removeFirstDigits.Trim(' ');
 
-                    <a href="@Url.Action("DetailVideos", "Lectures", new { page = item.DisplayOrder })"
+                    <a href="@Url.Action("DetailVideos", "Lectures", new { page = indexOfVideo + 1 })"
                        class="list-group-item list-group-item-action" style="color:blue">
                         @trimFirstEndSpaceChar
                     </a>
@@ -102,7 +116,7 @@
                     {
                         @Html.AntiForgeryToken()
                         @Html.Hidden("rating")
-                        @Html.Hidden("currentLectureId", Model.FirstOrDefault().LectureId)
+                        @Html.Hidden("currentLectureId", thisPage.LectureId)
                         @Html.Hidden("currentPage", thisPage.CurrentPage)
 
                         <div class="form-group">
@@ -111,6 +125,15 @@
                             </div>
                         </div>
                     }
+                </div>
+
+                @{ 
+                    string urlComment = string.Format("https://localhost:44390/Lectures/DetailVideos?id={0}&page={1}", thisPage.LectureId, thisPage.CurrentPage);
+                }
+
+                <div>
+                    <div id="fb-root"></div>
+                    <div class="fb-comments" data-href=@urlComment data-width="350" data-numposts="5"></div>
                 </div>
             </div>
         </div>
@@ -156,7 +179,7 @@
             // 3
             const starPercentageRounded = `${(Math.round(starPercentage / 10) * 10)}%`;
             // 4
-            
+
             document.querySelector(`.${rating} .stars-finalinner`).style.width = starPercentageRounded;
             };
 
@@ -164,6 +187,7 @@
         })
 
     </script>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v6.0&appId=583730498876225&autoLogAppEvents=1"></script>
 }
 
 @section CustomStyles{
@@ -242,9 +266,10 @@
             overflow: hidden;
             width: 0;
         }
-        .stars-finalinner::before {
+
+            .stars-finalinner::before {
                 content: "\f005 \f005 \f005 \f005 \f005";
-                 color: red;
+                color: red;
             }
     </style>
 }
