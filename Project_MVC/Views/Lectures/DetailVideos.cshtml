@@ -31,9 +31,9 @@
     <div class="container">
         <div class="row align-items-center site-hero-inner justify-content-center">
             <div class="col-md-3 list-group">
-                @*@{ 
-                    var indexOfVideo = 1;
-                }*@
+                @*@{
+                        var indexOfVideo = 1;
+                    }*@
                 @foreach (var item in lstLectureVideos)
                 {
                     var indexOfVideo = lstLectureVideos.IndexOf(item);
@@ -75,10 +75,9 @@
                         {
                             <span id="nextVideo">@Html.ActionLink("Next", "DetailVideos", new { page = thisPage.CurrentPage + 1 }, new { @class = "btn btn-primary" })</span>
                         }
-                        @if (thisPage.CurrentPage == thisPage.TotalPage)
-                        {
-                            <span id="back2IndexLectures">@Html.ActionLink("Back to Course", "Index", "Lectures", new { productCode = currentCourse.Code }, new { @class = "btn btn-primary" })</span>
-                        }
+                        @*@if (thisPage.CurrentPage == thisPage.TotalPage)
+                            {*@
+                        <span id="back2IndexLectures">@Html.ActionLink("Back to Course", "Index", "Lectures", new { productCode = currentCourse.Code }, new { @class = "btn btn-primary" })</span>
                     </div>
                 </div>
             </div>
@@ -127,7 +126,7 @@
                     }
                 </div>
 
-                @{ 
+                @{
                     string urlComment = string.Format("https://localhost:44390/Lectures/DetailVideos?id={0}&page={1}", thisPage.LectureId, thisPage.CurrentPage);
                 }
 
@@ -141,7 +140,7 @@
 </section>
 
 @section scripts{
-    @Scripts.Render("~/bundles/video");
+    @*@Scripts.Render("~/bundles/video");*@
     <script>
         var getRating = @rating;
         const starTotal = 5;

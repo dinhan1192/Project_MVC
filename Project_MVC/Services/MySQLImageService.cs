@@ -120,25 +120,27 @@ namespace Project_MVC.Services
                     {
                         using (var br = new BinaryReader(video.InputStream))
                         {
-                            ValidateVideo(video.FileName, state);
-                            var data = br.ReadBytes(video.ContentLength);
-                            var contentType = video.ContentType;
-                            var vid = new LectureVideo { LectureId = id };
-                            vid.Name = video.FileName;
-                            if (char.IsDigit(vid.Name[1]))
+                            if(ValidateVideo(video.FileName, state))
                             {
-                                vid.DisplayOrder = Convert.ToInt32(vid.Name.Substring(0, 2));
+                                var data = br.ReadBytes(video.ContentLength);
+                                var contentType = video.ContentType;
+                                var vid = new LectureVideo { LectureId = id };
+                                vid.Name = video.FileName;
+                                if (char.IsDigit(vid.Name[1]))
+                                {
+                                    vid.DisplayOrder = Convert.ToInt32(vid.Name.Substring(0, 2));
+                                }
+                                else
+                                {
+                                    vid.DisplayOrder = Convert.ToInt32(vid.Name[0].ToString());
+                                }
+                                ValidateVideoDisplayOrder(vid.DisplayOrder, (int)id, state);
+                                vid.VideoData = data;
+                                vid.ContentType = contentType;
+                                vid.CreatedAt = DateTime.Now;
+                                vid.CreatedBy = userService.GetCurrentUserName();
+                                videoList.Add(vid);
                             }
-                            else
-                            {
-                                vid.DisplayOrder = Convert.ToInt32(vid.Name[0].ToString());
-                            }
-                            ValidateVideoDisplayOrder(vid.DisplayOrder, (int)id, state);
-                            vid.VideoData = data;
-                            vid.ContentType = contentType;
-                            vid.CreatedAt = DateTime.Now;
-                            vid.CreatedBy = userService.GetCurrentUserName();
-                            videoList.Add(vid);
                         }
                     }
                 }
@@ -148,12 +150,15 @@ namespace Project_MVC.Services
             return null;
         }
 
-        public void ValidateVideo(string videoName, ModelStateDictionary state)
+        public bool ValidateVideo(string videoName, ModelStateDictionary state)
         {
             if (!char.IsDigit(videoName[0]))
             {
                 state.AddModelError("LectureVideoValidation", "Tên file của Video bài giảng phải bắt đầu bằng số.");
+                return false;
             }
+
+            return true;
         }
 
         public void ValidateVideoDisplayOrder(int displayOrder, int parentId, ModelStateDictionary state)

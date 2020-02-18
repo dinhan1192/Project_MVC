@@ -143,6 +143,8 @@ namespace Project_MVC.Controllers
                 return RedirectToAction("Details", "Products", new { id = existLecture.ProductCode });
             }
 
+            lecture.LectureVideos = existLecture.LectureVideos;
+
             return View(lecture);
         }
 
