@@ -536,10 +536,7 @@ namespace Project_MVC.Controllers
                 }
             }
 
-            if (product.Lectures == null)
-            {
-                product.Lectures = new List<Lecture>();
-            }
+            product.Lectures = existProduct.Lectures;
 
             return View(product);
         }
