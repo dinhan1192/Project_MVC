@@ -11,10 +11,12 @@ namespace Project_MVC.Controllers
     public class HomeController : Controller
     {
         private ICRUDService<Product> mySQLProductService;
+        private ICRUDService<OwnerOfCourse> mySQLOwnerOfCourseService;
 
         public HomeController()
         {
             mySQLProductService = new MySQLProductService();
+            mySQLOwnerOfCourseService = new MySQLOwnerOfCourseService();
         }
 
         public ActionResult Index()
@@ -25,15 +27,23 @@ namespace Project_MVC.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
+            return View(mySQLOwnerOfCourseService.GetList());
         }
 
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
 
+            return View();
+        }
+
+        public ActionResult Blog()
+        {
+            return View();
+        }
+
+        public ActionResult Blog_Single()
+        {
             return View();
         }
     }

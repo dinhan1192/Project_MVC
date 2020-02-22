@@ -61,12 +61,12 @@ namespace Project_MVC.Services
 
         public void DisposeDb()
         {
-            throw new NotImplementedException();
+            DbContext.Dispose();
         }
 
         public IEnumerable<Order> GetList()
         {
-            throw new NotImplementedException();
+            return DbContext.Orders.Where(s => s.Status == OrderStatus.NotDeleted);
         }
 
         public int? UpdateStatus(Order item)

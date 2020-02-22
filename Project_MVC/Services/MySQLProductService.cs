@@ -65,7 +65,8 @@ namespace Project_MVC.Services
                 //product.ProductCategoryId = Utils.Utility.GetNullableInt(product.ProductCategoryNameAndId.Split(' ')[0]);
                 //product.ProductCategoryName = product.ProductCategoryNameAndId.Substring(product.ProductCategoryNameAndId.IndexOf('-') + 2);
                 item.CreatedAt = DateTime.Now;
-                item.UpdatedAt = null;
+                item.UpdatedAt = DateTime.Now;
+                item.UpdatedBy = userService.GetCurrentUserName();
                 item.DeletedAt = null;
                 item.CreatedBy = userService.GetCurrentUserName();
                 item.Status = ProductStatus.NotDeleted;

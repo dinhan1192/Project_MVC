@@ -73,10 +73,10 @@ namespace Project_MVC.Controllers
                     productCategories = productCategories.OrderByDescending(s => s.Name);
                     break;
                 case "Date":
-                    productCategories = productCategories.OrderBy(s => s.CreatedAt);
+                    productCategories = productCategories.OrderBy(s => s.UpdatedAt);
                     break;
                 case "date_desc":
-                    productCategories = productCategories.OrderByDescending(s => s.CreatedAt);
+                    productCategories = productCategories.OrderByDescending(s => s.UpdatedAt);
                     break;
                 default:
                     productCategories = productCategories.OrderBy(s => s.Name);
