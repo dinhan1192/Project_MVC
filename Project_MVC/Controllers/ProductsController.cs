@@ -352,7 +352,7 @@ namespace Project_MVC.Controllers
 
             // nếu page == null thì lấy giá trị là 1, nếu không thì giá trị là page
             //return View(students.ToList().ToPagedList(pageNumber, pageSize));
-            return View(products.Skip(pageSize * (pageNumber - 1)).Take(pageSize).OrderByDescending(s => s.UpdatedAt).ToList());
+            return View(products.Skip(pageSize * (pageNumber - 1)).Take(pageSize).ToList());
         }
 
         [Authorize(Roles = Constant.Admin + "," + Constant.Employee)]
