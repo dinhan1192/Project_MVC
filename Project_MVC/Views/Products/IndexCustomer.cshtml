@@ -86,13 +86,17 @@
         </div>
         <!-- END row -->
 
-        <div class="row justify-content-center mb-5">
-            <div class="col-md-2 text-center">
-                @Html.Partial("_Paginate", thisPage)
+        @if (thisPage.TotalPage > 1)
+        {
+            <div class="row justify-content-center mb-5">
+                <div class="col-md-2 text-center">
+                    @Html.Partial("_Paginate", thisPage)
+                </div>
             </div>
-        </div>
+        }
+
     </div>
-  
+
 </section>
 <!-- END section -->
 
