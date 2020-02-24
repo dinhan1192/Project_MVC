@@ -4079,6 +4079,7 @@
     <Content Include="Views\Shared\_PaginateVideo.cshtml" />
     <Content Include="Views\Lectures\Edit.cshtml" />
     <Content Include="Views\Shared\_SignUp.cshtml" />
+    <Content Include="Views\Shared\Tieptest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

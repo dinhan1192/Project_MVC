@@ -155,7 +155,7 @@ namespace Project_MVC.Controllers
             }
             return View(productCategory);
         }
-
+        
         // GET: ProductCategories/Create
         public ActionResult Create()
         {
@@ -174,7 +174,7 @@ namespace Project_MVC.Controllers
             {
                 return RedirectToAction("Index");
             }
-
+            
             return View(productCategory);
         }
 
@@ -210,7 +210,7 @@ namespace Project_MVC.Controllers
         {
             //ModelStateDictionary state = ModelState;
 
-            if (productCategory == null || productCategory.Code == null)
+               if (productCategory == null || productCategory.Code == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -249,6 +249,7 @@ namespace Project_MVC.Controllers
         {
             //ModelStateDictionary state = ModelState;
             if (id == null)
+             
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -272,5 +273,6 @@ namespace Project_MVC.Controllers
             }
             base.Dispose(disposing);
         }
+        
     }
 }
