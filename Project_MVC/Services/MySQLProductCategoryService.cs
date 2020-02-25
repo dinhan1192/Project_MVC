@@ -117,7 +117,7 @@ namespace Project_MVC.Services
             {
                 state.AddModelError("Code", "Product Category Code already exist.");
             }
-            if (!string.IsNullOrEmpty(item.LevelOneProductCategoryCode) && !Regex.IsMatch(item.Code, "^[0-9]+$"))
+            if (!string.IsNullOrEmpty(item.LevelOneProductCategoryCode) && !Regex.IsMatch(item.Code, "^[A-Z]+[0-9]+$"))
             {
                 state.AddModelError("Code", "Code Number must only contain numbers");
             }
