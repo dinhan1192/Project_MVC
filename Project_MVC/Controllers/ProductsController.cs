@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
@@ -361,7 +362,7 @@ namespace Project_MVC.Controllers
         {
             //Console.WriteLine("123");
             //var list = db.ProductCategories.Where(s => s.Status != ProductCategoryStatus.Deleted).ToList();
-            var list = mySQLProductCategoryService.GetList();
+            var list = mySQLProductCategoryService.GetList().Where(s => Regex.IsMatch(s.Code, "^[A-Z]+[0-9]+$"));
             var newlist = list.Select(dep => new
             {
                 dep.Code,

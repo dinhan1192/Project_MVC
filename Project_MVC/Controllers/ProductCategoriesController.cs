@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity.Owin;
@@ -128,7 +129,7 @@ namespace Project_MVC.Controllers
         {
             //Console.WriteLine("123");
             //var list = db.ProductCategories.Where(s => s.Status != ProductCategoryStatus.Deleted).ToList();
-            var list = mySQLLevelOneProductCategoryService.GetList();
+            var list = mySQLProductCategoryService.GetList().Where(s => Regex.IsMatch(s.Code, "^[A-Z]+$"));
             var newlist = list.Select(dep => new
             {
                 dep.Code,
@@ -185,14 +186,16 @@ namespace Project_MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ProductCategory productCategory = mySQLProductCategoryService.Detail(id);
-            if (productCategory.LevelOneProductCategory == null)
+            var productCategory = mySQLProductCategoryService.Detail(id);
+            var levelOneCategory = mySQLProductCategoryService.Detail(productCategory.LevelOneProductCategoryCode);
+
+            if (levelOneCategory == null)
             {
                 productCategory.LevelOneProductCategoryNameAndCode = "";
             }
             else
             {
-                productCategory.LevelOneProductCategoryNameAndCode = productCategory.LevelOneProductCategory.Code + " - " + productCategory.LevelOneProductCategory.Name;
+                productCategory.LevelOneProductCategoryNameAndCode = levelOneCategory.Code + " - " + levelOneCategory.Name;
             }
             if (productCategory == null || productCategory.IsDeleted())
             {

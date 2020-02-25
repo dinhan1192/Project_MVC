@@ -12,8 +12,9 @@ namespace Project_MVC.Models
     public class ProductCategory
     {
         [Key]
-        [DisplayName("Product Category Code")]
-        [RegularExpression(@"^[A-Z]{1,3}\d{1,4}$", ErrorMessage = "Invalid Code")]
+        [DisplayName("Code Number")]
+        //[RegularExpression(@"^[A-Z]{1,3}\d{1,4}$", ErrorMessage = "Invalid Code")]
+        [RegularExpression(@"^[A-Z0-9]+$", ErrorMessage = "Invalid Code")]
         public string Code { get; set; }
         [DisplayName("Product Category Name")]
         [Required]
@@ -29,9 +30,9 @@ namespace Project_MVC.Models
         public ProductCategoryStatus Status { get; set; }
         public virtual ICollection<Product> Products { get; set; }
         public virtual ICollection<OwnerOfCourse> OwnerOfCourses { get; set; }
-        [ForeignKey("LevelOneProductCategory")]
+        //[ForeignKey("LevelOneProductCategory")]
         public string LevelOneProductCategoryCode { get; set; }
-        public virtual LevelOneProductCategory LevelOneProductCategory { get; set; }
+        //public virtual LevelOneProductCategory LevelOneProductCategory { get; set; }
         [DisplayName("Level One Product Category")]
         [NotMapped]
         [RegularExpression(@"^[0-9A-Z]+\s-\s[0-9a-zA-Z\s+ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềếểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]+$", ErrorMessage = "Invalid Product Category")]

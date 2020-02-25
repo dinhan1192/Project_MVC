@@ -251,7 +251,7 @@ namespace Project_MVC.Services
             {
                 state.AddModelError("Code", "Product Code is required.");
             }
-            var list = DbContext.Products.Where(s => s.Code.Contains(item.Code)).ToList();
+            var list = DbContext.Products.Where(s => s.Code == item.Code).ToList();
             if (list.Count != 0)
             {
                 state.AddModelError("Code", "Product Code already exist.");

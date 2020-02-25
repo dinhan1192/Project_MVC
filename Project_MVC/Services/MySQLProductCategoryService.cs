@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity.Migrations;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity.Owin;
@@ -31,6 +32,7 @@ namespace Project_MVC.Services
             Validate(item, state);
             if (state.IsValid)
             {
+                item.Code = item.LevelOneProductCategoryCode + item.Code;
                 item.CreatedAt = DateTime.Now;
                 item.UpdatedAt = DateTime.Now;
                 item.UpdatedBy = userService.GetCurrentUserName();
@@ -110,10 +112,14 @@ namespace Project_MVC.Services
             {
                 state.AddModelError("Code", "Product Category Code is required.");
             }
-            var list = DbContext.ProductCategories.Where(s => s.Code.Contains(item.Code)).ToList();
+            var list = DbContext.ProductCategories.Where(s => s.Code == item.Code).ToList();
             if (list.Count != 0)
             {
                 state.AddModelError("Code", "Product Category Code already exist.");
+            }
+            if (!string.IsNullOrEmpty(item.LevelOneProductCategoryCode) && !Regex.IsMatch(item.Code, "^[0-9]+$"))
+            {
+                state.AddModelError("Code", "Code Number must only contain numbers");
             }
         }
 
