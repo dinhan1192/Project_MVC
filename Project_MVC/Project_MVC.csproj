@@ -4084,6 +4084,7 @@
     <Content Include="Views\Shared\khactieptest.cshtml" />
     <Content Include="Views\Shared\AnTest.cshtml" />
     <Content Include="Views\Shared\TestTuan.cshtml" />
+    <Content Include="Views\Shared\TestThao.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
