@@ -4083,6 +4083,7 @@
     <Content Include="Views\Home\Blog.cshtml" />
     <Content Include="Views\Shared\khactieptest.cshtml" />
     <Content Include="Views\Shared\AnTest.cshtml" />
+    <Content Include="Views\Shared\TestTuan.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
