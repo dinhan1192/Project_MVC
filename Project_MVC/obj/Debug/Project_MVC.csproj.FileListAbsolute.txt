@@ -246,3 +246,4 @@ D:\Lap Trinh\T1808A\MVC\Project_Course_MVC\Project_MVC\Project_MVC\obj\Debug\Pro
 D:\Lap Trinh\T1808A\MVC\Project_Course_MVC\Project_MVC\Project_MVC\obj\Debug\Project_MVC.pdb
 D:\Lap Trinh\T1808A\MVC\Project_Course_MVC\Project_MVC\Project_MVC\obj\Debug\Project_MVC.Migrations.InitializeDatabase.resources
 D:\Lap Trinh\T1808A\MVC\Project_Course_MVC\Project_MVC\Project_MVC\obj\Debug\Project_MVC.csproj.GenerateResource.cache
+D:\Lap Trinh\T1808A\MVC\Project_Course_MVC\Project_MVC\Project_MVC\obj\Debug\Project_MVC.csprojAssemblyReference.cache

@@ -25,7 +25,7 @@ namespace Project_MVC.Models
         public string UpdatedBy { get; set; }
         public string DeletedBy { get; set; }
         public LevelOneProductCategoryStatus Status { get; set; }
-        public virtual ICollection<ProductCategory> ProductCategories { get; set; }
+        //public virtual ICollection<ProductCategory> ProductCategories { get; set; }
 
         public enum LevelOneProductCategoryStatus
         {

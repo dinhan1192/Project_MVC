@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Security.Principal;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -20,7 +21,7 @@ namespace Project_MVC.Utils
             get { return _db ?? HttpContext.Current.GetOwinContext().Get<MyDbContext>(); }
             set { _db = value; }
         }
-        private static List<LevelOneProductCategory> _listLevelOneProductCategories;
+        private static List<ProductCategory> _listLevelOneProductCategories;
         private static List<ProductCategory> _listProductCategories;
 
         private static List<LevelOneMenu> _listLevelOneMenus;
@@ -31,13 +32,14 @@ namespace Project_MVC.Utils
             asm = Assembly.GetAssembly(typeof(Project_MVC.MvcApplication));
         }
 
-        public static List<LevelOneProductCategory> GetLevelOneProductCategories()
+        public static List<ProductCategory> GetLevelOneProductCategories()
         {
-            _listLevelOneProductCategories = DbContext.LevelOneProductCategories.ToList();
+            _listLevelOneProductCategories = DbContext.ProductCategories.ToList();
+            _listLevelOneProductCategories = _listLevelOneProductCategories.Where(s => Regex.IsMatch(s.Code, "^[A-Z]+$")).ToList();
             return _listLevelOneProductCategories;
         }
 
-        public static void SetLevelOneProductCategories(List<LevelOneProductCategory> lstLevelOneProductCategories)
+        public static void SetLevelOneProductCategories(List<ProductCategory> lstLevelOneProductCategories)
         {
             _listLevelOneProductCategories = lstLevelOneProductCategories;
         }
@@ -54,7 +56,7 @@ namespace Project_MVC.Utils
             }
             else
             {
-                _listProductCategories = DbContext.ProductCategories.Where(s => s.LevelOneProductCategory.Code == Code).ToList();
+                _listProductCategories = DbContext.ProductCategories.Where(s => s.LevelOneProductCategoryCode == Code).ToList();
             }
             return _listProductCategories;
         }
