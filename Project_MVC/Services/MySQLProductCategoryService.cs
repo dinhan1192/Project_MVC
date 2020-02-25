@@ -29,10 +29,10 @@ namespace Project_MVC.Services
 
         public bool Create(ProductCategory item, ModelStateDictionary state)
         {
+            item.Code = item.LevelOneProductCategoryCode + item.Code;
             Validate(item, state);
             if (state.IsValid)
             {
-                item.Code = item.LevelOneProductCategoryCode + item.Code;
                 item.CreatedAt = DateTime.Now;
                 item.UpdatedAt = DateTime.Now;
                 item.UpdatedBy = userService.GetCurrentUserName();
