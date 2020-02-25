@@ -4081,6 +4081,8 @@
     <Content Include="Views\Home\Blog_Single.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Blog.cshtml" />
+    <Content Include="Views\Shared\khactieptest.cshtml" />
+    <Content Include="Views\Shared\AnTest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
