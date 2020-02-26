@@ -129,7 +129,8 @@ namespace Project_MVC.Controllers
         {
             //Console.WriteLine("123");
             //var list = db.ProductCategories.Where(s => s.Status != ProductCategoryStatus.Deleted).ToList();
-            var list = mySQLProductCategoryService.GetList().Where(s => Regex.IsMatch(s.Code, "^[A-Z]+$"));
+            //var list = mySQLProductCategoryService.GetList().Where(s => Regex.IsMatch(s.Code, "^[A-Z]+$"));
+            var list = mySQLProductCategoryService.GetList().Where(s => string.IsNullOrEmpty(s.LevelOneProductCategoryCode));
             var newlist = list.Select(dep => new
             {
                 dep.Code,
