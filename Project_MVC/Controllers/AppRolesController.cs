@@ -29,6 +29,12 @@ namespace Project_MVC.Controllers
         }
 
         //[Authorize(Roles = "Admin")]
+
+        public ActionResult Index()
+        {
+            return View(_db.Roles.ToList());
+        }
+
         public ActionResult Create()
         {
             return View();
