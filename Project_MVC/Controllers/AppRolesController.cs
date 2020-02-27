@@ -32,7 +32,7 @@ namespace Project_MVC.Controllers
 
         public ActionResult Index()
         {
-            return View(_db.Roles.ToList());
+            return View(_db.IdentityRoles.ToList());
         }
 
         public ActionResult Create()
@@ -43,7 +43,8 @@ namespace Project_MVC.Controllers
         //[Authorize(Roles = "Admin")]
         //[Authorize]
         [HttpPost]
-        public ActionResult Create([Bind(Include = "Name")] AppRole role)
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "Name,Description")] AppRole role)
         {
             role.CreatedAt = DateTime.Now;
             if (!roleManager.RoleExists(role.Name))
@@ -55,7 +56,7 @@ namespace Project_MVC.Controllers
                 ModelState.AddModelError("Name", "Role already exists");
                 return View(role);
             }
-            return Redirect("/AppUsers/Index");
+            return RedirectToAction("Index");
         }
     }
 }

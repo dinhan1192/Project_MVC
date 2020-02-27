@@ -57,7 +57,8 @@ namespace Project_MVC
                      "~/Content/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css",
                      "~/Content/vendors/jqvmap/dist/jqvmap.min.css",
                      "~/Content/vendors/bootstrap-daterangepicker/daterangepicker.css",
-                     "~/Content/build/css/custom.min.css"
+                     "~/Content/build/css/custom.min.css",
+                     "~/Content/css/jquery-confirmPopup.css"
                      ));
 
             bundles.Add(new ScriptBundle("~/Js").Include(
@@ -71,31 +72,32 @@ namespace Project_MVC
                      //"~/Scripts/Customs/jquery-confirmPopup.js",
                      //"~/Scripts/js/demo/chart-area-demo.js"
                      // layout test tiep
-                     "~/Scripts/vendors/jquery/dist/jquery.min.js",
-                      "~/Scripts/vendors/bootstrap/dist/js/bootstrap.min.js",
-                      "~/Scripts/vendors/fastclick/lib/fastclick.js",
-                      "~/Scripts/vendors/nprogress/nprogress.js",
-                      "~/Scripts/vendors/Chart.js/dist/Chart.min.js",
-                      "~/Scripts/vendors/gauge.js/dist/gauge.min.js",
-                      "~/Scripts/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js",
-                      "~/Scripts/vendors/iCheck/icheck.min.js",
-                      "~/Scripts/vendors/skycons/skycons.js",
-                      "~/Scripts/vendors/Flot/jquery.flot.js",
-                      "~/Scripts/vendors/Flot/jquery.flot.pie.js",
-                      "~/Scripts/vendors/Flot/jquery.flot.time.js",
-                      "~/Scripts/vendors/Flot/jquery.flot.stack.js",
-                      "~/Scripts/vendors/Flot/jquery.flot.resize.js",
-                      "~/Scripts/vendors/flot.orderbars/js/jquery.flot.orderBars.js",
-                      "~/Scripts/vendors/flot-spline/js/jquery.flot.spline.min.js",
-                      "~/Scripts/vendors/flot.curvedlines/curvedLines.js",
-                      "~/Scripts/vendors/DateJS/build/date.js",
-                      "~/Scripts/vendors/jqvmap/dist/jquery.vmap.js",
-                      "~/Scripts/vendors/jqvmap/dist/maps/jquery.vmap.world.js",
-                      "~/Scripts/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js",
-                      "~/Scripts/vendors/moment/min/moment.min.js",
-                      "~/Scripts/vendors/bootstrap-daterangepicker/daterangepicker.js",
-                      "~/Scripts/build/js/custom.min.js"
-                     ));
+                     //"~/Scripts/vendors/jquery/dist/jquery.min.js",
+                     //"~/Scripts/vendors/bootstrap/dist/js/bootstrap.min.js",
+                     "~/Scripts/vendors/fastclick/lib/fastclick.js",
+                     "~/Scripts/vendors/nprogress/nprogress.js",
+                     "~/Scripts/vendors/Chart.js/dist/Chart.min.js",
+                     "~/Scripts/vendors/gauge.js/dist/gauge.min.js",
+                     "~/Scripts/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js",
+                     "~/Scripts/vendors/iCheck/icheck.min.js",
+                     "~/Scripts/vendors/skycons/skycons.js",
+                     "~/Scripts/vendors/Flot/jquery.flot.js",
+                     "~/Scripts/vendors/Flot/jquery.flot.pie.js",
+                     "~/Scripts/vendors/Flot/jquery.flot.time.js",
+                     "~/Scripts/vendors/Flot/jquery.flot.stack.js",
+                     "~/Scripts/vendors/Flot/jquery.flot.resize.js",
+                     "~/Scripts/vendors/flot.orderbars/js/jquery.flot.orderBars.js",
+                     "~/Scripts/vendors/flot-spline/js/jquery.flot.spline.min.js",
+                     "~/Scripts/vendors/flot.curvedlines/curvedLines.js",
+                     "~/Scripts/vendors/DateJS/build/date.js",
+                     "~/Scripts/vendors/jqvmap/dist/jquery.vmap.js",
+                     "~/Scripts/vendors/jqvmap/dist/maps/jquery.vmap.world.js",
+                     "~/Scripts/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js",
+                     "~/Scripts/vendors/moment/min/moment.min.js",
+                     "~/Scripts/vendors/bootstrap-daterangepicker/daterangepicker.js",
+                     "~/Scripts/build/js/custom.min.js",
+                     "~/Scripts/Customs/jquery-confirmPopup.js"
+                    ));
 
             bundles.Add(new StyleBundle("~/customs").Include(
                       "~/Content/Customs/completeAndInComplete.css"

@@ -35,7 +35,7 @@
                                     <a><i class="fa fa-user"></i> Manage Users <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li>@Html.ActionLink("Users", "Index", "AppUsers")</li>
-                                        <li>@Html.ActionLink("Roles", "Create", "AppRoles")</li>
+                                        <li>@Html.ActionLink("Roles", "Index", "AppRoles")</li>
                                     </ul>
                                 </li>
                                 <li>
@@ -176,6 +176,9 @@
         </div>
     </div>
 
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/typeahead")
     @Scripts.Render("~/Js")
     @RenderSection("scripts", required: false)
 </body>
