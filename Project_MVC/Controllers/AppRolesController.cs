@@ -56,7 +56,7 @@ namespace Project_MVC.Controllers
                 ModelState.AddModelError("Name", "Role already exists");
                 return View(role);
             }
-            return Redirect("/AppUsers/Index");
+            return RedirectToAction("Index");
         }
     }
 }
