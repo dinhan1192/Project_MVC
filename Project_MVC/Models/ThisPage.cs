@@ -12,5 +12,6 @@ namespace Project_MVC.Models
         public string ProductCategoryCode { get; set; }
         public string CurrentType { get; set; }
         public string LectureId { get; set; }
+        public string FunctionType { get; set; }
     }
 }

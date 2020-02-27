@@ -6,6 +6,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     var thisPage = ViewBag.Page as ThisPage;
+    var functionType = Constant.CreateProduct;
     var url = "/Products/Delete/";
     var urlPopup = "/Products/CreatePopup";
 
@@ -14,6 +15,8 @@
 }
 
 <h2>Index</h2>
+@Html.Hidden("FunctionType", @functionType)
+@Html.Hidden("FunctionTypeOfPage", @thisPage.FunctionType)
 
 <p>
     @*@Html.ActionLink("Create New", "Create")*@
@@ -122,4 +125,14 @@
 @Html.AntiForgeryToken()
 @section scripts{
     @Scripts.Render("~/bundles/custom");
+<script>
+        $(document).ready(function () {
+            debugger;
+            var functionType = $.trim($('#FunctionType').val());
+            var functionTypeOfPage = $.trim($('#FunctionTypeOfPage').val());
+            if (functionType === functionTypeOfPage) {
+                $(".anchorDetail").trigger("click");
+            }
+});
+</script>
 }
