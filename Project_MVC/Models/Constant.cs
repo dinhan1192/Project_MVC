@@ -21,6 +21,7 @@ namespace Project_MVC.Models
         public const string Customer = "Customer";
         public const string CreateRating = "CreateRating";
         public const string UpdateRating = "UpdateRating";
+        public const string CreateProduct = "CreateProduct";
         
         #region Images
 

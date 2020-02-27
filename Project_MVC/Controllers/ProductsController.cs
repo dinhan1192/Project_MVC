@@ -294,7 +294,7 @@ namespace Project_MVC.Controllers
 
         [Authorize(Roles = Constant.Admin + "," + Constant.Employee)]
         // GET: Products
-        public ActionResult Index(string productCategoryCode, string sortOrder, string searchString, string currentFilter, int? page)
+        public ActionResult Index(string productCategoryCode, string sortOrder, string searchString, string currentFilter, int? page, string type)
         {
             ViewBag.CurrentSort = sortOrder;
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
@@ -347,7 +347,8 @@ namespace Project_MVC.Controllers
             ThisPage thisPage = new ThisPage()
             {
                 CurrentPage = pageNumber,
-                TotalPage = Math.Ceiling((double)products.Count() / pageSize)
+                TotalPage = Math.Ceiling((double)products.Count() / pageSize),
+                FunctionType = type
             };
             ViewBag.Page = thisPage;
 
@@ -430,7 +431,8 @@ namespace Project_MVC.Controllers
         public ActionResult Create()
         {
             //ViewBag.ProductCategoryId = new SelectList(db.ProductCategories, "Id", "Name");
-            return View();
+            var functionType = Constant.CreateProduct;
+            return RedirectToAction("Index", new { type = functionType });
         }
 
         [Authorize(Roles = Constant.Admin + "," + Constant.Employee)]
