@@ -29,7 +29,6 @@ namespace Project_MVC.Services
 
         public bool Create(ProductCategory item, ModelStateDictionary state)
         {
-            item.Code = item.LevelOneProductCategoryCode + item.Code;
             Validate(item, state);
             if (state.IsValid)
             {
@@ -117,10 +116,10 @@ namespace Project_MVC.Services
             {
                 state.AddModelError("Code", "Product Category Code already exist.");
             }
-            if (!string.IsNullOrEmpty(item.LevelOneProductCategoryCode) && !Regex.IsMatch(item.Code, "^[A-Z]+[0-9]+$"))
-            {
-                state.AddModelError("Code", "Code Number must only contain numbers");
-            }
+            //if (string.IsNullOrEmpty(item.LevelOneProductCategoryCode) && !Regex.IsMatch(item.Code, "^[A-Z]$"))
+            //{
+            //    state.AddModelError("Code", "Level One Code must only contain numbers");
+            //}
         }
 
         public void DisposeDb()
