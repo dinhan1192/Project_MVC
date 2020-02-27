@@ -44,6 +44,7 @@ namespace Project_MVC
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
 
+
             bundles.Add(new StyleBundle("~/Css").Include(
                      //"~/Content/vendor/fontawesome-free/css/all.min.css",
                      //"~/Content/vendor/datatables/dataTables.bootstrap4.css",
@@ -57,22 +58,23 @@ namespace Project_MVC
                      "~/Content/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css",
                      "~/Content/vendors/jqvmap/dist/jqvmap.min.css",
                      "~/Content/vendors/bootstrap-daterangepicker/daterangepicker.css",
-                     "~/Content/build/css/custom.min.css"
+                     "~/Content/build/css/custom.min.css",
+                     "~/Content/css/jquery-confirmPopup.css"
                      ));
 
             bundles.Add(new ScriptBundle("~/Js").Include(
-                     //"~/Scripts/vendor/bootstrap/js/bootstrap.bundle.min.js",
-                     //"~/Scripts/vendor/jquery-easing/jquery.easing.min.js",
-                     //"~/Scripts/vendor/chart.js/Chart.min.js",
-                     //"~/Scripts/vendor/datatables/jquery.dataTables.js",
-                     //"~/Scripts/vendor/datatables/dataTables.bootstrap4.js",
-                     //"~/Scripts/js/sb-admin.min.js",
-                     //"~/Scripts/js/demo/datatables-demo.js",
-                     //"~/Scripts/Customs/jquery-confirmPopup.js",
-                     //"~/Scripts/js/demo/chart-area-demo.js"
-                     // layout test tiep
-                     "~/Scripts/vendors/jquery/dist/jquery.min.js",
-                      "~/Scripts/vendors/bootstrap/dist/js/bootstrap.min.js",
+                      //"~/Scripts/vendor/bootstrap/js/bootstrap.bundle.min.js",
+                      //"~/Scripts/vendor/jquery-easing/jquery.easing.min.js",
+                      //"~/Scripts/vendor/chart.js/Chart.min.js",
+                      //"~/Scripts/vendor/datatables/jquery.dataTables.js",
+                      //"~/Scripts/vendor/datatables/dataTables.bootstrap4.js",
+                      //"~/Scripts/js/sb-admin.min.js",
+                      //"~/Scripts/js/demo/datatables-demo.js",
+                      //"~/Scripts/Customs/jquery-confirmPopup.js",
+                      //"~/Scripts/js/demo/chart-area-demo.js"
+                      // layout test tiep
+                      //"~/Scripts/vendors/jquery/dist/jquery.min.js",
+                      //"~/Scripts/vendors/bootstrap/dist/js/bootstrap.min.js",
                       "~/Scripts/vendors/fastclick/lib/fastclick.js",
                       "~/Scripts/vendors/nprogress/nprogress.js",
                       "~/Scripts/vendors/Chart.js/dist/Chart.min.js",
@@ -94,7 +96,8 @@ namespace Project_MVC
                       "~/Scripts/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js",
                       "~/Scripts/vendors/moment/min/moment.min.js",
                       "~/Scripts/vendors/bootstrap-daterangepicker/daterangepicker.js",
-                      "~/Scripts/build/js/custom.min.js"
+                      "~/Scripts/build/js/custom.min.js",
+                      "~/Scripts/Customs/jquery-confirmPopup.js"
                      ));
 
             bundles.Add(new StyleBundle("~/customs").Include(
