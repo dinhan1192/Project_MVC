@@ -73,8 +73,8 @@ namespace Project_MVC
                       //"~/Scripts/Customs/jquery-confirmPopup.js",
                       //"~/Scripts/js/demo/chart-area-demo.js"
                       // layout test tiep
-                      //"~/Scripts/vendors/jquery/dist/jquery.min.js",
-                      //"~/Scripts/vendors/bootstrap/dist/js/bootstrap.min.js",
+                      "~/Scripts/vendors/jquery/dist/jquery.min.js",
+                      "~/Scripts/vendors/bootstrap/dist/js/bootstrap.min.js",
                       "~/Scripts/vendors/fastclick/lib/fastclick.js",
                       "~/Scripts/vendors/nprogress/nprogress.js",
                       "~/Scripts/vendors/Chart.js/dist/Chart.min.js",
@@ -96,8 +96,7 @@ namespace Project_MVC
                       "~/Scripts/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js",
                       "~/Scripts/vendors/moment/min/moment.min.js",
                       "~/Scripts/vendors/bootstrap-daterangepicker/daterangepicker.js",
-                      "~/Scripts/build/js/custom.min.js",
-                      "~/Scripts/Customs/jquery-confirmPopup.js"
+                      "~/Scripts/build/js/custom.min.js"
                      ));
 
             bundles.Add(new StyleBundle("~/customs").Include(
