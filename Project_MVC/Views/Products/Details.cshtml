@@ -55,7 +55,7 @@
     </dl>
 </div>
 
-@Html.Partial("_Lectures", Model.Lectures)
+@Html.Partial("_Lectures", Model.Lectures.Where(s => s.Status == Project_MVC.Models.Lecture.LectureStatus.NotDeleted))
 
 @*<div>
     @foreach (var video in Model.ProductVideos)

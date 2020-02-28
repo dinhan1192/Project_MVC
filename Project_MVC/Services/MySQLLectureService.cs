@@ -90,9 +90,20 @@ namespace Project_MVC.Services
             //}
         }
 
-        public bool Delete(Lecture item, ModelStateDictionary state)
+        public bool Delete(Lecture existLecture, ModelStateDictionary state)
         {
-            throw new NotImplementedException();
+            if (state.IsValid)
+            {
+                existLecture.Status = LectureStatus.Deleted;
+                existLecture.DeletedAt = DateTime.Now;
+                existLecture.DeletedBy = userService.GetCurrentUserName();
+                DbContext.Lectures.AddOrUpdate(existLecture);
+                DbContext.SaveChanges();
+
+                return true;
+            }
+
+            return false;
         }
 
         public Lecture Detail(string id)
