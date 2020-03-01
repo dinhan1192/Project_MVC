@@ -72,9 +72,9 @@
         <th>
             @Html.ActionLink("Date of Update", "Index", new { sortOrder = ViewBag.DateSortParm })
         </th>
-        <th>
+        @*<th>
             Product Images
-        </th>
+        </th>*@
         <th></th>
     </tr>
 
@@ -102,12 +102,12 @@
             <td>
                 @Html.DisplayFor(modelItem => item.UpdatedAt)
             </td>
-            <td>
+            @*<td>
                 @foreach (var image in item.ProductImages)
                 {
                     <img src="data:image;base64,@System.Convert.ToBase64String(image.ImageData)" width="80" height="80" />
                 }
-            </td>
+            </td>*@
 
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.Code }) |
